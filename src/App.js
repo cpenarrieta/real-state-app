@@ -1,25 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Auth0Provider } from "@auth0/auth0-react";
+import { BrowserRouter as Router } from "react-router-dom";
+import { AppRoutes } from "./AppRoutes";
+import { ApiProvider } from "./context/ApiContext";
+
+const requestedScopes = [
+  "read:dashboard",
+  "read:user",
+  "edit:user",
+  "write:user",
+  "read:users",
+  "read:property",
+  "edit:property",
+  "write:property",
+  "read:properties",
+];
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Auth0Provider
+      domain={process.env.REACT_APP_AUTH0_DOMAIN}
+      clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
+      redirectUri={`${window.location.origin}/dashboard`}
+      audience={process.env.REACT_APP_AUTH0_AUDIENCE}
+      scope={requestedScopes.join(" ")}
+    >
+      <ApiProvider>
+        <Router>
+          <div className="bg-gray-100">
+            <AppRoutes />
+          </div>
+        </Router>
+      </ApiProvider>
+    </Auth0Provider>
   );
 }
 
