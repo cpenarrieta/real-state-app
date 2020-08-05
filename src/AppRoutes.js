@@ -14,6 +14,7 @@ import AppShell from "./AppShell";
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Properties = lazy(() => import("./pages/Properties"));
 const Users = lazy(() => import("./pages/Users"));
+const AuthDebugger = lazy(() => import("./pages/AuthDebugger"));
 
 const LoadingFallback = () => (
   <AppShell>
@@ -48,7 +49,7 @@ const AuthenticatedRoute = ({ children, ...rest }) => {
 const AdminRoute = ({ children, ...rest }) => {
   const { user, isAuthenticated } = useAuth0();
   const roles = user[`${process.env.REACT_APP_JWT_NAMESPACE}/roles`];
-  const isAdmin = roles[0] === "admin" ? true : false;
+  const isAdmin = roles?.[0] === "admin" ? true : false;
   return (
     <Route
       {...rest}
@@ -80,6 +81,9 @@ export const AppRoutes = () => {
           </AuthenticatedRoute>
           <AdminRoute path="/users">
             <Users />
+          </AdminRoute>
+          <AdminRoute path="/auth-debugger">
+            <AuthDebugger />
           </AdminRoute>
           <UnauthenticatedRoutes />
         </Switch>

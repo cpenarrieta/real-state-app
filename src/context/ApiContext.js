@@ -46,7 +46,7 @@ export const ApiProvider = ({ children }) => {
         (error) => error.extensions.code === "UNAUTHENTICATED"
       );
       if (unauthorizedErrors.length) {
-        window.location = "/login";
+        getAccessToken();
       }
     }
 
