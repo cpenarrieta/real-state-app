@@ -46,11 +46,9 @@ export const ApiProvider = ({ children }) => {
         );
         if (unauthorizedErrors.length) {
           getAccessToken();
-          forward(operation)
+          return forward(operation);
         }
-      }
-
-      if (networkError) {
+      } else if (networkError) {
         console.log(`[Network error]: ${networkError}`);
       }
     }
@@ -58,7 +56,7 @@ export const ApiProvider = ({ children }) => {
 
   // TODO figure out order of link
   // const link = from([errorLink, authLink, httpLink]);
-  const link = from([authLink, httpLink]);
+  const link = from([errorLink, authLink, httpLink]);
 
   const apolloClient = new ApolloClient({
     link: link,

@@ -1,7 +1,5 @@
 import React, { lazy, Suspense } from "react";
-
 import { useAuth0 } from "@auth0/auth0-react";
-
 import { Route, Switch, Redirect } from "react-router-dom";
 import FourOFour from "./pages/FourOFour";
 import Home from "./pages/Home";
@@ -12,6 +10,7 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Properties = lazy(() => import("./pages/Properties"));
 const Users = lazy(() => import("./pages/Users"));
 const AuthDebugger = lazy(() => import("./pages/AuthDebugger"));
+const PropertyManage = lazy(() => import("./pages/PropertyManage"));
 
 const LoadingFallback = () => (
   <AppShell>
@@ -75,6 +74,9 @@ export const AppRoutes = () => {
           </AuthenticatedRoute>
           <AuthenticatedRoute path="/dashboard">
             <Dashboard />
+          </AuthenticatedRoute>
+          <AuthenticatedRoute path="/property/manage/:propertyId">
+            <PropertyManage />
           </AuthenticatedRoute>
           <AuthenticatedRoute path="/properties">
             <Properties />
