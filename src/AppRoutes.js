@@ -4,7 +4,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import FourOFour from "./pages/FourOFour";
 import Home from "./pages/Home";
 import VerifyUserCallBack from "./pages/VerifyUserCallBack";
-import AppShell from "./AppShell";
+import AppShell from "./components/AppShell";
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Properties = lazy(() => import("./pages/Properties"));

@@ -53,11 +53,15 @@ export default function Dashboard() {
       <div>
         {savePropertyLoading && <p>Loading...</p>}
         {savePropertyError && <p>Error :( Please try again</p>}
-        <button type="button" onClick={savePropertyOnClick} disabled={savePropertyLoading}>
+        <button
+          type="button"
+          onClick={savePropertyOnClick}
+          disabled={savePropertyLoading}
+        >
           New Property
         </button>
       </div>
-      <div>
+      <div class="grid gap-4 grid-cols-3">
         {data.properties.map((property) => (
           <PropertyCard key={property.uuid} {...property} />
         ))}
