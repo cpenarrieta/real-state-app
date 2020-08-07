@@ -18,9 +18,7 @@ export const ApiProvider = ({ children }) => {
     try {
       const token = await getAccessTokenSilently();
       setAccessToken(token);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   }, [getAccessTokenSilently]);
 
   useEffect(() => {
@@ -31,7 +29,7 @@ export const ApiProvider = ({ children }) => {
     uri: process.env.REACT_APP_GRAPHQL_URI,
   });
 
-  const authLink = setContext((_, { headers }) => {
+  const authLink = setContext((_, { headers, operation }) => {
     return {
       headers: {
         ...headers,
@@ -40,29 +38,36 @@ export const ApiProvider = ({ children }) => {
     };
   });
 
-  const errorLink = onError(({ graphQLErrors, networkError }) => {
-    if (graphQLErrors) {
-      const unauthorizedErrors = graphQLErrors.filter(
-        (error) => error.extensions.code === "UNAUTHENTICATED"
-      );
-      if (unauthorizedErrors.length) {
-        getAccessToken();
+  const errorLink = onError(
+    ({ graphQLErrors, networkError, operation, forward }) => {
+      if (graphQLErrors) {
+        const unauthorizedErrors = graphQLErrors.filter(
+          (error) => error.extensions.code === "UNAUTHENTICATED"
+        );
+        if (unauthorizedErrors.length) {
+          getAccessToken();
+          forward(operation)
+        }
+      }
+
+      if (networkError) {
+        console.log(`[Network error]: ${networkError}`);
       }
     }
-
-    if (networkError) {
-      // TODO
-      console.log(`[Network error]: ${networkError}`);
-    }
-  });
+  );
 
   // TODO figure out order of link
-  const link = from([errorLink, authLink, httpLink]);
+  // const link = from([errorLink, authLink, httpLink]);
+  const link = from([authLink, httpLink]);
 
   const apolloClient = new ApolloClient({
     link: link,
     cache: new InMemoryCache(),
   });
 
-  return <ApolloProvider client={apolloClient}>{children}</ApolloProvider>;
+  if (window.location.pathname === "/" || accessToken) {
+    return <ApolloProvider client={apolloClient}>{children}</ApolloProvider>;
+  } else {
+    return <p>Loading...</p>;
+  }
 };

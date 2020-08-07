@@ -4,9 +4,8 @@ import { useQuery, gql } from "@apollo/client";
 const USERS_QUERY = gql`
   query GetUsers {
     users {
-      id
+      uuid
       email
-      firstName
     }
   }
 `;
@@ -22,7 +21,7 @@ export default function Dashboard() {
       <h2>Dashboard Page</h2>
       <div>
         {data.users.map((u) => (
-          <div key={u.id}>{u.email}</div>
+          <div key={u.uuid}>{u.email} - {u.uuid}</div>
         ))}
       </div>
     </div>
