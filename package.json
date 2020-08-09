@@ -9,7 +9,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "formik": "^2.1.5",
-    "graphql": "^15.3.0", 
+    "graphql": "^15.3.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
@@ -20,12 +20,17 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build:styles": "postcss src/tailwind.css -o src/tailwind.css",
+    "build:styles": "postcss src/css/tailwind.css -o src/css/tailwind-output.css",
     "prebuild": "npm run build:styles",
     "prestart": "npm run build:styles"
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.8.5",
+    "postcss-cli": "^7.1.1",
+    "tailwindcss": "^1.5.2"
   },
   "browserslist": {
     "production": [
@@ -38,10 +43,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "autoprefixer": "^9.8.5",
-    "postcss-cli": "^7.1.1",
-    "tailwindcss": "^1.5.2"
   }
 }

@@ -6,6 +6,7 @@ export default function Navbar() {
 
   return (
     <div>
+      <h1 className="text-4xl font-bold text-center text-blue-500">Real State</h1>
       <button
         type="button"
         onClick={() => logout({ returnTo: window.location.origin })}

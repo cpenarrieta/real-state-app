@@ -27,7 +27,7 @@ function App() {
     >
       <ApiProvider>
         <Router>
-          <div className="bg-gray-100">
+          <div className="bg-gray-100 h-screen">
             <AppRoutes />
           </div>
         </Router>

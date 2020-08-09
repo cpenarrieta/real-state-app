@@ -10,7 +10,7 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Properties = lazy(() => import("./pages/Properties"));
 const Users = lazy(() => import("./pages/Users"));
 const AuthDebugger = lazy(() => import("./pages/AuthDebugger"));
-const PropertyManage = lazy(() => import("./pages/PropertyManage"));
+const ManageProperty = lazy(() => import("./pages/ManageProperty"));
 
 const LoadingFallback = () => (
   <AppShell>
@@ -76,7 +76,7 @@ export const AppRoutes = () => {
             <Dashboard />
           </AuthenticatedRoute>
           <AuthenticatedRoute path="/property/manage/:propertyId">
-            <PropertyManage />
+            <ManageProperty />
           </AuthenticatedRoute>
           <AuthenticatedRoute path="/properties">
             <Properties />

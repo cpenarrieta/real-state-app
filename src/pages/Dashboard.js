@@ -49,7 +49,6 @@ export default function Dashboard() {
 
   return (
     <div>
-      <h2>Dashboard Page</h2>
       <div>
         {savePropertyLoading && <p>Loading...</p>}
         {savePropertyError && <p>Error :( Please try again</p>}
@@ -61,7 +60,7 @@ export default function Dashboard() {
           New Property
         </button>
       </div>
-      <div class="grid gap-4 grid-cols-3">
+      <div className="">
         {data.properties.map((property) => (
           <PropertyCard key={property.uuid} {...property} />
         ))}
