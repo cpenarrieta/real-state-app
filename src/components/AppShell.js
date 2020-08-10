@@ -1,26 +1,20 @@
-import React from 'react';
-import Navbar from './Navbar';
-import Sidebar from './Sidebar';
-import Footer from './Footer';
+import React from "react";
+import Navbar from "./Navbar";
+import Sidebar from "./Sidebar";
 
 const AppShell = ({ children }) => {
   return (
-    <>
+    <div className="h-screen">
+      <div>
+        <Sidebar />
+      </div>
       <div>
         <div>
-          <Sidebar />
+          <Navbar />
         </div>
-        <div>
-          <div>
-            <Navbar />
-          </div>
-          <div>
-            {children}
-          </div>
-          <Footer />
-        </div>
+        <div>{children}</div>
       </div>
-    </>
+    </div>
   );
 };
 

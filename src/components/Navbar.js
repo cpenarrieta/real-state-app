@@ -5,7 +5,7 @@ export default function Navbar() {
   const { logout } = useAuth0();
 
   return (
-    <div>
+    <div className="flex">
       <h1 className="text-4xl font-bold text-center text-blue-500">Real State</h1>
       <button
         type="button"

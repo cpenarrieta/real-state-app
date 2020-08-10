@@ -8,6 +8,7 @@ const PROPERTY_QUERY = gql`
     property(uuid: $uuid) {
       uuid
       title
+      mainPicture
     }
   }
 `;
@@ -28,13 +29,13 @@ export default function ManageProperty() {
   });
   const [
     saveProperty,
-    { loading: savePropertyLoading, error: savePropertyError }, //TODO manage errors
+    // { loading: savePropertyLoading, error: savePropertyError }, //TODO manage errors
   ] = useMutation(NEW_PROPERTY_MUTATION);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
-  const { uuid, title } = data?.property;
+  const { uuid, title, mainPicture } = data?.property;
 
   return (
     <div>
@@ -42,6 +43,7 @@ export default function ManageProperty() {
       <Formik
         initialValues={{
           title: title || "",
+          mainPicture: mainPicture || "",
         }}
         onSubmit={async (values) => {
           const propertyResponse = await saveProperty({
@@ -58,6 +60,10 @@ export default function ManageProperty() {
         <Form>
           <label htmlFor="title">Property Title</label>
           <Field id="title" name="title" placeholder="Property Title" />
+
+          <label htmlFor="mainPicture">Main Picture</label>
+          <Field id="mainPicture" name="mainPicture" placeholder="Main Picture" />
+
           <button type="submit">Submit</button>
         </Form>
       </Formik>

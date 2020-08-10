@@ -8,6 +8,10 @@ const DASHBOARD_QUERY = gql`
     properties {
       uuid
       title
+      mainPicture
+      bedrooms
+      bathrooms
+      price
     }
   }
 `;
@@ -60,9 +64,11 @@ export default function Dashboard() {
           New Property
         </button>
       </div>
-      <div className="">
+      <div className="flex justify-evenly flex-wrap">
         {data.properties.map((property) => (
-          <PropertyCard key={property.uuid} {...property} />
+          <div key={property.uuid} className="my-2">
+            <PropertyCard {...property} />
+          </div>
         ))}
       </div>
     </div>
