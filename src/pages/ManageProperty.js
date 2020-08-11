@@ -2,13 +2,17 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { Formik, Field, Form } from "formik";
+import { DASHBOARD_QUERY } from "../queries/dashboard";
 
 const PROPERTY_QUERY = gql`
   query GetProperty($uuid: String!) {
     property(uuid: $uuid) {
       uuid
       title
+      price
       mainPicture
+      status
+      publishedStatus
     }
   }
 `;
@@ -18,6 +22,7 @@ const NEW_PROPERTY_MUTATION = gql`
     saveProperty(property: $property) {
       uuid
       title
+      mainPicture
     }
   }
 `;
@@ -29,8 +34,9 @@ export default function ManageProperty() {
   });
   const [
     saveProperty,
-    // { loading: savePropertyLoading, error: savePropertyError }, //TODO manage errors
+    { loading: savePropertyLoading, error: savePropertyError },
   ] = useMutation(NEW_PROPERTY_MUTATION);
+  const { refetch } = useQuery(DASHBOARD_QUERY);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
@@ -40,6 +46,8 @@ export default function ManageProperty() {
   return (
     <div>
       <h3>Manage your Property</h3>
+      {savePropertyLoading && <p>Loading...</p>}
+      {savePropertyError && <p>Error :( Please try again</p>}
       <Formik
         initialValues={{
           title: title || "",
@@ -51,10 +59,12 @@ export default function ManageProperty() {
               property: {
                 uuid,
                 title: values.title,
+                mainPicture: values.mainPicture,
               },
             },
           });
-          console.log(propertyResponse?.data?.saveProperty);
+
+          refetch();
         }}
       >
         <Form>
@@ -62,7 +72,11 @@ export default function ManageProperty() {
           <Field id="title" name="title" placeholder="Property Title" />
 
           <label htmlFor="mainPicture">Main Picture</label>
-          <Field id="mainPicture" name="mainPicture" placeholder="Main Picture" />
+          <Field
+            id="mainPicture"
+            name="mainPicture"
+            placeholder="Main Picture"
+          />
 
           <button type="submit">Submit</button>
         </Form>

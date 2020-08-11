@@ -1,6 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+const getPropertyBadge = (status, publishedStatus) => {
+  if (status === "ACTIVE" && publishedStatus === "PUBLISHED") {
+    return ["live", "teal"];
+  }
+  if (status === "ACTIVE" && publishedStatus === "DRAFT") {
+    return ["draft", "yellow"];
+  }
+  if (status === "SOLD") {
+    return ["sold", "orange"];
+  }
+  if (status === "INACTIVE") {
+    return ["inactive", "red"];
+  }
+  return [status, "gray"];
+};
+
 export default function PropertyCard({
   uuid,
   title,
@@ -8,13 +24,19 @@ export default function PropertyCard({
   bedrooms,
   bathrooms,
   price,
+  status,
+  publishedStatus,
+  currency,
 }) {
+  const [badgeText, badgeColor] = getPropertyBadge(status, publishedStatus);
+  const formattedPrice = new Intl.NumberFormat("en-us").format(price);
+
   return (
-    <div>
+    <div className="">
       <div className="relative pb-5/6">
         <Link to={`/property/manage/${uuid}`}>
           <img
-            className="absolute h-full w-full object-cover rounded-lg shadow-md transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+            className="absolute h-full w-full object-cover rounded-lg shadow-md transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105"
             src={mainPicture}
             alt={uuid}
           />
@@ -23,8 +45,10 @@ export default function PropertyCard({
       <div className="relative px-4 -mt-12">
         <div className="bg-white p-6 rounded-lg shadow-lg">
           <div className="flex items-baseline">
-            <span className="inline-block bg-teal-200 text-teal-800 text-xs px-2 rounded-full uppercase font-semibold tracking-wide">
-              New
+            <span
+              className={`inline-block bg-${badgeColor}-200 text-${badgeColor}-800 text-xs px-2 rounded-full uppercase font-semibold tracking-wide`}
+            >
+              {badgeText}
             </span>
             <div className="ml-2 text-gray-600 text-xs uppercase font-semibold tracking-wide">
               {bedrooms} beds &bull; {bathrooms} baths
@@ -34,8 +58,8 @@ export default function PropertyCard({
             {title}
           </h4>
           <div className="mt-1">
-            {price}
-            <span className="text-gray-600 text-sm"> CAD</span>
+            $ {formattedPrice}
+            <span className="text-gray-600 text-xs"> {currency}</span>
           </div>
         </div>
       </div>

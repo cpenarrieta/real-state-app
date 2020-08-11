@@ -2,19 +2,7 @@ import React from "react";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { useHistory } from "react-router-dom";
 import PropertyCard from "../components/PropertyCard";
-
-const DASHBOARD_QUERY = gql`
-  query GetDashboardData {
-    properties {
-      uuid
-      title
-      mainPicture
-      bedrooms
-      bathrooms
-      price
-    }
-  }
-`;
+import { DASHBOARD_QUERY } from "../queries/dashboard";
 
 const NEW_PROPERTY_MUTATION = gql`
   mutation SaveProperty {
@@ -64,12 +52,17 @@ export default function Dashboard() {
           New Property
         </button>
       </div>
-      <div className="flex justify-evenly flex-wrap">
-        {data.properties.map((property) => (
-          <div key={property.uuid} className="my-2">
-            <PropertyCard {...property} />
-          </div>
-        ))}
+      <div className="px-2">
+        <div className="flex flex-wrap">
+          {data.properties.map((property) => (
+            <div
+              key={property.uuid}
+              className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 m-2"
+            >
+              <PropertyCard {...property} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
