@@ -65,6 +65,7 @@ export const AppRoutes = () => {
   if (isLoading) {
     return <div className="h-screen flex justify-center">loading logo</div>;
   }
+
   return (
     <>
       <Suspense fallback={<LoadingFallback />}>

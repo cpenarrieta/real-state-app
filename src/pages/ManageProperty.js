@@ -54,7 +54,7 @@ export default function ManageProperty() {
           mainPicture: mainPicture || "",
         }}
         onSubmit={async (values) => {
-          const propertyResponse = await saveProperty({
+          await saveProperty({
             variables: {
               property: {
                 uuid,
