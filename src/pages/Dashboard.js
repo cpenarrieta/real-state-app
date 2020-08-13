@@ -21,7 +21,7 @@ export default function Dashboard() {
   let history = useHistory();
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
+  if (error) return <p>Error...</p>;
 
   const savePropertyOnClick = async () => {
     const propertyResponse = await saveProperty({
@@ -43,7 +43,7 @@ export default function Dashboard() {
     <div>
       <div>
         {savePropertyLoading && <p>Loading...</p>}
-        {savePropertyError && <p>Error :( Please try again</p>}
+        {savePropertyError && <p>Error... Please try again</p>}
         <button
           type="button"
           onClick={savePropertyOnClick}

@@ -11,6 +11,7 @@ const Properties = lazy(() => import("./pages/Properties"));
 const Users = lazy(() => import("./pages/Users"));
 const AuthDebugger = lazy(() => import("./pages/AuthDebugger"));
 const ManageProperty = lazy(() => import("./pages/ManageProperty"));
+const MyAccount = lazy(() => import("./pages/MyAccount"));
 
 const LoadingFallback = () => (
   <AppShell>
@@ -81,6 +82,9 @@ export const AppRoutes = () => {
           </AuthenticatedRoute>
           <AuthenticatedRoute path="/properties">
             <Properties />
+          </AuthenticatedRoute>
+          <AuthenticatedRoute path="/my-account">
+            <MyAccount />
           </AuthenticatedRoute>
           <AdminRoute path="/users">
             <Users />

@@ -39,7 +39,7 @@ export default function ManageProperty() {
   const { refetch } = useQuery(DASHBOARD_QUERY);
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
+  if (error) return <p>Error...</p>;
 
   const { uuid, title, mainPicture } = data?.property;
 
@@ -47,7 +47,7 @@ export default function ManageProperty() {
     <div>
       <h3>Manage your Property</h3>
       {savePropertyLoading && <p>Loading...</p>}
-      {savePropertyError && <p>Error :( Please try again</p>}
+      {savePropertyError && <p>Error... Please try again</p>}
       <Formik
         initialValues={{
           title: title || "",

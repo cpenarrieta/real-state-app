@@ -6,10 +6,11 @@ export default function Navbar() {
 
   return (
     <div className="flex">
-      <h1 className="text-4xl font-bold text-center text-blue-500">Real State</h1>
+      <h1 className="text-4xl font-bold text-center text-blue-500 p-2">Real State</h1>
       <button
         type="button"
         onClick={() => logout({ returnTo: window.location.origin })}
+        className="p-2"
       >
         Log Out
       </button>

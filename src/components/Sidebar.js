@@ -3,26 +3,27 @@ import { Link } from "react-router-dom";
 
 export default function Sidebar() {
   return (
-    <div>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/dashboard">Dashboard</Link>
-          </li>
-          <li>
-            <Link to="/properties">Properties</Link>
-          </li>
-          <li>
-            <Link to="/users">Users</Link>
-          </li>
-          <li>
-            <Link to="/auth-debugger">Auth Debugger</Link>
-          </li>
-        </ul>
-      </nav>
-    </div>
+    <nav>
+      <ul className="flex content-between flex-wrap">
+        <li className="p-3">
+          <Link to="/">Home</Link>
+        </li>
+        <li className="p-3">
+          <Link to="/dashboard">Dashboard</Link>
+        </li>
+        <li className="p-3">
+          <Link to="/properties">Properties</Link>
+        </li>
+        <li className="p-3">
+          <Link to="/users">Users</Link>
+        </li>
+        <li className="p-3">
+          <Link to="/my-account">My Account</Link>
+        </li>
+        <li className="p-3">
+          <Link to="/auth-debugger">Auth Debugger</Link>
+        </li>
+      </ul>
+    </nav>
   );
 }
