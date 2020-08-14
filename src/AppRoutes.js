@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import FourOFour from "./pages/FourOFour";
 import Home from "./pages/Home";
+import PublicProperty from "./pages/PublicProperty";
 import VerifyUserCallBack from "./pages/VerifyUserCallBack";
 import AppShell from "./components/AppShell";
 
@@ -12,6 +13,7 @@ const Users = lazy(() => import("./pages/Users"));
 const AuthDebugger = lazy(() => import("./pages/AuthDebugger"));
 const ManageProperty = lazy(() => import("./pages/ManageProperty"));
 const MyAccount = lazy(() => import("./pages/MyAccount"));
+const PreviewProperty = lazy(() => import("./pages/PreviewProperty"));
 
 const LoadingFallback = () => (
   <AppShell>
@@ -24,6 +26,9 @@ const UnauthenticatedRoutes = () => (
     <Route exact path="/">
       <Home />
     </Route>
+    <Route exact path="/property/:propertyId">
+      <PublicProperty />
+    </Route>
     <Route path="*">
       <FourOFour />
     </Route>
@@ -31,7 +36,11 @@ const UnauthenticatedRoutes = () => (
 );
 
 const AuthenticatedRoute = ({ children, ...rest }) => {
-  const { isAuthenticated } = useAuth0();
+  const { isAuthenticated, isLoading } = useAuth0();
+
+  if (isLoading) {
+    return <div className="h-screen flex justify-center">loading logo</div>;
+  }
 
   return (
     <Route
@@ -44,7 +53,12 @@ const AuthenticatedRoute = ({ children, ...rest }) => {
 };
 
 const AdminRoute = ({ children, ...rest }) => {
-  const { user, isAuthenticated } = useAuth0();
+  const { user, isAuthenticated, isLoading } = useAuth0();
+
+  if (isLoading) {
+    return <div className="h-screen flex justify-center">loading logo</div>;
+  }
+
   const roles = user[`${process.env.REACT_APP_JWT_NAMESPACE}/roles`];
   const isAdmin = roles?.[0] === "admin" ? true : false;
   return (
@@ -62,34 +76,32 @@ const AdminRoute = ({ children, ...rest }) => {
 };
 
 export const AppRoutes = () => {
-  const { isLoading } = useAuth0();
-  if (isLoading) {
-    return <div className="h-screen flex justify-center">loading logo</div>;
-  }
-
   return (
     <>
       <Suspense fallback={<LoadingFallback />}>
         <Switch>
-          <AuthenticatedRoute path="/verify_user">
+          <AuthenticatedRoute exact path="/verify_user">
             <VerifyUserCallBack />
           </AuthenticatedRoute>
-          <AuthenticatedRoute path="/dashboard">
+          <AuthenticatedRoute exact path="/dashboard">
             <Dashboard />
           </AuthenticatedRoute>
-          <AuthenticatedRoute path="/property/manage/:propertyId">
+          <AuthenticatedRoute exact path="/manage-property/:propertyId">
             <ManageProperty />
           </AuthenticatedRoute>
-          <AuthenticatedRoute path="/properties">
+          <AuthenticatedRoute exact path="/manage-property/preview/:propertyId">
+            <PreviewProperty />
+          </AuthenticatedRoute>
+          <AuthenticatedRoute exact path="/my-properties">
             <Properties />
           </AuthenticatedRoute>
-          <AuthenticatedRoute path="/my-account">
+          <AuthenticatedRoute exact path="/my-account">
             <MyAccount />
           </AuthenticatedRoute>
-          <AdminRoute path="/users">
+          <AdminRoute exact path="/users">
             <Users />
           </AdminRoute>
-          <AdminRoute path="/auth-debugger">
+          <AdminRoute exact path="/auth-debugger">
             <AuthDebugger />
           </AdminRoute>
           <UnauthenticatedRoutes />

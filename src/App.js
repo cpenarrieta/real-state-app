@@ -17,22 +17,38 @@ const requestedScopes = [
 ];
 
 function App() {
+  const ManageAppProvider = ({ children }) => {
+    return (
+      <Auth0Provider
+        domain={process.env.REACT_APP_AUTH0_DOMAIN}
+        clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
+        redirectUri={`${window.location.origin}/verify_user`}
+        audience={process.env.REACT_APP_AUTH0_AUDIENCE}
+        scope={requestedScopes.join(" ")}
+      >
+        <ApiProvider>{children}</ApiProvider>
+      </Auth0Provider>
+    );
+  };
+
+  const AppRouter = () => {
+    return (
+      <Router>
+        <div className="bg-gray-100 h-screen">
+          <AppRoutes />
+        </div>
+      </Router>
+    );
+  };
+
+  if (window.location.pathname.startsWith("/property")) {
+    return <AppRouter />;
+  }
+
   return (
-    <Auth0Provider
-      domain={process.env.REACT_APP_AUTH0_DOMAIN}
-      clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
-      redirectUri={`${window.location.origin}/verify_user`}
-      audience={process.env.REACT_APP_AUTH0_AUDIENCE}
-      scope={requestedScopes.join(" ")}
-    >
-      <ApiProvider>
-        <Router>
-          <div className="bg-gray-100 h-screen">
-            <AppRoutes />
-          </div>
-        </Router>
-      </ApiProvider>
-    </Auth0Provider>
+    <ManageAppProvider>
+      <AppRouter />
+    </ManageAppProvider>
   );
 }
 

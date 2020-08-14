@@ -35,7 +35,7 @@ export default function Dashboard() {
     const propertyUuid = propertyResponse?.data?.saveProperty?.uuid;
 
     if (propertyUuid) {
-      history.push(`/property/manage/${propertyUuid}`);
+      history.push(`/manage-property/${propertyUuid}`);
     }
   };
 

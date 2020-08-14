@@ -6,13 +6,10 @@ export default function Sidebar() {
     <nav>
       <ul className="flex content-between flex-wrap">
         <li className="p-3">
-          <Link to="/">Home</Link>
+          <Link to="/dashboard">Home</Link>
         </li>
         <li className="p-3">
-          <Link to="/dashboard">Dashboard</Link>
-        </li>
-        <li className="p-3">
-          <Link to="/properties">Properties</Link>
+          <Link to="/my-properties">Properties</Link>
         </li>
         <li className="p-3">
           <Link to="/users">Users</Link>

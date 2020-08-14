@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory, Link } from "react-router-dom";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { Formik, Field, Form } from "formik";
 import { DASHBOARD_QUERY } from "../queries/dashboard";
@@ -29,6 +29,7 @@ const NEW_PROPERTY_MUTATION = gql`
 
 export default function ManageProperty() {
   const { propertyId } = useParams();
+  const history = useHistory();
   const { loading, error, data } = useQuery(PROPERTY_QUERY, {
     variables: { uuid: propertyId },
   });
@@ -48,6 +49,22 @@ export default function ManageProperty() {
       <h3>Manage your Property</h3>
       {savePropertyLoading && <p>Loading...</p>}
       {savePropertyError && <p>Error... Please try again</p>}
+
+      <div className="flex justify-center">
+        <Link to={`/property/${propertyId}`} target="_blank" className="text-indigo-500 font-bold hover:text-indigo-700">
+          Live Page
+        </Link>
+        <button
+          className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-4"
+          onClick={() => history.push(`/manage-property/preview/${propertyId}`)}
+        >
+          Preview
+        </button>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4">
+          Publish
+        </button>
+      </div>
+
       <Formik
         initialValues={{
           title: title || "",
