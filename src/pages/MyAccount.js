@@ -142,9 +142,6 @@ export default function MyAccount() {
                       type="text"
                       placeholder="Jane"
                     />
-                    {/* <p class="text-red-500 text-xs italic">
-                Please fill out this field.
-              </p> */}
                   </div>
                   <div className="w-full md:w-1/2 px-3">
                     <label
