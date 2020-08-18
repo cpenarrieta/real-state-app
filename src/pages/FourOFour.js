@@ -3,7 +3,7 @@ import React from 'react'
 export default function FourOFour() {
   return (
     <div>
-      4040 page
+      404 page
     </div>
   )
 }

@@ -14,6 +14,8 @@ const AuthDebugger = lazy(() => import("./pages/AuthDebugger"));
 const ManageProperty = lazy(() => import("./pages/ManageProperty"));
 const MyAccount = lazy(() => import("./pages/MyAccount"));
 const PreviewProperty = lazy(() => import("./pages/PreviewProperty"));
+const Payment = lazy(() => import("./pages/Payment"));
+const SuccessPayment = lazy(() => import("./pages/SuccessPayment"));
 
 const LoadingFallback = () => (
   <AppShell>
@@ -92,11 +94,17 @@ export const AppRoutes = () => {
           <AuthenticatedRoute exact path="/manage-property/preview/:propertyId">
             <PreviewProperty />
           </AuthenticatedRoute>
+          <AuthenticatedRoute exact path="/payment/:propertyId">
+            <Payment />
+          </AuthenticatedRoute>
           <AuthenticatedRoute exact path="/my-properties">
             <Properties />
           </AuthenticatedRoute>
           <AuthenticatedRoute exact path="/my-account">
             <MyAccount />
+          </AuthenticatedRoute>
+          <AuthenticatedRoute exact path="/payment-success">
+            <SuccessPayment />
           </AuthenticatedRoute>
           <AdminRoute exact path="/users">
             <Users />

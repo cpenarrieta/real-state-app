@@ -134,6 +134,14 @@ export default function ManageProperty() {
                   >
                     Publish
                   </button>
+                  <button
+                    className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded ml-4"
+                    onClick={() => {
+                      history.push(`/payment/${propertyId}`)
+                    }}
+                  >
+                    Activate
+                  </button>
                   {webPaidUntil && (
                     <div className="flex items-baseline ml-4">
                       <span
