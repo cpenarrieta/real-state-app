@@ -3,7 +3,7 @@ import { useParams, useHistory, Link } from "react-router-dom";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { Formik, Field, Form } from "formik";
 import { DASHBOARD_QUERY } from "../queries/dashboard";
-import { format, parseISO } from "date-fns";
+import { format, parseISO, compareAsc } from "date-fns";
 import { getPropertyBadge } from "../util/propertyStatus";
 
 const PROPERTY_QUERY = gql`
@@ -81,6 +81,9 @@ export default function ManageProperty() {
     });
   };
 
+  const validPayment =
+    webPaidUntil && compareAsc(parseISO(webPaidUntil), new Date()) === 1;
+
   return (
     <div>
       <div className="flex justify-center">
@@ -104,13 +107,15 @@ export default function ManageProperty() {
             return (
               <div className="w-full max-w-3xl">
                 <div className="flex justify-center">
-                  <Link
-                    to={`/property/${propertyId}`}
-                    target="_blank"
-                    className="text-indigo-500 font-bold hover:text-indigo-700"
-                  >
-                    Live Page
-                  </Link>
+                  {publishedStatus === "PUBLISHED" && validPayment && (
+                    <Link
+                      to={`/property/${propertyId}`}
+                      target="_blank"
+                      className="text-indigo-500 font-bold hover:text-indigo-700"
+                    >
+                      Live Page
+                    </Link>
+                  )}
                   <button
                     className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-4"
                     onClick={() =>
@@ -119,29 +124,33 @@ export default function ManageProperty() {
                   >
                     Preview
                   </button>
-                  <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4"
-                    onClick={async () => {
-                      await savePropertyFunc(values);
-                      await publishProperty({
-                        variables: {
-                          propertyUuid: propertyId,
-                        },
-                      });
-                      refetchGetProperty();
-                      refetch();
-                    }}
-                  >
-                    Publish
-                  </button>
-                  <button
-                    className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded ml-4"
-                    onClick={() => {
-                      history.push(`/payment/${propertyId}`)
-                    }}
-                  >
-                    Activate
-                  </button>
+                  {validPayment && (
+                    <button
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4"
+                      onClick={async () => {
+                        await savePropertyFunc(values);
+                        await publishProperty({
+                          variables: {
+                            propertyUuid: propertyId,
+                          },
+                        });
+                        refetchGetProperty();
+                        refetch();
+                      }}
+                    >
+                      Publish
+                    </button>
+                  )}
+                  {!validPayment && (
+                    <button
+                      className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded ml-4"
+                      onClick={() => {
+                        history.push(`/payment/${propertyId}`);
+                      }}
+                    >
+                      Activate
+                    </button>
+                  )}
                   {webPaidUntil && (
                     <div className="flex items-baseline ml-4">
                       <span

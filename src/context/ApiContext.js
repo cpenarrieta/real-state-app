@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
   from,
@@ -9,9 +9,10 @@ import {
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
+import { useAccessToken } from "../context/AccessTokenContext";
 
 export const ApiProvider = ({ children }) => {
-  const [accessToken, setAccessToken] = useState();
+  const { accessToken, setAccessToken } = useAccessToken();
   const { getAccessTokenSilently } = useAuth0();
 
   const getAccessToken = useCallback(async () => {
@@ -19,7 +20,7 @@ export const ApiProvider = ({ children }) => {
       const token = await getAccessTokenSilently();
       setAccessToken(token);
     } catch (err) {}
-  }, [getAccessTokenSilently]);
+  }, [getAccessTokenSilently, setAccessToken]);
 
   useEffect(() => {
     getAccessToken();

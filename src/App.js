@@ -3,6 +3,7 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { AppRoutes } from "./AppRoutes";
 import { ApiProvider } from "./context/ApiContext";
+import { AccessTokenProvider } from "./context/AccessTokenContext";
 
 const requestedScopes = [
   "read:dashboard",
@@ -19,15 +20,17 @@ const requestedScopes = [
 function App() {
   const ManageAppProvider = ({ children }) => {
     return (
-      <Auth0Provider
-        domain={process.env.REACT_APP_AUTH0_DOMAIN}
-        clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
-        redirectUri={`${window.location.origin}/verify_user`}
-        audience={process.env.REACT_APP_AUTH0_AUDIENCE}
-        scope={requestedScopes.join(" ")}
-      >
-        <ApiProvider>{children}</ApiProvider>
-      </Auth0Provider>
+      <AccessTokenProvider>
+        <Auth0Provider
+          domain={process.env.REACT_APP_AUTH0_DOMAIN}
+          clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
+          redirectUri={`${window.location.origin}/verify_user`}
+          audience={process.env.REACT_APP_AUTH0_AUDIENCE}
+          scope={requestedScopes.join(" ")}
+        >
+          <ApiProvider>{children}</ApiProvider>
+        </Auth0Provider>
+      </AccessTokenProvider>
     );
   };
 

@@ -2,14 +2,22 @@ import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { loadStripe } from "@stripe/stripe-js";
 import { useParams } from "react-router-dom";
+import { useAccessToken } from "../context/AccessTokenContext";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC);
 
-const fetchCheckoutSession = async ({ productType, locale, propertyId, email }) => {
+const fetchCheckoutSession = async ({
+  productType,
+  locale,
+  propertyId,
+  email,
+  accessToken,
+}) => {
   return fetch(`${process.env.REACT_APP_API_URI}create-checkout-session`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify({
       productType,
@@ -21,6 +29,7 @@ const fetchCheckoutSession = async ({ productType, locale, propertyId, email }) 
 };
 
 export default function Payment() {
+  const { accessToken } = useAccessToken();
   const { propertyId } = useParams();
   const { user } = useAuth0();
 
@@ -30,6 +39,7 @@ export default function Payment() {
       locale: "en",
       propertyId,
       email: user.email,
+      accessToken,
     });
 
     const stripe = await stripePromise;
