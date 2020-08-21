@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import PropertyPage from "../components/property/PropertyPage";
 
 export default function PublicProperty() {
   const { propertyId } = useParams();
@@ -16,7 +17,7 @@ export default function PublicProperty() {
       if (data && data.uuid) {
         setProperty(data);
       } else {
-        setQueryDone(true)
+        setQueryDone(true);
       }
     }
 
@@ -32,5 +33,5 @@ export default function PublicProperty() {
     return <div>Error or redirect to Home</div>;
   }
 
-  return <div>Public Property - {property.title}</div>;
+  return <PropertyPage {...property} />;
 }
