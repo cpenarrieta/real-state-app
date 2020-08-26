@@ -3,7 +3,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import FourOFour from "./pages/FourOFour";
 import Home from "./pages/Home";
-import PublicProperty from "./pages/PublicProperty";
 import VerifyUserCallBack from "./pages/VerifyUserCallBack";
 import AppShell from "./components/AppShell";
 
@@ -27,9 +26,6 @@ const UnauthenticatedRoutes = () => (
   <Switch>
     <Route exact path="/">
       <Home />
-    </Route>
-    <Route exact path="/property/:propertyId">
-      <PublicProperty />
     </Route>
     <Route path="*">
       <FourOFour />
