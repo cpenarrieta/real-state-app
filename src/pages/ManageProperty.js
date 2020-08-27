@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, useHistory, Link } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { Formik, Field, Form } from "formik";
 import { DASHBOARD_QUERY } from "../queries/dashboard";
@@ -16,6 +16,7 @@ const PROPERTY_QUERY = gql`
       status
       publishedStatus
       webPaidUntil
+      username
     }
   }
 `;
@@ -65,6 +66,7 @@ export default function ManageProperty() {
     webPaidUntil,
     status,
     publishedStatus,
+    username,
   } = data?.property;
 
   const [badgeText, badgeColor] = getPropertyBadge(status, publishedStatus);
@@ -108,13 +110,14 @@ export default function ManageProperty() {
               <div className="w-full max-w-3xl">
                 <div className="flex justify-center">
                   {publishedStatus === "PUBLISHED" && validPayment && (
-                    <Link
-                      to={`/property/${propertyId}`}
+                    <a
+                      href={`${process.env.REACT_APP_STATIC_URI}${username}/${propertyId}`}
+                      rel="noopener noreferrer"
                       target="_blank"
                       className="text-indigo-500 font-bold hover:text-indigo-700"
                     >
                       Live Page
-                    </Link>
+                    </a>
                   )}
                   <button
                     className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-4"
