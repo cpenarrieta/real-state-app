@@ -333,7 +333,7 @@ export default function MyAccount() {
                       type="submit"
                       disabled={submitButtonDisabled}
                     >
-                      Submit
+                      Save
                     </button>
                   </div>
                 </div>

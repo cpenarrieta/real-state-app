@@ -57,7 +57,7 @@ export default function Dashboard() {
           {data.properties.map((property) => (
             <div
               key={property.uuid}
-              className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 m-2"
+              className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 m-2"
             >
               <PropertyCard {...property} />
             </div>
