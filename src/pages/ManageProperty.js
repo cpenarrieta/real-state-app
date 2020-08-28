@@ -122,7 +122,7 @@ export default function ManageProperty() {
                   <button
                     className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-4"
                     onClick={() =>
-                      history.push(`/manage-property/preview/${propertyId}`)
+                      history.push(`/manage-property/${propertyId}/preview`)
                     }
                   >
                     Preview
@@ -142,6 +142,29 @@ export default function ManageProperty() {
                       }}
                     >
                       Publish
+                    </button>
+                  )}
+                  {validPayment && (
+                    <button
+                      className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded ml-4"
+                      onClick={() =>
+                        history.push(`/manage-property/${propertyId}/leads`)
+                      }
+                    >
+                      <svg
+                        className="w-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"
+                        />
+                      </svg>
                     </button>
                   )}
                   {!validPayment && (

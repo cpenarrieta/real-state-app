@@ -9,9 +9,6 @@ export default function Sidebar() {
           <Link to="/dashboard">Home</Link>
         </li>
         <li className="p-3">
-          <Link to="/my-properties">Properties</Link>
-        </li>
-        <li className="p-3">
           <Link to="/users">Users</Link>
         </li>
         <li className="p-3">
