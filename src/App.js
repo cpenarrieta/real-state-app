@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { AppRoutes } from "./AppRoutes";
 import { ApiProvider } from "./context/ApiContext";
 import { AccessTokenProvider } from "./context/AccessTokenContext";
+import { UserProvider } from "./context/UserContext";
 
 const requestedScopes = [
   "read:dashboard",
@@ -28,7 +29,9 @@ function App() {
           audience={process.env.REACT_APP_AUTH0_AUDIENCE}
           scope={requestedScopes.join(" ")}
         >
-          <ApiProvider>{children}</ApiProvider>
+          <ApiProvider>
+            <UserProvider>{children}</UserProvider>
+          </ApiProvider>
         </Auth0Provider>
       </AccessTokenProvider>
     );
@@ -43,10 +46,6 @@ function App() {
       </Router>
     );
   };
-
-  if (window.location.pathname.startsWith("/property")) {
-    return <AppRouter />;
-  }
 
   return (
     <ManageAppProvider>
