@@ -64,7 +64,8 @@ export const ApiProvider = ({ children }) => {
     cache: new InMemoryCache(),
   });
 
-  if (window.location.pathname === "/" || accessToken) {
+  // window.location.pathname === "/"
+  if (accessToken) {
     return <ApolloProvider client={apolloClient}>{children}</ApolloProvider>;
   } else {
     return <p>Loading...</p>;

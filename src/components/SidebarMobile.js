@@ -4,6 +4,7 @@ import { useMutation, gql } from "@apollo/client";
 import { useHistory } from "react-router-dom";
 import Alert from "./Alert";
 import { useUser } from "../context/UserContext";
+import { useAuth0 } from "@auth0/auth0-react";
 import userDefault from "../images/user-default.png";
 import { Transition } from "@tailwindui/react";
 
@@ -22,6 +23,7 @@ export default function SidebarMobile({ mobileMenuOpen, setMobileMenuOpen }) {
   ] = useMutation(NEW_PROPERTY_MUTATION);
   let history = useHistory();
   const { user } = useUser();
+  const { logout } = useAuth0();
 
   const savePropertyOnClick = async () => {
     const propertyResponse = await saveProperty({
@@ -247,7 +249,7 @@ export default function SidebarMobile({ mobileMenuOpen, setMobileMenuOpen }) {
                       </div>
                       <div className="ml-3">
                         <p className="text-base leading-6 font-medium text-gray-700 group-hover:text-gray-900">
-                          {`${user.firstName} ${user.lastName}`}
+                          {`${user.firstName}`}
                         </p>
                         <p className="text-sm leading-5 font-medium text-gray-500 group-hover:text-gray-700 group-focus:underline transition ease-in-out duration-150">
                           View profile
@@ -255,6 +257,30 @@ export default function SidebarMobile({ mobileMenuOpen, setMobileMenuOpen }) {
                       </div>
                     </div>
                   </Link>
+                </div>
+              )}
+              {user && (
+                <div className="flex-shrink-0 flex px-4 py-2">
+                  <button
+                    className="w-full inline-flex font-normal text-sm text-red-500 hover:text-red-800"
+                    onClick={() => logout({ returnTo: window.location.origin })}
+                  >
+                    <svg
+                      className="mr-3 h-5 w-5 text-red-400 group-hover:text-red-500 group-focus:text-red-500 transition ease-in-out duration-150"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                      />
+                    </svg>
+                    Log Out
+                  </button>
                 </div>
               )}
             </div>

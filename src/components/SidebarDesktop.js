@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, gql } from "@apollo/client";
 import { useHistory } from "react-router-dom";
 import Alert from "./Alert";
 import { useUser } from "../context/UserContext";
+import { useAuth0 } from "@auth0/auth0-react";
 import userDefault from "../images/user-default.png";
+import { Transition } from "@tailwindui/react";
 
 const NEW_PROPERTY_MUTATION = gql`
   mutation SaveProperty {
@@ -21,6 +23,8 @@ export default function SidebarDesktop() {
   ] = useMutation(NEW_PROPERTY_MUTATION);
   let history = useHistory();
   const { user } = useUser();
+  const { logout } = useAuth0();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const savePropertyOnClick = async () => {
     const propertyResponse = await saveProperty({
@@ -47,7 +51,7 @@ export default function SidebarDesktop() {
           position="top-right"
         />
       )}
-      <div className="flex flex-col w-56">
+      <div className="flex flex-col w-64">
         <div className="flex flex-col h-0 flex-1 border-r border-gray-200 bg-white">
           <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
             <div className="flex items-center flex-shrink-0 px-4">
@@ -192,13 +196,71 @@ export default function SidebarDesktop() {
                 </button>
               </span>
             </nav>
+            <Transition
+              show={dropdownOpen}
+              enter="transition ease-out duration-100"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
+            >
+              <div className="origin-bottom-left relative left-0 mt-2 w-full rounded-md shadow-lg">
+                <div
+                  className="rounded-md bg-white shadow-xs"
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="options-menu"
+                >
+                  <div className="px-4 py-3">
+                    <p className="text-sm leading-5">Signed in as</p>
+                    <p className="text-sm leading-5 font-medium text-gray-900 truncate">
+                      {user && user.email}
+                    </p>
+                  </div>
+                  <div className="border-t border-gray-100"></div>
+                  <div className="py-1">
+                    <Link
+                      to=""
+                      className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                      role="menuitem"
+                    >
+                      Account settings
+                    </Link>
+                    <Link
+                      to=""
+                      className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                      role="menuitem"
+                    >
+                      Support
+                    </Link>
+                    <Link
+                      to=""
+                      className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                      role="menuitem"
+                    >
+                      License
+                    </Link>
+                  </div>
+                  <div className="border-t border-gray-100"></div>
+                  <div className="py-1">
+                    <button
+                      className="block w-full text-left px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                      role="menuitem"
+                      onClick={() =>
+                        logout({ returnTo: window.location.origin })
+                      }
+                    >
+                      Sign out
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </Transition>
           </div>
           {user && (
             <div className="flex-shrink-0 flex border-t border-gray-200 p-4">
-              <Link
-                to="/my-account"
-                className="flex-shrink-0 w-full group block"
-              >
+              <Link to="/my-account" className="flex-shrink-0  group block">
                 <div className="flex items-center">
                   <div>
                     <img
@@ -209,7 +271,7 @@ export default function SidebarDesktop() {
                   </div>
                   <div className="ml-3">
                     <p className="text-sm leading-5 font-medium text-gray-700 group-hover:text-gray-900">
-                      {`${user.firstName} ${user.lastName}`}
+                      {`${user.firstName}`}
                     </p>
                     <p className="text-xs leading-4 font-medium text-gray-500 group-hover:text-gray-700 transition ease-in-out duration-150">
                       View profile
@@ -217,6 +279,24 @@ export default function SidebarDesktop() {
                   </div>
                 </div>
               </Link>
+
+              <div className="ml-auto self-center">
+                <svg
+                  className="-mr-1 ml-2 h-5 w-5 text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  onClick={() => setDropdownOpen((v) => !v)}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 15l7-7 7 7"
+                  />
+                </svg>
+              </div>
             </div>
           )}
         </div>
