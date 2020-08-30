@@ -16,6 +16,10 @@ const PreviewProperty = lazy(() => import("./pages/PreviewProperty"));
 const Payment = lazy(() => import("./pages/Payment"));
 const SuccessPayment = lazy(() => import("./pages/SuccessPayment"));
 const PropertyLeads = lazy(() => import("./pages/PropertyLeads"));
+const Leads = lazy(() => import("./pages/Leads"));
+const Analytics = lazy(() => import("./pages/Analytics"));
+const Settings = lazy(() => import("./pages/Settings"));
+const Support = lazy(() => import("./pages/Support"));
 
 const LoadingFallback = () => (
   <AppShell>
@@ -105,6 +109,18 @@ export const AppRoutes = () => {
           </AuthenticatedRoute>
           <AuthenticatedRoute exact path="/payment-success">
             <SuccessPayment />
+          </AuthenticatedRoute>
+          <AuthenticatedRoute exact path="/leads">
+            <Leads />
+          </AuthenticatedRoute>
+          <AuthenticatedRoute exact path="/analytics">
+            <Analytics />
+          </AuthenticatedRoute>
+          <AuthenticatedRoute exact path="/settings">
+            <Settings />
+          </AuthenticatedRoute>
+          <AuthenticatedRoute exact path="/support">
+            <Support />
           </AuthenticatedRoute>
           <AdminRoute exact path="/users">
             <Users />

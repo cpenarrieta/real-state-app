@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useMutation, gql } from "@apollo/client";
 import { useHistory } from "react-router-dom";
@@ -16,7 +16,11 @@ const NEW_PROPERTY_MUTATION = gql`
   }
 `;
 
-export default function SidebarDesktop() {
+export default function SidebarDesktop({
+  dropdownOpen,
+  setDropdownOpen,
+  currentPath,
+}) {
   const [
     saveProperty,
     { loading: savePropertyLoading, error: savePropertyError },
@@ -24,7 +28,6 @@ export default function SidebarDesktop() {
   let history = useHistory();
   const { user } = useUser();
   const { logout } = useAuth0();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const savePropertyOnClick = async () => {
     const propertyResponse = await saveProperty({
@@ -64,7 +67,11 @@ export default function SidebarDesktop() {
             <nav className="mt-5 flex-1 px-2 bg-white space-y-1">
               <Link
                 to="/dashboard"
-                className="group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-900 rounded-md bg-gray-100 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:bg-gray-200 transition ease-in-out duration-150"
+                className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-900 rounded-md ${
+                  currentPath === "/dashboard" ? "bg-gray-100" : ""
+                } hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:bg-gray-${
+                  currentPath === "/dashboard" ? "200" : "50"
+                } transition ease-in-out duration-150`}
               >
                 <svg
                   className="mr-3 h-6 w-6 text-gray-500 group-hover:text-gray-500 group-focus:text-gray-600 transition ease-in-out duration-150"
@@ -84,8 +91,12 @@ export default function SidebarDesktop() {
               </Link>
 
               <Link
-                to="/dashboard"
-                className="group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150"
+                to="/my-properties"
+                className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-600 rounded-md ${
+                  currentPath === "/my-properties" ? "bg-gray-100" : ""
+                } hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-${
+                  currentPath === "/my-properties" ? "200" : "50"
+                } transition ease-in-out duration-150`}
               >
                 <svg
                   className="mr-3 h-6 w-6 text-gray-500 group-hover:text-gray-500 group-focus:text-gray-600 transition ease-in-out duration-150"
@@ -104,8 +115,12 @@ export default function SidebarDesktop() {
               </Link>
 
               <Link
-                to="/dashboard"
-                className="group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150"
+                to="/leads"
+                className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-600 rounded-md ${
+                  currentPath === "/leads" ? "bg-gray-100" : ""
+                } hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-${
+                  currentPath === "/leads" ? "200" : "50"
+                } transition ease-in-out duration-150`}
               >
                 <svg
                   className="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-500 group-focus:text-gray-500 transition ease-in-out duration-150"
@@ -124,8 +139,12 @@ export default function SidebarDesktop() {
               </Link>
 
               <Link
-                to="/dashboard"
-                className="group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150"
+                to="/analytics"
+                className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-600 rounded-md ${
+                  currentPath === "/analytics" ? "bg-gray-100" : ""
+                } hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-${
+                  currentPath === "/analytics" ? "200" : "50"
+                } transition ease-in-out duration-150`}
               >
                 <svg
                   className="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-500 group-focus:text-gray-500 transition ease-in-out duration-150"
@@ -145,8 +164,12 @@ export default function SidebarDesktop() {
               </Link>
 
               <Link
-                to="/dashboard"
-                className="group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150"
+                to="/settings"
+                className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-600 rounded-md ${
+                  currentPath === "/settings" ? "bg-gray-100" : ""
+                } hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-${
+                  currentPath === "/settings" ? "200" : "50"
+                } transition ease-in-out duration-150`}
               >
                 <svg
                   className="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-500 group-focus:text-gray-500 transition ease-in-out duration-150"
@@ -221,25 +244,18 @@ export default function SidebarDesktop() {
                   <div className="border-t border-gray-100"></div>
                   <div className="py-1">
                     <Link
-                      to=""
+                      to="/settings"
                       className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
                       role="menuitem"
                     >
                       Account settings
                     </Link>
                     <Link
-                      to=""
+                      to="/support"
                       className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
                       role="menuitem"
                     >
                       Support
-                    </Link>
-                    <Link
-                      to=""
-                      className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
-                      role="menuitem"
-                    >
-                      License
                     </Link>
                   </div>
                   <div className="border-t border-gray-100"></div>

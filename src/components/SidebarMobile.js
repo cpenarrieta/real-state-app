@@ -16,7 +16,11 @@ const NEW_PROPERTY_MUTATION = gql`
   }
 `;
 
-export default function SidebarMobile({ mobileMenuOpen, setMobileMenuOpen }) {
+export default function SidebarMobile({
+  mobileMenuOpen,
+  setMobileMenuOpen,
+  currentPath,
+}) {
   const [
     saveProperty,
     { loading: savePropertyLoading, error: savePropertyError },
@@ -100,7 +104,11 @@ export default function SidebarMobile({ mobileMenuOpen, setMobileMenuOpen }) {
                 <nav className="mt-5 px-2 space-y-1">
                   <Link
                     to="/dashboard"
-                    className="group flex items-center px-2 py-2 text-base leading-6 font-medium text-gray-900 rounded-md bg-gray-100 focus:outline-none focus:bg-gray-200 transition ease-in-out duration-150"
+                    className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-900 rounded-md ${
+                      currentPath === "/dashboard" ? "bg-gray-100" : ""
+                    } hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:bg-gray-${
+                      currentPath === "/dashboard" ? "200" : "50"
+                    } transition ease-in-out duration-150`}
                   >
                     <svg
                       className="mr-3 h-6 w-6 text-gray-500 group-hover:text-gray-500 group-focus:text-gray-600 transition ease-in-out duration-150"
@@ -120,8 +128,12 @@ export default function SidebarMobile({ mobileMenuOpen, setMobileMenuOpen }) {
                   </Link>
 
                   <Link
-                    to="/dashboard"
-                    className="group flex items-center px-2 py-2 text-base leading-6 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-100 transition ease-in-out duration-150"
+                    to="/my-properties"
+                    className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-600 rounded-md ${
+                      currentPath === "/my-properties" ? "bg-gray-100" : ""
+                    } hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-${
+                      currentPath === "/my-properties" ? "200" : "50"
+                    } transition ease-in-out duration-150`}
                   >
                     <svg
                       className="mr-3 h-6 w-6 text-gray-500 group-hover:text-gray-500 group-focus:text-gray-600 transition ease-in-out duration-150"
@@ -140,8 +152,12 @@ export default function SidebarMobile({ mobileMenuOpen, setMobileMenuOpen }) {
                   </Link>
 
                   <Link
-                    to="/dashboard"
-                    className="group flex items-center px-2 py-2 text-base leading-6 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-100 transition ease-in-out duration-150"
+                    to="/leads"
+                    className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-600 rounded-md ${
+                      currentPath === "/leads" ? "bg-gray-100" : ""
+                    } hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-${
+                      currentPath === "/leads" ? "200" : "50"
+                    } transition ease-in-out duration-150`}
                   >
                     <svg
                       className="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-500 group-focus:text-gray-500 transition ease-in-out duration-150"
@@ -160,8 +176,12 @@ export default function SidebarMobile({ mobileMenuOpen, setMobileMenuOpen }) {
                   </Link>
 
                   <Link
-                    to="/dashboard"
-                    className="group flex items-center px-2 py-2 text-base leading-6 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-100 transition ease-in-out duration-150"
+                    to="/analytics"
+                    className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-600 rounded-md ${
+                      currentPath === "/analytics" ? "bg-gray-100" : ""
+                    } hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-${
+                      currentPath === "/analytics" ? "200" : "50"
+                    } transition ease-in-out duration-150`}
                   >
                     <svg
                       className="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-500 group-focus:text-gray-500 transition ease-in-out duration-150"
@@ -181,8 +201,12 @@ export default function SidebarMobile({ mobileMenuOpen, setMobileMenuOpen }) {
                   </Link>
 
                   <Link
-                    to="/dashboard"
-                    className="group flex items-center px-2 py-2 text-base leading-6 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-100 transition ease-in-out duration-150"
+                    to="/settings"
+                    className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-600 rounded-md ${
+                      currentPath === "/settings" ? "bg-gray-100" : ""
+                    } hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-${
+                      currentPath === "/settings" ? "200" : "50"
+                    } transition ease-in-out duration-150`}
                   >
                     <svg
                       className="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-500 group-focus:text-gray-500 transition ease-in-out duration-150"
@@ -261,24 +285,18 @@ export default function SidebarMobile({ mobileMenuOpen, setMobileMenuOpen }) {
               )}
               {user && (
                 <div className="flex-shrink-0 flex px-4 py-2">
-                  <button
-                    className="w-full inline-flex font-normal text-sm text-red-500 hover:text-red-800"
-                    onClick={() => logout({ returnTo: window.location.origin })}
+                  <Link
+                    to="/support"
+                    className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                    role="menuitem"
                   >
-                    <svg
-                      className="mr-3 h-5 w-5 text-red-400 group-hover:text-red-500 group-focus:text-red-500 transition ease-in-out duration-150"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                      />
-                    </svg>
+                    Support
+                  </Link>
+                  <button
+                    onClick={() => logout({ returnTo: window.location.origin })}
+                    className=" ml-auto block px-4 py-2 text-sm leading-5 text-red-700 hover:bg-red-100 hover:text-red-900 focus:outline-none focus:bg-red-100 focus:text-red-900"
+                    role="menuitem"
+                  >
                     Log Out
                   </button>
                 </div>

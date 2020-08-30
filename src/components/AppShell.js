@@ -5,10 +5,14 @@ import SidebarMobile from "./SidebarMobile";
 
 const AppShell = ({ children }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const history = useHistory();
-
+  
   useEffect(() => {
-    history.listen(() => setMobileMenuOpen(false));
+    history.listen(() => {
+      setMobileMenuOpen(false);
+      setDropdownOpen(false);
+    });
   }, [history]);
 
   return (
@@ -16,9 +20,14 @@ const AppShell = ({ children }) => {
       <SidebarMobile
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
+        currentPath={history?.location?.pathname}
       />
 
-      <SidebarDesktop />
+      <SidebarDesktop
+        dropdownOpen={dropdownOpen}
+        setDropdownOpen={setDropdownOpen}
+        currentPath={history?.location?.pathname}
+      />
 
       <div className="flex flex-col w-0 flex-1 overflow-hidden">
         <div className="md:hidden pl-1 pt-1 sm:pl-3 sm:pt-3">

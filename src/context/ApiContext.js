@@ -19,7 +19,9 @@ export const ApiProvider = ({ children }) => {
     try {
       const token = await getAccessTokenSilently();
       setAccessToken(token);
-    } catch (err) {}
+    } catch (err) {
+      window.location.href = process.env.REACT_APP_STATIC_URI
+    }
   }, [getAccessTokenSilently, setAccessToken]);
 
   useEffect(() => {
@@ -64,7 +66,6 @@ export const ApiProvider = ({ children }) => {
     cache: new InMemoryCache(),
   });
 
-  // window.location.pathname === "/"
   if (accessToken) {
     return <ApolloProvider client={apolloClient}>{children}</ApolloProvider>;
   } else {
