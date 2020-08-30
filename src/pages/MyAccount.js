@@ -9,7 +9,6 @@ const ME_QUERY = gql`
       firstName
       lastName
       phone
-      address
       address1
       address2
       city
@@ -17,6 +16,7 @@ const ME_QUERY = gql`
       zipCode
       country
       pictureLowRes
+      username
     }
   }
 `;
@@ -80,6 +80,7 @@ export default function MyAccount() {
     city,
     province,
     zipCode,
+    username,
   } = data?.me;
 
   return (
@@ -98,6 +99,7 @@ export default function MyAccount() {
           city: city || "",
           province: province || "",
           zipCode: zipCode || "",
+          username: username || "",
         }}
         onSubmit={async (values) => {
           await saveUser({
