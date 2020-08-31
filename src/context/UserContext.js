@@ -1,5 +1,6 @@
 import React, { useContext, useState, useMemo, useEffect } from "react";
-import { useQuery, gql } from "@apollo/client";
+import { gql } from "@apollo/client";
+import {useAuthQuery} from '../hooks/useAuthQuery'
 
 const ME_QUERY = gql`
   query MeQuery {
@@ -25,7 +26,7 @@ const UserContext = React.createContext();
 const useUser = () => useContext(UserContext);
 
 function UserProvider({ children }) {
-  const { data, loading } = useQuery(ME_QUERY);
+  const { data, loading } = useAuthQuery(ME_QUERY);
   const [user, setUser] = useState(data?.me);
   const value = useMemo(() => ({ user }), [user]);
 

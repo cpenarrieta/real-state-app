@@ -26,7 +26,8 @@ export default function SidebarMobile({
     { loading: savePropertyLoading, error: savePropertyError },
   ] = useMutation(NEW_PROPERTY_MUTATION);
   let history = useHistory();
-  const { user } = useUser();
+  const useUserCtx = useUser();
+  const user = useUserCtx?.user
   const { logout } = useAuth0();
 
   const savePropertyOnClick = async () => {

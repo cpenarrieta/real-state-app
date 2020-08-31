@@ -4,7 +4,6 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { AppRoutes } from "./AppRoutes";
 import { ApiProvider } from "./context/ApiContext";
 import { AccessTokenProvider } from "./context/AccessTokenContext";
-import { UserProvider } from "./context/UserContext";
 
 const requestedScopes = [
   "read:dashboard",
@@ -19,54 +18,24 @@ const requestedScopes = [
 ];
 
 function App() {
-  const ManageAppProvider = ({ children }) => {
-    return (
-      <AccessTokenProvider>
-        <Auth0Provider
-          domain={process.env.REACT_APP_AUTH0_DOMAIN}
-          clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
-          redirectUri={`${window.location.origin}/verify_user`}
-          audience={process.env.REACT_APP_AUTH0_AUDIENCE}
-          scope={requestedScopes.join(" ")}
-        >
-          <ApiProvider>
-            <UserProvider>{children}</UserProvider>
-          </ApiProvider>
-        </Auth0Provider>
-      </AccessTokenProvider>
-    );
-  };
-
-  const AppRouter = () => {
-    return (
-      <Router>
-        <div className="bg-gray-100 h-screen">
-          <AppRoutes />
-        </div>
-      </Router>
-    );
-  };
-
-  if (window.location.pathname === "/") {
-    return (
-      <AccessTokenProvider>
-        <Auth0Provider
-          domain={process.env.REACT_APP_AUTH0_DOMAIN}
-          clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
-          redirectUri={`${window.location.origin}/verify_user`}
-          audience={process.env.REACT_APP_AUTH0_AUDIENCE}
-          scope={requestedScopes.join(" ")}
-        >
-          <AppRouter />
-        </Auth0Provider>
-      </AccessTokenProvider>
-    );
-  }
-
   return (
-    <ManageAppProvider>
-      <AppRouter />
-    </ManageAppProvider>
+    <AccessTokenProvider>
+      <Auth0Provider
+        domain={process.env.REACT_APP_AUTH0_DOMAIN}
+        clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
+        redirectUri={`${window.location.origin}/verify_user`}
+        audience={process.env.REACT_APP_AUTH0_AUDIENCE}
+        scope={requestedScopes.join(" ")}
+      >
+        <Router>
+          <ApiProvider>
+            <div className="bg-gray-100 h-screen">
+              <AppRoutes />
+            </div>
+          </ApiProvider>
+        </Router>
+      </Auth0Provider>
+    </AccessTokenProvider>
   );
 }
 

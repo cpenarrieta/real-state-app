@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
   from,
@@ -14,13 +14,16 @@ import { useAccessToken } from "../context/AccessTokenContext";
 export const ApiProvider = ({ children }) => {
   const { accessToken, setAccessToken } = useAccessToken();
   const { getAccessTokenSilently } = useAuth0();
+  const [tokenError, setTokenError] = useState(false);
 
   const getAccessToken = useCallback(async () => {
     try {
       const token = await getAccessTokenSilently();
+      setTokenError(false);
       setAccessToken(token);
     } catch (err) {
-      window.location.href = process.env.REACT_APP_STATIC_URI
+      // TODFO report bugsnag
+      setTokenError(true);
     }
   }, [getAccessTokenSilently, setAccessToken]);
 
@@ -66,7 +69,9 @@ export const ApiProvider = ({ children }) => {
     cache: new InMemoryCache(),
   });
 
-  if (accessToken) {
+  if (accessToken && !tokenError) {
+    return <ApolloProvider client={apolloClient}>{children}</ApolloProvider>;
+  } else if (tokenError) {
     return <ApolloProvider client={apolloClient}>{children}</ApolloProvider>;
   } else {
     return <p>Loading...</p>;

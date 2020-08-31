@@ -21,11 +21,7 @@ const Analytics = lazy(() => import("./pages/Analytics"));
 const Settings = lazy(() => import("./pages/Settings"));
 const Support = lazy(() => import("./pages/Support"));
 
-const LoadingFallback = () => (
-  <AppShell>
-    <div className="p-4">Loading...</div>
-  </AppShell>
-);
+const LoadingFallback = () => <div className="p-4">Loading...</div>;
 
 const UnauthenticatedRoutes = () => (
   <Switch>
@@ -51,6 +47,21 @@ const AuthenticatedRoute = ({ children, ...rest }) => {
       render={() =>
         isAuthenticated ? <AppShell>{children}</AppShell> : <Redirect to="/" />
       }
+    ></Route>
+  );
+};
+
+const AuthenticatedRouteNoAppShell = ({ children, ...rest }) => {
+  const { isAuthenticated, isLoading } = useAuth0();
+
+  if (isLoading) {
+    return <div className="h-screen flex justify-center">loading logo</div>;
+  }
+
+  return (
+    <Route
+      {...rest}
+      render={() => (isAuthenticated ? <>{children}</> : <Redirect to="/" />)}
     ></Route>
   );
 };
@@ -83,9 +94,9 @@ export const AppRoutes = () => {
     <>
       <Suspense fallback={<LoadingFallback />}>
         <Switch>
-          <AuthenticatedRoute exact path="/verify_user">
+          <AuthenticatedRouteNoAppShell exact path="/verify_user">
             <VerifyUserCallBack />
-          </AuthenticatedRoute>
+          </AuthenticatedRouteNoAppShell>
           <AuthenticatedRoute exact path="/dashboard">
             <Dashboard />
           </AuthenticatedRoute>
