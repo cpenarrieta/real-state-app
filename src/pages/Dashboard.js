@@ -12,11 +12,12 @@ export default function Dashboard() {
   return (
     <div>
       <div className="px-2">
-        <div className="flex flex-wrap">
+        <div 
+          className="grid grid-cols-3 gap-4"
+        >
           {data.properties.map((property) => (
             <div
               key={property.uuid}
-              className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 m-2"
             >
               <PropertyCard {...property} />
             </div>
