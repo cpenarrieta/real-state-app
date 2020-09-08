@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { Formik, Field, Form } from "formik";
 import { DASHBOARD_QUERY } from "../queries/dashboard";
 import { format, parseISO, compareAsc } from "date-fns";
 import { getPropertyBadge } from "../util/propertyStatus";
-import Alert from "../components/Alert";
+import { useAlert } from "../context/AlertContext";
+import RadioButtons from "../components/RadioButtons";
+import { TextField } from "../components/TextField";
+import * as Yup from "yup";
 
 const PROPERTY_QUERY = gql`
   query GetProperty($uuid: String!) {
@@ -21,10 +24,13 @@ const PROPERTY_QUERY = gql`
       description
       listingId
       mainPicture
+      mainPictureLowRes
       status
       publishedStatus
       webPaidUntil
       username
+      lat
+      lon
     }
   }
 `;
@@ -34,7 +40,6 @@ const SAVE_PROPERTY_MUTATION = gql`
     saveProperty(property: $property) {
       uuid
       title
-      mainPicture
     }
   }
 `;
@@ -44,6 +49,35 @@ const PUBLISH_PROPERTY_MUTATION = gql`
     publishProperty(propertyUuid: $propertyUuid)
   }
 `;
+
+const PropertyDetailsSchema = Yup.object().shape({
+  price: Yup.number()
+    .typeError("invalid characters")
+    .max(9999999999999, "Too Long!")
+    .positive("Value must be positive")
+    .integer()
+    .notRequired(),
+  lotSize: Yup.number()
+    .typeError("invalid characters")
+    .max(944735000000, "Too Long!")
+    .positive("Value must be positive")
+    .integer()
+    .notRequired(),
+  builtYear: Yup.number()
+    .typeError("invalid characters")
+    .min(100, "Too Short!")
+    .max(3000, "Too Long!")
+    .integer()
+    .notRequired(),
+  grossTaxesLastYear: Yup.number()
+    .typeError("invalid characters")
+    .min(0, "Too Short!")
+    .max(9999999999999, "Too Long!")
+    .integer()
+    .notRequired(),
+  listingId: Yup.string().max(12, "Too Long!"),
+  description: Yup.string().max(1500, "Too Long!"),
+});
 
 export default function ManageProperty() {
   const { propertyId } = useParams();
@@ -56,17 +90,21 @@ export default function ManageProperty() {
   );
   const [
     saveProperty,
-    {
-      loading: savePropertyLoading,
-      error: savePropertyError,
-      called: savePropertyCalled,
-    },
+    { loading: savePropertyLoading, error: savePropertyError },
   ] = useMutation(SAVE_PROPERTY_MUTATION);
   const [
     publishProperty,
     { loading: publishPropertyLoading, error: publishPropertyError },
   ] = useMutation(PUBLISH_PROPERTY_MUTATION);
   const { refetch } = useQuery(DASHBOARD_QUERY);
+  const { setShowAlert } = useAlert();
+  const [form1Success, setForm1Success] = useState(false);
+
+  useEffect(() => {
+    if (savePropertyError) {
+      setShowAlert(true);
+    }
+  }, [savePropertyError]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error...</p>;
@@ -74,6 +112,7 @@ export default function ManageProperty() {
   const {
     uuid,
     mainPicture,
+    mainPictureLowRes,
     webPaidUntil,
     status,
     publishedStatus,
@@ -87,6 +126,8 @@ export default function ManageProperty() {
     description,
     username,
     listingId,
+    lat,
+    lon,
   } = data?.property;
 
   const [badgeText, badgeColor] = getPropertyBadge(status, publishedStatus);
@@ -94,23 +135,8 @@ export default function ManageProperty() {
   const validPayment =
     webPaidUntil && compareAsc(parseISO(webPaidUntil), new Date()) === 1;
 
-  const lat = 49.14700209999999;
-  const lon = -122.6430761;
-
   return (
     <div className="">
-      {/* {savePropertyCalled && (
-        <Alert type="success" title="Property Saved" position="top-right" />
-      )}
-
-      {savePropertyError && (
-        <Alert
-          type="error"
-          title="error saving property"
-          position="top-right"
-        />
-      )} */}
-
       <div>
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
@@ -126,9 +152,10 @@ export default function ManageProperty() {
           </div>
           <div className="mt-5 md:mt-0 md:col-span-2">
             <Formik
+              validationSchema={PropertyDetailsSchema}
               initialValues={{
-                bedrooms: bedrooms || null,
-                bathrooms: bathrooms || null,
+                bedrooms: bedrooms || "",
+                bathrooms: bathrooms || "",
                 price: price || "",
                 propertyType: propertyType || "",
                 lotSize: lotSize || "",
@@ -138,317 +165,40 @@ export default function ManageProperty() {
                 listingId: listingId || "",
               }}
               onSubmit={async (values) => {
-                await saveProperty({
+                const res = await saveProperty({
                   variables: {
                     property: {
                       uuid,
-                      bedrooms: values.bedrooms,
-                      bathrooms: values.bathrooms,
-                      price: values.price,
-                      propertyType: values.propertyType,
-                      lotSize: values.lotSize,
-                      builtYear: values.builtYear,
-                      grossTaxesLastYear: values.grossTaxesLastYear,
+                      bedrooms: values.bedrooms || null,
+                      bathrooms: values.bathrooms || null,
+                      price: values.price || null,
+                      propertyType: values.propertyType || null,
+                      lotSize: values.lotSize || null,
+                      builtYear: values.builtYear || null,
+                      grossTaxesLastYear: values.grossTaxesLastYear || null,
                       description: values.description,
                       listingId: values.listingId,
                     },
                   },
                 });
-                refetch();
+                setForm1Success(true);
               }}
             >
-              {({ values, isSubmitting, setFieldValue }) => {
-                const submitButtonDisabled = isSubmitting;
+              {({ isSubmitting, errors, touched }) => {
+                const submitButtonDisabled =
+                  isSubmitting || savePropertyLoading;
 
                 return (
                   <Form>
                     <div className="shadow sm:rounded-md sm:overflow-hidden">
                       <div className="px-4 py-5 bg-white sm:p-6">
                         <div className="grid grid-cols-6 gap-6">
-                          <div className="col-span-6">
-                            <label
-                              htmlFor="company_website"
-                              className="block text-sm font-medium leading-5 text-gray-700"
-                            >
-                              Website
-                            </label>
-                            <div className="mt-1 flex rounded-md shadow-sm">
-                              <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
-                                copy
-                              </span>
-                              <input
-                                id="company_website"
-                                className="form-input flex-1 block w-full rounded-none rounded-r-md transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                                placeholder="www.example.com"
-                                value={`${process.env.REACT_APP_STATIC_URI}${username}/${propertyId}`}
-                                disabled
-                              />
-                            </div>
-                          </div>
-
-                          {/* TODO useField Formik custom input for this */}
                           <div className="col-span-6 sm:col-span-6">
-                            <label
-                              htmlFor="bedrooms"
-                              className="block text-sm font-medium leading-5 text-gray-700"
-                            >
-                              Beds
-                            </label>
-                            <div className="relative z-0 inline-flex shadow-sm">
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bedrooms === 0 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bedrooms", 0, false)
-                                }
-                              >
-                                0
-                              </button>
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bedrooms === 1 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bedrooms", 1, false)
-                                }
-                              >
-                                1
-                              </button>
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bedrooms === 2 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bedrooms", 2, false)
-                                }
-                              >
-                                2
-                              </button>
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bedrooms === 3 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bedrooms", 3, false)
-                                }
-                              >
-                                3
-                              </button>
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bedrooms === 4 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bedrooms", 4, false)
-                                }
-                              >
-                                4
-                              </button>
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bedrooms === 5 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bedrooms", 5, false)
-                                }
-                              >
-                                5
-                              </button>
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bedrooms === 6 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bedrooms", 6, false)
-                                }
-                              >
-                                6
-                              </button>
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bedrooms === 7 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bedrooms", 7, false)
-                                }
-                              >
-                                7
-                              </button>
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bedrooms === 8 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bedrooms", 8, false)
-                                }
-                              >
-                                8
-                              </button>
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bedrooms === 9 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bedrooms", 9, false)
-                                }
-                              >
-                                9
-                              </button>
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bedrooms === 10 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bedrooms", 10, false)
-                                }
-                              >
-                                10
-                              </button>
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bedrooms > 10 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bedrooms", 11, false)
-                                }
-                              >
-                                {" "}
-                                +10
-                              </button>
-                            </div>
+                            <RadioButtons name="bedrooms" label="Beds" />
                           </div>
 
                           <div className="col-span-6 sm:col-span-6">
-                            <label
-                              htmlFor="bathrooms"
-                              className="block text-sm font-medium leading-5 text-gray-700"
-                            >
-                              Baths
-                            </label>
-                            <div className="relative z-0 inline-flex shadow-sm">
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bathrooms === 0 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bathrooms", 0, false)
-                                }
-                              >
-                                0
-                              </button>
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bathrooms === 1 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bathrooms", 1, false)
-                                }
-                              >
-                                1
-                              </button>
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bathrooms === 2 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bathrooms", 2, false)
-                                }
-                              >
-                                2
-                              </button>
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bathrooms === 3 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bathrooms", 3, false)
-                                }
-                              >
-                                3
-                              </button>
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bathrooms === 4 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bathrooms", 4, false)
-                                }
-                              >
-                                4
-                              </button>
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bathrooms === 5 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bathrooms", 5, false)
-                                }
-                              >
-                                5
-                              </button>
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bathrooms === 6 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bathrooms", 6, false)
-                                }
-                              >
-                                6
-                              </button>
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bathrooms === 7 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bathrooms", 7, false)
-                                }
-                              >
-                                7
-                              </button>
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bathrooms === 8 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bathrooms", 8, false)
-                                }
-                              >
-                                8
-                              </button>
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bathrooms === 9 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bathrooms", 9, false)
-                                }
-                              >
-                                9
-                              </button>
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bathrooms === 10 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bathrooms", 10, false)
-                                }
-                              >
-                                10
-                              </button>
-                              <button
-                                className={`-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 ${
-                                  values.bathrooms > 10 ? "bg-indigo-200" : ""
-                                }`}
-                                onClick={() =>
-                                  setFieldValue("bathrooms", 11, false)
-                                }
-                              >
-                                {" "}
-                                +10
-                              </button>
-                            </div>
+                            <RadioButtons name="bathrooms" label="Baths" />
                           </div>
 
                           <div className="col-span-6 sm:col-span-3">
@@ -474,84 +224,59 @@ export default function ManageProperty() {
                           </div>
 
                           <div className="col-span-6 sm:col-span-3">
-                            <label
-                              htmlFor="price"
-                              className="block text-sm font-medium leading-5 text-gray-700"
-                            >
-                              Price ($)
-                            </label>
-
-                            <Field
-                              className="mt-1 form-input block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                            <TextField
                               id="price"
                               name="price"
-                              placeholder="Property price in $"
                               type="number"
+                              placeholder="Property price in $"
+                              label="Price ($)"
+                              labelClass="block text-sm font-medium leading-5 text-gray-700"
+                              className="mt-1 form-input block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                             />
                           </div>
 
                           <div className="col-span-6 sm:col-span-3">
-                            <label
-                              htmlFor="lotSize"
-                              className="block text-sm font-medium leading-5 text-gray-700"
-                            >
-                              Lot Size (SQFT)
-                            </label>
-                            <Field
-                              className="mt-1 form-input block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                            <TextField
                               id="lotSize"
                               name="lotSize"
-                              placeholder="Property Lot Size in SQFT"
                               type="number"
+                              placeholder="Property Lot Size in SQFT"
+                              label="Lot Size (SQFT)"
+                              labelClass="block text-sm font-medium leading-5 text-gray-700"
+                              className="mt-1 form-input block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                             />
                           </div>
 
                           <div className="col-span-6 sm:col-span-3">
-                            <label
-                              htmlFor="builtYear"
-                              className="block text-sm font-medium leading-5 text-gray-700"
-                            >
-                              Built Year
-                            </label>
-                            <Field
-                              className="mt-1 form-input block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                            <TextField
                               id="builtYear"
                               name="builtYear"
-                              placeholder=""
-                              type="text"
                               type="number"
+                              label="Built Year"
+                              labelClass="block text-sm font-medium leading-5 text-gray-700"
+                              className="mt-1 form-input block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                             />
                           </div>
 
                           <div className="col-span-6 sm:col-span-3">
-                            <label
-                              htmlFor="grossTaxesLastYear"
-                              className="block text-sm font-medium leading-5 text-gray-700"
-                            >
-                              Last Year Taxes ($)
-                            </label>
-                            <Field
-                              className="mt-1 form-input block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                            <TextField
                               id="grossTaxesLastYear"
                               name="grossTaxesLastYear"
-                              placeholder=""
                               type="number"
+                              label="Last Year Taxes ($)"
+                              labelClass="block text-sm font-medium leading-5 text-gray-700"
+                              className="mt-1 form-input block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                             />
                           </div>
 
                           <div className="col-span-6 sm:col-span-3">
-                            <label
-                              htmlFor="listingId"
-                              className="block text-sm font-medium leading-5 text-gray-700"
-                            >
-                              Listing Id
-                            </label>
-                            <Field
-                              className="mt-1 form-input block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                            <TextField
                               id="listingId"
                               name="listingId"
-                              placeholder=""
-                              type="text"
+                              label="Listing Id"
+                              placeholder="MLS Listing Id"
+                              labelClass="block text-sm font-medium leading-5 text-gray-700"
+                              className="mt-1 form-input block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                             />
                           </div>
 
@@ -573,10 +298,15 @@ export default function ManageProperty() {
                                 type="text"
                               />
                             </div>
+                            {errors.description && touched.description ? (
+                              <div className="text-sm text-red-400">
+                                {errors.description}
+                              </div>
+                            ) : null}
                           </div>
                         </div>
                       </div>
-                      <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                      <div className="px-4 py-3 bg-gray-50 text-right sm:px-6 flex flex-row-reverse">
                         <button
                           className={`py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-500 focus:outline-none focus:shadow-outline-blue active:bg-indigo-600 transition duration-150 ease-in-out ${
                             submitButtonDisabled
@@ -588,6 +318,11 @@ export default function ManageProperty() {
                         >
                           Save
                         </button>
+                        {form1Success && (
+                          <p className="text-sm text-green-500 py-2 px-4">
+                            Property Saved!
+                          </p>
+                        )}
                       </div>
                     </div>
                   </Form>
@@ -719,24 +454,26 @@ export default function ManageProperty() {
                       />
                     </div>
 
-                    <div className="col-span-6 ">
-                      <label
-                        htmlFor="postal_code"
-                        className="block text-sm font-medium leading-5 text-gray-700"
-                      >
-                        Map
-                      </label>
-                      <a
-                        href={`https://maps.google.com/?q=${lat},${lon}&ll=${lat},${lon}&z=12`}
-                        target="_blank"
-                      >
-                        {/* <img
-                          src={`https://maps.googleapis.com/maps/api/staticmap?zoom=11&size=600x300&maptype=roadmap
+                    {lat && lon && (
+                      <div className="col-span-6 ">
+                        <label
+                          htmlFor="postal_code"
+                          className="block text-sm font-medium leading-5 text-gray-700"
+                        >
+                          Map
+                        </label>
+                        <a
+                          href={`https://maps.google.com/?q=${lat},${lon}&ll=${lat},${lon}&z=12`}
+                          target="_blank"
+                        >
+                          <img
+                            src={`https://maps.googleapis.com/maps/api/staticmap?zoom=11&size=600x300&maptype=roadmap
   &markers=color:red%7Clabel:A%7C${lat},${lon}
   &key=${process.env.REACT_APP_MAPS_KEY}`}
-                        /> */}
-                      </a>
-                    </div>
+                          />
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, gql } from "@apollo/client";
 import { useHistory } from "react-router-dom";
@@ -7,6 +7,7 @@ import { useUser } from "../context/UserContext";
 import { useAuth0 } from "@auth0/auth0-react";
 import userDefault from "../images/user-default.png";
 import { Transition } from "@tailwindui/react";
+import { useAlert } from "../context/AlertContext";
 
 const NEW_PROPERTY_MUTATION = gql`
   mutation SaveProperty {
@@ -27,8 +28,15 @@ export default function SidebarMobile({
   ] = useMutation(NEW_PROPERTY_MUTATION);
   let history = useHistory();
   const useUserCtx = useUser();
-  const user = useUserCtx?.user
+  const user = useUserCtx?.user;
   const { logout } = useAuth0();
+  const { setShowAlert } = useAlert();
+
+  useEffect(() => {
+    if (savePropertyError) {
+      setShowAlert(true);
+    }
+  }, [savePropertyError]);
 
   const savePropertyOnClick = async () => {
     const propertyResponse = await saveProperty({
@@ -48,13 +56,6 @@ export default function SidebarMobile({
 
   return (
     <div className="md:hidden">
-      {savePropertyError && (
-        <Alert
-          type="error"
-          title="error creating property"
-          position="top-right"
-        />
-      )}
       <Transition
         show={mobileMenuOpen}
         enter="transition-opacity ease-linear duration-150"

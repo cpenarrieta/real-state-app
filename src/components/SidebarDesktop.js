@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Link } from "react-router-dom";
 import { useMutation, gql } from "@apollo/client";
 import { useHistory } from "react-router-dom";
@@ -7,6 +7,7 @@ import { useUser } from "../context/UserContext";
 import { useAuth0 } from "@auth0/auth0-react";
 import userDefault from "../images/user-default.png";
 import { Transition } from "@tailwindui/react";
+import { useAlert } from "../context/AlertContext";
 
 const NEW_PROPERTY_MUTATION = gql`
   mutation SaveProperty {
@@ -29,6 +30,13 @@ export default function SidebarDesktop({
   const useUserCtx = useUser();
   const user = useUserCtx?.user
   const { logout } = useAuth0();
+  const { setShowAlert } = useAlert();
+
+  useEffect(() => {
+    if (savePropertyError) {
+      setShowAlert(true);
+    }
+  }, [savePropertyError]);
 
   const savePropertyOnClick = async () => {
     const propertyResponse = await saveProperty({
@@ -48,13 +56,6 @@ export default function SidebarDesktop({
 
   return (
     <div className="hidden md:flex md:flex-shrink-0">
-      {savePropertyError && (
-        <Alert
-          type="error"
-          title="error creating property"
-          position="top-right"
-        />
-      )}
       <div className="flex flex-col w-64">
         <div className="flex flex-col h-0 flex-1 border-r border-gray-200 bg-white">
           <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">

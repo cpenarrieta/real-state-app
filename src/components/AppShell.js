@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import SidebarDesktop from "./SidebarDesktop";
 import SidebarMobile from "./SidebarMobile";
 import { UserProvider } from "../context/UserContext";
+import ErrorAlert from './ErrorAlert'
 
 const AppShell = ({ children }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -57,6 +58,8 @@ const AppShell = ({ children }) => {
             className="flex-1 relative z-0 overflow-y-auto focus:outline-none"
             tabIndex="0"
           >
+            <ErrorAlert />
+
             <div className="pt-2 pb-6 md:py-6">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
                 <div className="py-4">{children}</div>
