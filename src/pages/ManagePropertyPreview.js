@@ -18,7 +18,7 @@ const PROPERTY_QUERY = gql`
   }
 `;
 
-export default function PreviewProperty() {
+export default function ManagePropertyPreview() {
   const { propertyId } = useParams();
   const { loading, error, data } = useQuery(PROPERTY_QUERY, {
     variables: { uuid: propertyId },

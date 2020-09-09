@@ -12,10 +12,8 @@ const Users = lazy(() => import("./pages/Users"));
 const AuthDebugger = lazy(() => import("./pages/AuthDebugger"));
 const ManageProperty = lazy(() => import("./pages/ManageProperty"));
 const MyAccount = lazy(() => import("./pages/MyAccount"));
-const PreviewProperty = lazy(() => import("./pages/PreviewProperty"));
 const Payment = lazy(() => import("./pages/Payment"));
 const SuccessPayment = lazy(() => import("./pages/SuccessPayment"));
-const PropertyLeads = lazy(() => import("./pages/PropertyLeads"));
 const Leads = lazy(() => import("./pages/Leads"));
 const Analytics = lazy(() => import("./pages/Analytics"));
 const Settings = lazy(() => import("./pages/Settings"));
@@ -100,14 +98,8 @@ export const AppRoutes = () => {
           <AuthenticatedRoute exact path="/dashboard">
             <Dashboard />
           </AuthenticatedRoute>
-          <AuthenticatedRoute exact path="/manage-property/:propertyId">
+          <AuthenticatedRoute path="/manage-property/:propertyId">
             <ManageProperty />
-          </AuthenticatedRoute>
-          <AuthenticatedRoute exact path="/manage-property/:propertyId/leads">
-            <PropertyLeads />
-          </AuthenticatedRoute>
-          <AuthenticatedRoute exact path="/manage-property/:propertyId/preview">
-            <PreviewProperty />
           </AuthenticatedRoute>
           <AuthenticatedRoute exact path="/payment/:propertyId">
             <Payment />

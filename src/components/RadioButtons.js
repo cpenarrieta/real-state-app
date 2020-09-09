@@ -2,7 +2,7 @@ import React from "react";
 import { useField } from "formik";
 
 export default function RadioButtons({ name, label }) {
-  const [_, meta, helpers] = useField(name);
+  const [, meta, helpers] = useField(name);
   const { value } = meta;
   const { setValue } = helpers;
   const isSelected = (v) => v === value;
