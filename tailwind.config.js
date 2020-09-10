@@ -3,6 +3,19 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 module.exports = {
   theme: {
     extend: {
+      height: {
+        70: '18rem',
+        75: '20rem',
+        80: '22rem',
+        85: '24rem',
+        90: '26rem',
+        95: '28rem',
+        100: '30rem',
+        105: '32rem',
+        110: '34rem',
+        115: '37rem',
+        120: '40rem',
+      },
       spacing: {
         "1/2": "50%",
         "1/3": "33.333333%",

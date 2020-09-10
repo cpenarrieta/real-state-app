@@ -7,10 +7,13 @@ import {
   useParams,
   useHistory,
 } from "react-router-dom";
-import { useQuery, useMutation, gql } from "@apollo/client";
+import { useQuery, gql } from "@apollo/client";
 import ManagePropertyEdit from "./ManagePropertyEdit";
 import ManagePropertyLeads from "./ManagePropertyLeads";
 import ManagePropertyPreview from "./ManagePropertyPreview";
+import ManagePropertyBilling from "./ManagePropertyBilling";
+import ManagePropertyAnalytics from "./ManagePropertyAnalytics";
+
 import { getPropertyBadge } from "../util/propertyStatus";
 import { format, parseISO, compareAsc } from "date-fns";
 
@@ -29,6 +32,7 @@ const PROPERTY_QUERY = gql`
       title
       uuid
       price
+      currency
       lotSize
       builtYear
       grossTaxesLastYear
@@ -45,13 +49,9 @@ const PROPERTY_QUERY = gql`
       lat
       lon
       username
+      videoUrl
+      videoType
     }
-  }
-`;
-
-const PUBLISH_PROPERTY_MUTATION = gql`
-  mutation PublishProperty($propertyUuid: String) {
-    publishProperty(propertyUuid: $propertyUuid)
   }
 `;
 
@@ -66,13 +66,12 @@ export default function ManageProperty() {
   );
   const matchBilling = useRouteMatch("/manage-property/:propertyId/billing");
   const matchPreview = useRouteMatch("/manage-property/:propertyId/preview");
-  const { loading, error, data } = useQuery(PROPERTY_QUERY, {
-    variables: { uuid: propertyId },
-  });
-  const [
-    publishProperty,
-    { loading: publishPropertyLoading, error: publishPropertyError },
-  ] = useMutation(PUBLISH_PROPERTY_MUTATION);
+  const { loading, error, data } = useQuery(
+    PROPERTY_QUERY,
+    {
+      variables: { uuid: propertyId },
+    }
+  );
 
   const isRoot =
     !matchEdit &&
@@ -86,24 +85,10 @@ export default function ManageProperty() {
 
   const {
     title,
-    uuid,
-    mainPicture,
-    mainPictureLowRes,
     webPaidUntil,
     status,
     publishedStatus,
-    price,
-    lotSize,
-    builtYear,
-    grossTaxesLastYear,
-    bedrooms,
-    bathrooms,
-    propertyType,
-    description,
     username,
-    listingId,
-    lat,
-    lon,
   } = data?.property;
 
   const [badgeText, badgeColor] = getPropertyBadge(status, publishedStatus);
@@ -147,6 +132,31 @@ export default function ManageProperty() {
         </div>
         <div className="mt-5 flex lg:mt-0 lg:ml-4">
           {validPayment && (
+            <span className="sm:block ml-3 shadow-sm rounded-md">
+              <button
+                type="button"
+                className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-gray-300 active:text-gray-800 active:bg-gray-50 active:text-gray-800 transition duration-150 ease-in-out hover:bg-indigo-100"
+              >
+                <svg
+                  className="-ml-1 mr-2 h-5 w-5 text-gray-500"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+                  />
+                </svg>
+                Share
+              </button>
+            </span>
+          )}
+
+          {validPayment && (
             <a
               href={`${process.env.REACT_APP_STATIC_URI}${username}/${propertyId}`}
               rel="noopener noreferrer"
@@ -155,10 +165,10 @@ export default function ManageProperty() {
               <span className="sm:block ml-3 shadow-sm rounded-md">
                 <button
                   type="button"
-                  className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:text-gray-800 active:bg-gray-50 active:text-gray-800 transition duration-150 ease-in-out"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:shadow-outline-indigo focus:border-indigo-700 active:bg-indigo-700 transition duration-150 ease-in-out"
                 >
                   <svg
-                    className="-ml-1 mr-2 h-5 w-5 text-gray-500"
+                    className="-ml-1 mr-2 h-5 w-5 text-white-500"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                   >
@@ -174,32 +184,14 @@ export default function ManageProperty() {
             </a>
           )}
 
-          {validPayment && (
-            <span className="sm:ml-3 shadow-sm rounded-md">
-              <button
-                type="button"
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:shadow-outline-indigo focus:border-indigo-700 active:bg-indigo-700 transition duration-150 ease-in-out"
-              >
-                <svg
-                  className="-ml-1 mr-2 h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Publish
-              </button>
-            </span>
-          )}
           {!validPayment && (
             <span className="sm:ml-3 shadow-sm rounded-md">
               <button
                 type="button"
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-green-500 hover:bg-green-400 focus:outline-none focus:shadow-outline-green focus:border-green-700 active:bg-green-700 transition duration-150 ease-in-out"
+                onClick={() => {
+                  history.push(`/payment/${propertyId}`);
+                }}
               >
                 <svg
                   className="-ml-1 mr-2 h-4 w-4"
@@ -337,7 +329,7 @@ export default function ManageProperty() {
 
       <div className="pt-5">
         <Switch>
-          <Route exact path={`${path}`}>
+          <Route exact path={path}>
             <ManagePropertyEdit {...data?.property} />
           </Route>
           <Route exact path={`${path}/edit`}>
@@ -350,10 +342,10 @@ export default function ManageProperty() {
             <ManagePropertyPreview />
           </Route>
           <Route exact path={`${path}/billing`}>
-            <div>Billing</div>
+            <ManagePropertyBilling />
           </Route>
           <Route exact path={`${path}/analytics`}>
-            <div>Analytics</div>
+            <ManagePropertyAnalytics />
           </Route>
 
           <Redirect to={path} />
