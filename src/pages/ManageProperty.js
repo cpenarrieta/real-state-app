@@ -46,11 +46,17 @@ const PROPERTY_QUERY = gql`
       status
       publishedStatus
       webPaidUntil
-      lat
-      lon
       username
       videoUrl
       videoType
+      address1
+      zipCode
+      city
+      province
+      community
+      country
+      lat
+      lon
     }
   }
 `;
@@ -66,12 +72,9 @@ export default function ManageProperty() {
   );
   const matchBilling = useRouteMatch("/manage-property/:propertyId/billing");
   const matchPreview = useRouteMatch("/manage-property/:propertyId/preview");
-  const { loading, error, data } = useQuery(
-    PROPERTY_QUERY,
-    {
-      variables: { uuid: propertyId },
-    }
-  );
+  const { loading, error, data, refetch } = useQuery(PROPERTY_QUERY, {
+    variables: { uuid: propertyId },
+  });
 
   const isRoot =
     !matchEdit &&
@@ -330,7 +333,7 @@ export default function ManageProperty() {
       <div className="pt-5">
         <Switch>
           <Route exact path={path}>
-            <ManagePropertyEdit {...data?.property} />
+            <ManagePropertyEdit {...data?.property} refetch={refetch} />
           </Route>
           <Route exact path={`${path}/edit`}>
             <ManagePropertyEdit {...data?.property} />
