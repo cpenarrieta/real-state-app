@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { Formik, Field, Form } from "formik";
+import { singleImageUpload } from "../util/imageUpload";
 
 const ME_QUERY = gql`
   query MeQuery {
@@ -15,7 +16,7 @@ const ME_QUERY = gql`
       province
       zipCode
       country
-      pictureLowRes
+      picture
       username
     }
   }
@@ -41,20 +42,6 @@ const SavedSuccess = () => {
   );
 };
 
-const uploadSingleFile = async (e) => {
-  const files = e.target.files;
-  const data = new FormData();
-  data.append("file", files[0]);
-  data.append("upload_preset", process.env.REACT_APP_CLOUDINARY_SECRET);
-
-  const res = await fetch(process.env.REACT_APP_CLOUDINARY_URL, {
-    method: "POST",
-    body: data,
-  });
-  const file = await res.json();
-  return [file.secure_url, file.eager[0].secure_url];
-};
-
 export default function MyAccount() {
   const { loading, error, data } = useQuery(ME_QUERY);
   const [
@@ -74,7 +61,7 @@ export default function MyAccount() {
     firstName,
     lastName,
     phone,
-    pictureLowRes,
+    picture,
     address1,
     address2,
     city,
@@ -323,18 +310,22 @@ export default function MyAccount() {
                         const [
                           imageRes,
                           largeImageRes,
-                        ] = await uploadSingleFile(e);
+                        ] = await singleImageUpload(
+                          e,
+                          username,
+                          process.env.REACT_APP_CLOUDINARY_PROFILE_PRESET
+                        );
 
                         setLargeImage(largeImageRes);
                         setImage(imageRes);
                         setUploadImageLoading(false);
                       }}
                     />
-                    {(image || pictureLowRes) && (
+                    {(largeImage || picture) && (
                       <div className="flex justify-center">
                         <img
                           width="200"
-                          src={image || pictureLowRes}
+                          src={largeImage || picture}
                           alt="Upload Preview"
                         />
                       </div>

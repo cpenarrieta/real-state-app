@@ -7,6 +7,7 @@ import TextField from "../components/TextField";
 import PriceField from "../components/PriceField";
 import VideoUrlField from "../components/VideoUrlField";
 import AddressLookUpField from "../components/AddressLookUpField";
+import { singleImageUpload } from "../util/imageUpload";
 import * as Yup from "yup";
 
 const SAVE_PROPERTY_MUTATION = gql`
@@ -69,6 +70,7 @@ export default function ManagePropertyEdit({
   country,
   lat,
   lon,
+  mainPictureLowRes,
   refetch,
 }) {
   const [
@@ -81,6 +83,9 @@ export default function ManagePropertyEdit({
   const [formPicturesSuccess, setFormPicturesSuccess] = useState(false);
   const [formVideoSuccess, setFormVideoSuccess] = useState(false);
   const [formAttachmentsSuccess, setFormAttachmentsSuccess] = useState(false);
+  const [mainPictureUpload, setMainPictureUpload] = useState();
+  const [mainPictureLowResUpload, setMainPictureLowResUpload] = useState();
+  const [uploadMainImageLoading, setUploadMainImageLoading] = useState(false);
 
   useEffect(() => {
     if (savePropertyError) {
@@ -584,6 +589,8 @@ export default function ManagePropertyEdit({
                   variables: {
                     property: {
                       uuid,
+                      mainPicture: mainPictureUpload || null,
+                      mainPictureLowRes: mainPictureLowResUpload || null,
                     },
                   },
                 });
@@ -619,9 +626,33 @@ export default function ManagePropertyEdit({
                                   />
                                 </svg>
                                 <p className="mt-1 text-sm text-gray-600">
-                                  <button className="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition duration-150 ease-in-out">
-                                    Upload a file
-                                  </button>{" "}
+                                  <label
+                                    className="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition duration-150 ease-in-out cursor-pointer"
+                                    htmlFor="mainPicture"
+                                  >
+                                    Upload file
+                                  </label>
+                                  <input
+                                    className="w-0 h-0 overflow-hidden absolute z--1"
+                                    type="file"
+                                    id="mainPicture"
+                                    onChange={async (e) => {
+                                      setUploadMainImageLoading(true);
+                                      const [
+                                        lowRes,
+                                        largeRes,
+                                      ] = await singleImageUpload(
+                                        e,
+                                        uuid,
+                                        process.env
+                                          .REACT_APP_CLOUDINARY_PROPERTY_PRESET
+                                      );
+
+                                      setMainPictureLowResUpload(lowRes);
+                                      setMainPictureUpload(largeRes);
+                                      setUploadMainImageLoading(false);
+                                    }}
+                                  />{" "}
                                   or drag and drop
                                 </p>
                                 <p className="mt-1 text-xs text-gray-500">
@@ -629,6 +660,17 @@ export default function ManagePropertyEdit({
                                 </p>
                               </div>
                             </div>
+                            {(mainPictureLowRes || mainPictureLowResUpload) && (
+                              <div className="flex">
+                                <img
+                                  width="200"
+                                  src={
+                                    mainPictureLowRes || mainPictureLowResUpload
+                                  }
+                                  alt="Upload Preview"
+                                />
+                              </div>
+                            )}
                           </div>
                           <div className="col-span-6">
                             <label className="block text-sm leading-5 font-medium text-gray-700">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TextField from "./TextField";
-import { useField, useFormikContext } from "formik";
+import { useFormikContext } from "formik";
 
 const componentForm = {
   street_number: "short_name",
@@ -20,9 +20,9 @@ export default function AddressLookUpField() {
     setFieldValue,
   } = useFormikContext();
 
-  let autocomplete;
-
+  
   useEffect(() => {
+    let autocomplete;
     var script = document.createElement("script");
     script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_MAPS_KEY}&callback=initAutocomplete&libraries=places&v=weekly`;
     script.defer = true;
@@ -104,7 +104,7 @@ export default function AddressLookUpField() {
       id="searchAddress"
       name="searchAddress"
       label="Property Address"
-      placeholder="Enter Property Address"
+      placeholder="Enter the property address"
       labelClass="block text-sm font-medium leading-5 text-gray-700"
       className="mt-1 form-input block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
     />

@@ -1,20 +1,23 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
+const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
   theme: {
     extend: {
+      zIndex: {
+        "-1": "-1",
+      },
       height: {
-        70: '18rem',
-        75: '20rem',
-        80: '22rem',
-        85: '24rem',
-        90: '26rem',
-        95: '28rem',
-        100: '30rem',
-        105: '32rem',
-        110: '34rem',
-        115: '37rem',
-        120: '40rem',
+        70: "18rem",
+        75: "20rem",
+        80: "22rem",
+        85: "24rem",
+        90: "26rem",
+        95: "28rem",
+        100: "30rem",
+        105: "32rem",
+        110: "34rem",
+        115: "37rem",
+        120: "40rem",
       },
       spacing: {
         "1/2": "50%",
@@ -49,7 +52,7 @@ module.exports = {
         "brand-blue": "#1992d4",
       },
       fontFamily: {
-        sans: ['Inter var', ...defaultTheme.fontFamily.sans],
+        sans: ["Inter var", ...defaultTheme.fontFamily.sans],
       },
     },
   },
