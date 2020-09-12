@@ -7,6 +7,7 @@ import TextField from "../components/TextField";
 import PriceField from "../components/PriceField";
 import VideoUrlField from "../components/VideoUrlField";
 import AddressLookUpField from "../components/AddressLookUpField";
+import AttachmentsDropZone from "../components/AttachmentsDropZone";
 import { singleImageUpload } from "../util/imageUpload";
 import * as Yup from "yup";
 
@@ -82,7 +83,6 @@ export default function ManagePropertyEdit({
   const [formLocationSuccess, setFormLocationSuccess] = useState(false);
   const [formPicturesSuccess, setFormPicturesSuccess] = useState(false);
   const [formVideoSuccess, setFormVideoSuccess] = useState(false);
-  const [formAttachmentsSuccess, setFormAttachmentsSuccess] = useState(false);
   const [mainPictureUpload, setMainPictureUpload] = useState();
   const [mainPictureLowResUpload, setMainPictureLowResUpload] = useState();
   const [uploadMainImageLoading, setUploadMainImageLoading] = useState(false);
@@ -867,156 +867,7 @@ export default function ManagePropertyEdit({
               </p>
             </div>
           </div>
-          <div className="mt-5 md:mt-0 md:col-span-2">
-            <Formik
-              initialValues={{}}
-              onSubmit={async (values) => {
-                await saveProperty({
-                  variables: {
-                    property: {
-                      uuid,
-                    },
-                  },
-                });
-                setFormAttachmentsSuccess(true);
-              }}
-            >
-              {({ isSubmitting }) => {
-                const submitButtonDisabled =
-                  isSubmitting || savePropertyLoading;
-
-                return (
-                  <Form>
-                    <div className="shadow overflow-hidden sm:rounded-md">
-                      <div className="px-4 py-5 bg-white sm:p-6">
-                        <div className="grid grid-cols-6 gap-6">
-                          <div className="col-span-6">
-                            <div className="flex flex-col">
-                              <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                                <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                                  <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                                    <table className="min-w-full divide-y divide-gray-200">
-                                      <thead>
-                                        <tr>
-                                          <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Title
-                                          </th>
-                                          <th className="px-6 py-3 bg-gray-50"></th>
-                                          <th className="px-6 py-3 bg-gray-50"></th>
-                                        </tr>
-                                      </thead>
-                                      <tbody className="bg-white divide-y divide-gray-200">
-                                        <tr>
-                                          <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900">
-                                            Floorplans
-                                          </td>
-                                          <td className="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                            <a className="text-indigo-600 hover:text-indigo-900">
-                                              Download
-                                            </a>
-                                          </td>
-                                          <td className="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                            <a className="text-red-600 hover:text-red-900">
-                                              Remove
-                                            </a>
-                                          </td>
-                                        </tr>
-                                        <tr>
-                                          <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900">
-                                            Design Details
-                                          </td>
-                                          <td className="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                            <a className="text-indigo-600 hover:text-indigo-900">
-                                              Download
-                                            </a>
-                                          </td>
-                                          <td className="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                            <a
-                                              href="#"
-                                              className="text-red-600 hover:text-red-900"
-                                            >
-                                              Remove
-                                            </a>
-                                          </td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="col-span-6 sm:col-span-3">
-                            <label
-                              htmlFor="first_name"
-                              className="block text-sm font-medium leading-5 text-gray-700"
-                            >
-                              Title
-                            </label>
-                            <input
-                              id="first_name"
-                              className="mt-1 form-input block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                            />
-                          </div>
-
-                          <div className="col-span-6">
-                            <label className="block text-sm leading-5 font-medium text-gray-700">
-                              Attachment
-                            </label>
-                            <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-                              <div className="text-center">
-                                <svg
-                                  className="mx-auto h-12 w-12 text-gray-400"
-                                  stroke="currentColor"
-                                  fill="none"
-                                  viewBox="0 0 48 48"
-                                >
-                                  <path
-                                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                  />
-                                </svg>
-                                <p className="mt-1 text-sm text-gray-600">
-                                  <button className="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition duration-150 ease-in-out">
-                                    Upload a file
-                                  </button>{" "}
-                                  or drag and drop
-                                </p>
-                                <p className="mt-1 text-xs text-gray-500">
-                                  PDF up to 5MB
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="px-4 py-3 bg-gray-50 text-right sm:px-6 flex flex-row-reverse">
-                        <button
-                          className={`py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-500 focus:outline-none focus:shadow-outline-blue active:bg-indigo-600 transition duration-150 ease-in-out ${
-                            submitButtonDisabled
-                              ? "opacity-50 cursor-not-allowed"
-                              : ""
-                          }`}
-                          type="submit"
-                          disabled={submitButtonDisabled}
-                        >
-                          Save
-                        </button>
-                        {formAttachmentsSuccess && (
-                          <p className="text-sm text-green-500 py-2 px-4">
-                            Property Saved!
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </Form>
-                );
-              }}
-            </Formik>
-          </div>
+          <AttachmentsDropZone />
         </div>
       </div>
     </div>
