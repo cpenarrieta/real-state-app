@@ -108,7 +108,7 @@ export default function DeleteAttachmentModal({
                       setShowModal(false);
                     }}
                   >
-                    Deactivate
+                    Delete
                   </button>
                 </span>
                 <span className="mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:ml-3 sm:w-auto">
