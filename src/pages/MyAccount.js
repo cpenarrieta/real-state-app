@@ -307,11 +307,12 @@ export default function MyAccount() {
                       placeholder="Upload an image"
                       onChange={async (e) => {
                         setUploadImageLoading(true);
+                        const files = e.target.files;
                         const [
                           imageRes,
                           largeImageRes,
                         ] = await singleImageUpload(
-                          e,
+                          files[0],
                           username,
                           process.env.REACT_APP_CLOUDINARY_PROFILE_PRESET
                         );

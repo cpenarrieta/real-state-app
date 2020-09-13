@@ -41,6 +41,7 @@ const PROPERTY_QUERY = gql`
       propertyType
       description
       listingId
+      pictures
       mainPicture
       mainPictureLowRes
       status

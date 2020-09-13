@@ -5,7 +5,7 @@ import { Formik, Form } from "formik";
 import { useParams } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
 import { useQuery, useMutation, gql } from "@apollo/client";
-import TextField from "../components/TextField";
+import TextField from "./TextField";
 import DeleteAttachmentModal from "./DeleteAttachmentModal";
 
 const S3_SIGN_MUTATION = gql`
@@ -41,7 +41,7 @@ const formatFilename = (filename, propertyId) => {
   return newFilename.substring(0, 60);
 };
 
-export default function AttachmentsDropZone() {
+export default function PropertyAttachmentsForm() {
   const { propertyId } = useParams();
   const [file, setFile] = useState();
   const [formAttachmentsSuccess, setFormAttachmentsSuccess] = useState(false);
@@ -63,7 +63,11 @@ export default function AttachmentsDropZone() {
     setFile(acceptedFiles[0]);
     setFormAttachmentsSuccess(false);
   }, []);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    maxSize: 3000000,
+    accept: "application/pdf",
+  });
 
   const uploadToS3 = async (signedRequest) => {
     const options = {
@@ -106,9 +110,12 @@ export default function AttachmentsDropZone() {
         }}
         onSubmit={saveAttachmentClick}
       >
-        {({ isSubmitting, handleSubmit }) => {
+        {({ isSubmitting, handleSubmit, values }) => {
           const submitButtonDisabled =
-            isSubmitting || loadingSaveAttachment || loadingSignS3;
+            isSubmitting ||
+            loadingSaveAttachment ||
+            loadingSignS3 ||
+            !(file && values.attachmentTitle);
 
           return (
             <div className="shadow overflow-hidden sm:rounded-md">
@@ -187,7 +194,7 @@ export default function AttachmentsDropZone() {
                       </label>
                       <div
                         className={`mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md ${
-                          isDragActive ? "bg-teal-100" : ""
+                          isDragActive ? "bg-green-100" : ""
                         }`}
                         {...getRootProps()}
                       >
@@ -196,15 +203,16 @@ export default function AttachmentsDropZone() {
                           {!file && (
                             <svg
                               className="mx-auto h-12 w-12 text-gray-400"
-                              stroke="currentColor"
+                              xmlns="http://www.w3.org/2000/svg"
                               fill="none"
-                              viewBox="0 0 48 48"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
                             >
                               <path
-                                d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                               />
                             </svg>
                           )}
@@ -236,7 +244,7 @@ export default function AttachmentsDropZone() {
                             or drag and drop
                           </p>
                           <p className="mt-1 text-xs text-gray-500">
-                            PDF up to 5MB
+                            .PDF up to 5MB
                           </p>
                         </div>
                       </div>
