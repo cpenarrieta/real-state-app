@@ -1,4 +1,5 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
+const plugin = require('tailwindcss/plugin')
 
 module.exports = {
   theme: {
@@ -54,14 +55,37 @@ module.exports = {
       fontFamily: {
         sans: ["Inter var", ...defaultTheme.fontFamily.sans],
       },
+      lineHeight: {
+        '42px': '2.625rem',
+      },
     },
   },
   variants: {
     backgroundColor: ["responsive", "hover", "focus", "active"],
+    opacity: ['responsive', 'hover', 'focus', 'group-hover'],
+    textColor: [
+      'responsive',
+      'hover',
+      'focus',
+      'group-hover',
+      'group-focus-within',
+    ],
+    boxShadow: ['responsive', 'hover', 'focus', 'group-hover'],
+    translate: ['responsive', 'hover', 'focus', 'group-hover'],
+    backgroundOpacity: ['responsive', 'hover', 'focus', 'group-hover'],
   },
   plugins: [
     require("@tailwindcss/ui")({
       layout: "sidebar",
+    }),
+    plugin(({ addVariant, e }) => {
+      addVariant('group-focus-within', ({ modifySelectors, separator }) => {
+        modifySelectors(({ className }) => {
+          return `.group:focus-within .${e(
+            `group-focus-within${separator}${className}`
+          )}`
+        })
+      })
     }),
   ],
 };
