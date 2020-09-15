@@ -23,7 +23,13 @@ const SAVE_IMAGES_MUTATION = gql`
   }
 `;
 
-export default function PropertyPicturesForm() {
+export default function PropertyPicturesForm({
+  saveProperty,
+  savePropertyLoading,
+  refetch: refetchGetProperty,
+  mainImageId,
+  mainPictureLowRes,
+}) {
   const { propertyId } = useParams();
   const { loading, error, data, refetch } = useQuery(IMAGES_QUERY, {
     variables: { uuid: propertyId },
@@ -83,6 +89,7 @@ export default function PropertyPicturesForm() {
           setFiles([]);
           setFormPicturesSuccess(true);
           refetch();
+          refetchGetProperty();
         }}
       >
         {({ isSubmitting }) => {
@@ -93,7 +100,22 @@ export default function PropertyPicturesForm() {
               <div className="shadow overflow-hidden sm:rounded-md">
                 <div className="px-4 py-5 bg-white sm:p-6">
                   <div className="grid grid-cols-6 gap-6">
-                    {images && (
+                    {mainImageId && (
+                      <div className="col-span-6">
+                        <label className="block text-sm leading-5 font-medium text-gray-700">
+                          Cover Picture
+                        </label>
+                        <div
+                          className={`mt-2 flex justify-center px-3 pt-3 pb-3 border-2 border-gray-300 border-dashed rounded-md`}
+                        >
+                          <img
+                            src={mainPictureLowRes}
+                            alt="Cover Property picture"
+                          />
+                        </div>
+                      </div>
+                    )}
+                    {images && images.length > 0 && (
                       <div className="col-span-6">
                         <label className="block text-sm leading-5 font-medium text-gray-700">
                           Existing Pictures
@@ -102,10 +124,14 @@ export default function PropertyPicturesForm() {
                           className={`mt-2 flex justify-center px-3 pt-3 pb-3 border-2 border-gray-300 border-dashed rounded-md`}
                         >
                           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-1">
-                            {images.map((f) => (
+                            {images.map((image) => (
                               <PropertyPicture
-                                key={f.urlLowRes}
-                                url={f.urlLowRes}
+                                key={image.id}
+                                {...image}
+                                saveProperty={saveProperty}
+                                refetch={refetchGetProperty}
+                                refetchGetImages={refetch}
+                                propertyId={propertyId}
                               />
                             ))}
                           </div>

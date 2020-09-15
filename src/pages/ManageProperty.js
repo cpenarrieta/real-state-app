@@ -41,8 +41,8 @@ const PROPERTY_QUERY = gql`
       propertyType
       description
       listingId
-      mainPicture
       mainPictureLowRes
+      mainImageId
       status
       publishedStatus
       webPaidUntil

@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {getPropertyBadge} from '../util/propertyStatus'
-import propertyDefault from '../images/home-default.png'
+import { getPropertyBadge } from "../util/propertyStatus";
+import propertyDefault from "../images/home-default.png";
 
 export default function PropertyCard({
   uuid,
   title,
-  mainPicture,
+  mainPictureLowRes,
   bedrooms,
   bathrooms,
   price,
@@ -23,7 +23,7 @@ export default function PropertyCard({
         <Link to={`/manage-property/${uuid}`}>
           <img
             className="absolute h-full w-full object-cover rounded-lg shadow-md transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105"
-            src={mainPicture || propertyDefault}
+            src={mainPictureLowRes || propertyDefault}
             alt={uuid}
           />
         </Link>

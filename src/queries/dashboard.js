@@ -5,7 +5,7 @@ export const DASHBOARD_QUERY = gql`
     properties {
       uuid
       title
-      mainPicture
+      mainPictureLowRes
       bedrooms
       bathrooms
       price

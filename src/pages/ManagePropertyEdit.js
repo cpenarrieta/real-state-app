@@ -38,6 +38,7 @@ export default function ManagePropertyEdit({
   country,
   lat,
   lon,
+  mainImageId,
   mainPictureLowRes,
   refetch,
 }) {
@@ -140,7 +141,13 @@ export default function ManagePropertyEdit({
               </p>
             </div>
           </div>
-          <PropertyPicturesForm />
+          <PropertyPicturesForm
+            saveProperty={saveProperty}
+            savePropertyLoading={savePropertyLoading}
+            refetch={refetch}
+            mainImageId={mainImageId}
+            mainPictureLowRes={mainPictureLowRes}
+          />
         </div>
       </div>
 
