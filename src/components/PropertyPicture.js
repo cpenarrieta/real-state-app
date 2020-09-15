@@ -32,71 +32,92 @@ const PropertyPicture = memo(({ url }) => {
 
   return (
     <div
-      className={clsx("relative", {
-        group: state === "active",
-      })}
+      className="h-24 w-32 p-1"
+      style={{
+        backgroundImage: `url("${url}")`,
+        backgroundSize: "cover",
+      }}
       onMouseEnter={activate}
       onMouseLeave={deactivate}
       onClick={activate}
     >
-      <div className="relative text-center text-sm">
-        <img className="rounded-sm" src={url} alt="property image" />
-        <Transition
-          show={state === "active"}
-          enter="transition-opacity duration-100 ease-in-out"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="transition-opacity duration-200 ease-in-out"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          {(ref) => (
+      <Transition
+        show={state === "active"}
+        enter="transition-opacity duration-100 ease-in-out"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transition-opacity duration-200 ease-in-out"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+      >
+        {(ref) => (
+          <div
+            ref={ref}
+            role="menu"
+            className="grid grid-flow-col grid-cols-2 grid-rows-2 gap-1 h-full"
+          >
             <div
-              ref={ref}
-              id={`${url}`}
-              role="menu"
-              aria-labelledby={`${url}-btn`}
-              tabIndex={-1}
-              aria-activedescendant={
-                activeType ? `${url}-${activeType}` : undefined
-              }
-              className={clsx("absolute inset-0 z-10 p-1", {
-                "pointer-events-none": state !== "active",
-              })}
+              className={clsx(
+                "cursor-pointer col-span-2 font-medium bg-purple-200 bg-opacity-75 rounded-md text-purple-700 transition-colors duration-150 flex justify-center items-center",
+                { "bg-opacity-100": activeType === "COVER" }
+              )}
+              onMouseEnter={() => setActiveType("COVER")}
+              onMouseLeave={() => setActiveType(undefined)}
+              onClick={() => console.log("SET_COVER")}
             >
-              {/* <div className="absolute top-1/2 left-1/2 w-full -ml-4 -mt-4 bg-white bg-opacity-75" /> */}
-              <div
-                id={`${url}-svg`}
-                tabIndex={-1}
-                role="menuitem"
-                className={clsx(
-                  "relative cursor-pointer leading-42px xs:leading-10 font-medium bg-purple-200 bg-opacity-50 rounded-md text-purple-700 transition-colors duration-150 outline-none",
-                  { "bg-opacity-75": activeType === "svg" }
-                )}
-                onMouseEnter={() => setActiveType("svg")}
-                onMouseLeave={() => setActiveType(undefined)}
-                // onClick={() => copy("svg")}
-              >
-                Set Cover
-              </div>
-              <div
-                id={`${url}-jsx`}
-                tabIndex={-1}
-                role="menuitem"
-                className={clsx(
-                  "relative cursor-pointer mt-1 leading-42px xs:leading-10 font-medium bg-red-200 bg-opacity-50 rounded-md text-red-700 transition-colors duration-150 outline-none",
-                  { "bg-opacity-75": activeType === "jsx" }
-                )}
-                onMouseEnter={() => setActiveType("jsx")}
-                onMouseLeave={() => setActiveType(undefined)}
-                // onClick={() => copy("jsx")}
-              >
-                Delete
-              </div>
+              Set Cover
             </div>
-          )}
-        </Transition>
-      </div>
+            <div
+              className={clsx(
+                "cursor-pointer col-span-1 font-medium bg-red-200 bg-opacity-75 rounded-md text-red-700 transition-colors duration-150 flex justify-center items-center",
+                { "bg-opacity-100": activeType === "DELETE" }
+              )}
+              onMouseEnter={() => setActiveType("DELETE")}
+              onMouseLeave={() => setActiveType(undefined)}
+              onClick={() => console.log("DELETE")}
+            >
+              <svg
+                className="h-4 w-4"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
+            </div>
+            <div
+              className={clsx(
+                "cursor-pointer col-span-1 font-medium bg-yellow-200 bg-opacity-75 rounded-md text-yellow-700 transition-colors duration-150 flex justify-center items-center",
+                { "bg-opacity-100": activeType === "DRAG" }
+              )}
+              onMouseEnter={() => setActiveType("DRAG")}
+              onMouseLeave={() => setActiveType(undefined)}
+              onClick={() => console.log("DRAG")}
+            >
+              <svg
+                className="h-4 w-4"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
+                />
+              </svg>
+            </div>
+          </div>
+        )}
+      </Transition>
     </div>
   );
 });
