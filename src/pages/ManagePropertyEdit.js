@@ -39,7 +39,6 @@ export default function ManagePropertyEdit({
   lat,
   lon,
   mainPictureLowRes,
-  pictures,
   refetch,
 }) {
   const [
@@ -141,14 +140,7 @@ export default function ManagePropertyEdit({
               </p>
             </div>
           </div>
-          <PropertyPicturesForm
-            uuid={uuid}
-            saveProperty={saveProperty}
-            savePropertyLoading={savePropertyLoading}
-            mainPictureLowRes={mainPictureLowRes}
-            pictures={pictures}
-            refetch={refetch}
-          />
+          <PropertyPicturesForm />
         </div>
       </div>
 
