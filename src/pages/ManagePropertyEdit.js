@@ -1,17 +1,29 @@
 import React, { useEffect } from "react";
-import { useMutation, gql } from "@apollo/client";
+import { useMutation, useQuery, gql } from "@apollo/client";
 import { useAlert } from "../context/AlertContext";
 import PropertyVideoForm from "../components/PropertyVideoForm";
 import PropertyAttachmentsForm from "../components/PropertyAttachmentsForm";
 import PropertyLocationForm from "../components/PropertyLocationForm";
 import PropertyDetailsForm from "../components/PropertyDetailsForm";
 import PropertyPicturesForm from "../components/PropertyPicturesForm";
+import { GridProvider } from "../components/GridContext";
 
 const SAVE_PROPERTY_MUTATION = gql`
   mutation SaveProperty($property: PropertyInput) {
     saveProperty(property: $property) {
       uuid
       title
+    }
+  }
+`;
+
+const IMAGES_QUERY = gql`
+  query PropertyImages($uuid: String!) {
+    propertyImages(uuid: $uuid) {
+      id
+      title
+      url
+      urlLowRes
     }
   }
 `;
@@ -47,12 +59,19 @@ export default function ManagePropertyEdit({
     { loading: savePropertyLoading, error: savePropertyError },
   ] = useMutation(SAVE_PROPERTY_MUTATION);
   const { setShowAlert } = useAlert();
+  const { loading, error, data } = useQuery(IMAGES_QUERY, {
+    variables: { uuid },
+  });
 
   useEffect(() => {
     if (savePropertyError) {
       setShowAlert(true);
     }
   }, [savePropertyError, setShowAlert]);
+
+  if (loading) return <p>loading</p>;
+
+  const images = data?.propertyImages;
 
   return (
     <div className="">
@@ -141,13 +160,15 @@ export default function ManagePropertyEdit({
               </p>
             </div>
           </div>
-          <PropertyPicturesForm
-            saveProperty={saveProperty}
-            savePropertyLoading={savePropertyLoading}
-            refetch={refetch}
-            mainImageId={mainImageId}
-            mainPictureLowRes={mainPictureLowRes}
-          />
+          <GridProvider initialItems={images}>
+            <PropertyPicturesForm
+              saveProperty={saveProperty}
+              savePropertyLoading={savePropertyLoading}
+              refetch={refetch}
+              mainImageId={mainImageId}
+              mainPictureLowRes={mainPictureLowRes}
+            />
+          </GridProvider>
         </div>
       </div>
 

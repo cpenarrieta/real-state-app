@@ -12,6 +12,9 @@ const PropertyPicture = memo(
     propertyId,
     refetch,
     refetchGetImages,
+    forwardedRef,
+    title,
+    style
   }) => {
     const [state, setState] = useState("idle");
     const [activeType, setActiveType] = useState(undefined);
@@ -43,10 +46,14 @@ const PropertyPicture = memo(
 
     return (
       <div
+        ref={forwardedRef}
+        id={id}
+        title={title}
         className="h-24 w-32 p-1"
         style={{
           backgroundImage: `url("${urlLowRes}")`,
           backgroundSize: "cover",
+          ...style
         }}
         onMouseEnter={activate}
         onMouseLeave={deactivate}
@@ -123,7 +130,6 @@ const PropertyPicture = memo(
                 )}
                 onMouseEnter={() => setActiveType("DRAG")}
                 onMouseLeave={() => setActiveType(undefined)}
-                onClick={() => console.log("DRAG " + id)}
               >
                 <svg
                   className="h-4 w-4"

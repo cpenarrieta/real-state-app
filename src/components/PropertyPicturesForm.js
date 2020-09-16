@@ -1,10 +1,14 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useContext, useEffect } from "react";
 import { Formik, Form } from "formik";
 import { useDropzone } from "react-dropzone";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { multipleImageUpload } from "../util/imageUpload";
 import PropertyPicture from "./PropertyPicture";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import GridContext from "./GridContext";
+import DragItem from "./DragItem";
 
 const IMAGES_QUERY = gql`
   query PropertyImages($uuid: String!) {
@@ -40,6 +44,7 @@ export default function PropertyPicturesForm({
   ] = useMutation(SAVE_IMAGES_MUTATION);
   const [files, setFiles] = useState([]);
   const [formPicturesSuccess, setFormPicturesSuccess] = useState(false);
+  const { items, moveItem } = useContext(GridContext);
 
   const onDrop = useCallback((acceptedFiles) => {
     if (!acceptedFiles || acceptedFiles.length <= 0) return;
@@ -123,18 +128,25 @@ export default function PropertyPicturesForm({
                         <div
                           className={`mt-2 flex justify-center px-3 pt-3 pb-3 border-2 border-gray-300 border-dashed rounded-md`}
                         >
-                          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-1">
-                            {images.map((image) => (
-                              <PropertyPicture
-                                key={image.id}
-                                {...image}
-                                saveProperty={saveProperty}
-                                refetch={refetchGetProperty}
-                                refetchGetImages={refetch}
-                                propertyId={propertyId}
-                              />
-                            ))}
-                          </div>
+                          <DndProvider backend={HTML5Backend}>
+                            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-1">
+                              {items.map((image) => (
+                                <DragItem
+                                  key={image.id}
+                                  id={image.id}
+                                  onMoveItem={moveItem}
+                                >
+                                  <PropertyPicture
+                                    {...image}
+                                    saveProperty={saveProperty}
+                                    refetch={refetchGetProperty}
+                                    refetchGetImages={refetch}
+                                    propertyId={propertyId}
+                                  />
+                                </DragItem>
+                              ))}
+                            </div>
+                          </DndProvider>
                         </div>
                       </div>
                     )}
