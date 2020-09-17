@@ -2,24 +2,13 @@ import React, { useState, useCallback, useContext, useEffect } from "react";
 import { Formik, Form } from "formik";
 import { useDropzone } from "react-dropzone";
 import { useParams } from "react-router-dom";
-import { useQuery, useMutation, gql } from "@apollo/client";
+import { useMutation, gql } from "@apollo/client";
 import { multipleImageUpload } from "../util/imageUpload";
 import PropertyPicture from "./PropertyPicture";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import GridContext from "./GridContext";
+import { useImagesGrid } from "./ImagesGridContext";
 import DragItem from "./DragItem";
-
-const IMAGES_QUERY = gql`
-  query PropertyImages($uuid: String!) {
-    propertyImages(uuid: $uuid) {
-      id
-      title
-      url
-      urlLowRes
-    }
-  }
-`;
 
 const SAVE_IMAGES_MUTATION = gql`
   mutation SavePropertyImages($images: [ImagesInput]!, $uuid: String!) {
@@ -29,22 +18,19 @@ const SAVE_IMAGES_MUTATION = gql`
 
 export default function PropertyPicturesForm({
   saveProperty,
-  savePropertyLoading,
-  refetch: refetchGetProperty,
+  refetchGetProperty,
+  refetchGetImages,
   mainImageId,
   mainPictureLowRes,
 }) {
   const { propertyId } = useParams();
-  const { loading, error, data, refetch } = useQuery(IMAGES_QUERY, {
-    variables: { uuid: propertyId },
-  });
   const [
     savePropertyImages,
     { loading: loadingSavePropertyImages, error: errorSavePropertyImages },
   ] = useMutation(SAVE_IMAGES_MUTATION);
   const [files, setFiles] = useState([]);
   const [formPicturesSuccess, setFormPicturesSuccess] = useState(false);
-  const { items, moveItem } = useContext(GridContext);
+  const { items, moveItem, setItems } = useImagesGrid();
 
   const onDrop = useCallback((acceptedFiles) => {
     if (!acceptedFiles || acceptedFiles.length <= 0) return;
@@ -72,29 +58,32 @@ export default function PropertyPicturesForm({
     accept: "image/jpeg, image/png",
   });
 
-  const images = data?.propertyImages;
-
   return (
     <div className="mt-5 md:mt-0 md:col-span-2">
       <Formik
         initialValues={{}}
         onSubmit={async () => {
-          const resImages = await multipleImageUpload(
-            files,
-            propertyId,
-            process.env.REACT_APP_CLOUDINARY_PROPERTY_PRESET
-          );
+          if (files && files.length) {
+            const resImages = await multipleImageUpload(
+              files,
+              propertyId,
+              process.env.REACT_APP_CLOUDINARY_PROPERTY_PRESET
+            );
 
-          await savePropertyImages({
-            variables: {
-              uuid: propertyId,
-              images: resImages,
-            },
-          });
+            await savePropertyImages({
+              variables: {
+                uuid: propertyId,
+                images: resImages,
+              },
+            });
+          }
+
           setFiles([]);
           setFormPicturesSuccess(true);
-          refetch();
-          refetchGetProperty();
+          const newImages = await refetchGetImages();
+          if (newImages?.data?.propertyImages?.length > 0) {
+            setItems(newImages?.data?.propertyImages);
+          }
         }}
       >
         {({ isSubmitting }) => {
@@ -113,14 +102,11 @@ export default function PropertyPicturesForm({
                         <div
                           className={`mt-2 flex justify-center px-3 pt-3 pb-3 border-2 border-gray-300 border-dashed rounded-md`}
                         >
-                          <img
-                            src={mainPictureLowRes}
-                            alt="Cover Property picture"
-                          />
+                          <img src={mainPictureLowRes} alt="Cover Property" />
                         </div>
                       </div>
                     )}
-                    {images && images.length > 0 && (
+                    {items && items.length > 0 && (
                       <div className="col-span-6">
                         <label className="block text-sm leading-5 font-medium text-gray-700">
                           Existing Pictures
@@ -139,8 +125,8 @@ export default function PropertyPicturesForm({
                                   <PropertyPicture
                                     {...image}
                                     saveProperty={saveProperty}
-                                    refetch={refetchGetProperty}
-                                    refetchGetImages={refetch}
+                                    refetchGetProperty={refetchGetProperty}
+                                    refetchGetImages={refetchGetImages}
                                     propertyId={propertyId}
                                   />
                                 </DragItem>
@@ -216,6 +202,7 @@ export default function PropertyPicturesForm({
                               key={f.url}
                               className="col-span-1 rounded-sm"
                               src={f.url}
+                              alt="file uploaded"
                             />
                           ))}
                         </div>

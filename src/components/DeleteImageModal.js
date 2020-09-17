@@ -1,6 +1,7 @@
 import React from "react";
 import { Transition } from "@tailwindui/react";
 import { useMutation, gql } from "@apollo/client";
+import { useImagesGrid } from "./ImagesGridContext";
 
 const DELETE_IMAGES_MUTATION = gql`
   mutation DeleteImage($id: Int!, $uuid: String!) {
@@ -13,9 +14,10 @@ export default function DeleteImageModal({
   setShowModal,
   imageToDelete,
   propertyId,
-  refetch,
+  refetchGetImages,
 }) {
   const [deleteImage, { loading, error }] = useMutation(DELETE_IMAGES_MUTATION);
+  const { setItems } = useImagesGrid();
 
   return (
     <div
@@ -104,7 +106,10 @@ export default function DeleteImageModal({
                           uuid: propertyId,
                         },
                       });
-                      await refetch();
+                      const newImages = await refetchGetImages();
+                      if (newImages?.data?.propertyImages?.length > 0) {
+                        setItems(newImages?.data?.propertyImages);
+                      }
                       setShowModal(false);
                     }}
                   >

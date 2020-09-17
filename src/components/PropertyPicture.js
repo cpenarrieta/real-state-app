@@ -10,11 +10,11 @@ const PropertyPicture = memo(
     id,
     saveProperty,
     propertyId,
-    refetch,
+    refetchGetProperty,
     refetchGetImages,
     forwardedRef,
     title,
-    style
+    style,
   }) => {
     const [state, setState] = useState("idle");
     const [activeType, setActiveType] = useState(undefined);
@@ -53,7 +53,7 @@ const PropertyPicture = memo(
         style={{
           backgroundImage: `url("${urlLowRes}")`,
           backgroundSize: "cover",
-          ...style
+          ...style,
         }}
         onMouseEnter={activate}
         onMouseLeave={deactivate}
@@ -92,7 +92,7 @@ const PropertyPicture = memo(
                       },
                     },
                   });
-                  refetch();
+                  refetchGetProperty();
                 }}
               >
                 Set Cover
@@ -153,7 +153,7 @@ const PropertyPicture = memo(
           showModal={showModal}
           setShowModal={setShowModal}
           imageToDelete={id}
-          refetch={refetchGetImages}
+          refetchGetImages={refetchGetImages}
           propertyId={propertyId}
         />
       </div>
