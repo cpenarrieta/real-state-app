@@ -13,7 +13,6 @@ import ManagePropertyLeads from "./ManagePropertyLeads";
 import ManagePropertyPreview from "./ManagePropertyPreview";
 import ManagePropertySettings from "./ManagePropertySettings";
 import ManagePropertyAnalytics from "./ManagePropertyAnalytics";
-
 import { getPropertyBadge } from "../util/propertyStatus";
 import { format, parseISO, compareAsc } from "date-fns";
 
