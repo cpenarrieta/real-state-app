@@ -57,6 +57,9 @@ const PROPERTY_QUERY = gql`
       country
       lat
       lon
+      color
+      hidePrice
+      strata
     }
   }
 `;

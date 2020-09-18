@@ -49,6 +49,8 @@ export default function PropertyDetailsForm({
   propertyType,
   description,
   listingId,
+  hidePrice,
+  strata,
 }) {
   const [formDetailsSuccess, setFormDetailsSuccess] = useState(false);
 
@@ -67,6 +69,8 @@ export default function PropertyDetailsForm({
           description: description || "",
           listingId: listingId || "",
           currency: currency || "CAD",
+          hidePrice: hidePrice || false,
+          strata: strata || false,
         }}
         onSubmit={async (values) => {
           await saveProperty({
@@ -83,6 +87,8 @@ export default function PropertyDetailsForm({
                 description: values.description,
                 listingId: values.listingId,
                 currency: values.currency,
+                hidePrice: values.hidePrice || false,
+                strata: values.strata || false,
               },
             },
           });
@@ -175,6 +181,54 @@ export default function PropertyDetailsForm({
                         labelClass="block text-sm font-medium leading-5 text-gray-700"
                         className="mt-1 form-input block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                       />
+                    </div>
+
+                    <div className="col-span-6 sm:col-span-3">
+                      <div className="relative flex items-start">
+                        <div className="flex items-center h-5">
+                          <Field
+                            id="hidePrice"
+                            type="checkbox"
+                            name="hidePrice"
+                            className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                          />
+                        </div>
+                        <div className="ml-3 text-sm leading-5">
+                          <label
+                            htmlFor="hidePrice"
+                            className="font-medium text-gray-700"
+                          >
+                            Hide Price
+                          </label>
+                          <p className="text-gray-500">
+                            Price will be hidden in the property website.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="col-span-6 sm:col-span-3">
+                      <div className="relative flex items-start">
+                        <div className="flex items-center h-5">
+                          <Field
+                            id="strata"
+                            type="checkbox"
+                            name="strata"
+                            className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                          />
+                        </div>
+                        <div className="ml-3 text-sm leading-5">
+                          <label
+                            htmlFor="strata"
+                            className="font-medium text-gray-700"
+                          >
+                            Strata
+                          </label>
+                          <p className="text-gray-500">
+                            Is this a strata property?
+                          </p>
+                        </div>
+                      </div>
                     </div>
 
                     <div className="col-span-6">

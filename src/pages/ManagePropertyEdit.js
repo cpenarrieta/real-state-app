@@ -6,6 +6,7 @@ import PropertyAttachmentsForm from "../components/PropertyAttachmentsForm";
 import PropertyLocationForm from "../components/PropertyLocationForm";
 import PropertyDetailsForm from "../components/PropertyDetailsForm";
 import PropertyPicturesFormWrapper from "../components/PropertyPicturesFormWrapper";
+import PropertyThemeForm from "../components/PropertyThemeForm";
 
 const SAVE_PROPERTY_MUTATION = gql`
   mutation SaveProperty($property: PropertyInput) {
@@ -41,6 +42,9 @@ export default function ManagePropertyEdit({
   mainImageId,
   mainPictureLowRes,
   refetch,
+  color,
+  hidePrice,
+  strata,
 }) {
   const [
     saveProperty,
@@ -84,6 +88,8 @@ export default function ManagePropertyEdit({
             propertyType={propertyType}
             description={description}
             listingId={listingId}
+            hidePrice={hidePrice}
+            strata={strata}
           />
         </div>
       </div>
@@ -198,6 +204,34 @@ export default function ManagePropertyEdit({
             </div>
           </div>
           <PropertyAttachmentsForm />
+        </div>
+      </div>
+
+      <div className="hidden sm:block">
+        <div className="py-5">
+          <div className="border-t border-gray-200"></div>
+        </div>
+      </div>
+
+      <div className="mt-10 sm:mt-0">
+        <div className="md:grid md:grid-cols-3 md:gap-6">
+          <div className="md:col-span-1">
+            <div className="px-4 sm:px-0">
+              <h3 className="text-lg font-medium leading-6 text-gray-900">
+                Theme and Colors
+              </h3>
+              <p className="mt-1 text-sm leading-5 text-gray-600">
+                theme and colors....
+              </p>
+            </div>
+          </div>
+          <PropertyThemeForm
+            uuid={uuid}
+            saveProperty={saveProperty}
+            savePropertyLoading={savePropertyLoading}
+            color={color}
+            refetch={refetch}
+          />
         </div>
       </div>
     </div>
