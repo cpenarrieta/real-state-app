@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import RadioButtons from "../components/RadioButtons";
 import TextField from "../components/TextField";
 import PriceField from "../components/PriceField";
@@ -53,6 +53,17 @@ export default function PropertyDetailsForm({
   strata,
 }) {
   const [formDetailsSuccess, setFormDetailsSuccess] = useState(false);
+
+  useEffect(() => {
+    if (formDetailsSuccess) {
+      const handler = window.setTimeout(() => {
+        setFormDetailsSuccess(false);
+      }, 1000);
+      return () => {
+        window.clearTimeout(handler);
+      };
+    }
+  }, [formDetailsSuccess]);
 
   return (
     <div className="mt-5 md:mt-0 md:col-span-2">

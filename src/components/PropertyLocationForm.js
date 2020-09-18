@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AddressLookUpField from "./AddressLookUpField";
 import TextField from "./TextField";
 import { Formik, Field, Form } from "formik";
@@ -18,6 +18,17 @@ export default function PropertyLocationForm({
   lon,
 }) {
   const [formLocationSuccess, setFormLocationSuccess] = useState(false);
+
+  useEffect(() => {
+    if (formLocationSuccess) {
+      const handler = window.setTimeout(() => {
+        setFormLocationSuccess(false);
+      }, 1000);
+      return () => {
+        window.clearTimeout(handler);
+      };
+    }
+  }, [formLocationSuccess]);
 
   return (
     <div className="mt-5 md:mt-0 md:col-span-2">
@@ -263,7 +274,7 @@ export default function PropertyLocationForm({
                   </button>
                   {formLocationSuccess && (
                     <p className="text-sm text-green-500 py-2 px-4">
-                      Property Saved!
+                      Location Saved!
                     </p>
                   )}
                 </div>

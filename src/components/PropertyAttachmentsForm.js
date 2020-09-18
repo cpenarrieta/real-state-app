@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import { Formik, Form } from "formik";
@@ -68,6 +68,17 @@ export default function PropertyAttachmentsForm() {
     maxSize: 3000000,
     accept: "application/pdf",
   });
+
+  useEffect(() => {
+    if (formAttachmentsSuccess) {
+      const handler = window.setTimeout(() => {
+        setFormAttachmentsSuccess(false);
+      }, 1000);
+      return () => {
+        window.clearTimeout(handler);
+      };
+    }
+  }, [formAttachmentsSuccess]);
 
   const uploadToS3 = async (signedRequest) => {
     const options = {
@@ -286,7 +297,7 @@ export default function PropertyAttachmentsForm() {
                 </button>
                 {formAttachmentsSuccess && (
                   <p className="text-sm text-green-500 py-2 px-4">
-                    Property Saved!
+                    Attachments Saved!
                   </p>
                 )}
               </div>

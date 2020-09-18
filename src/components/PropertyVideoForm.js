@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import VideoUrlField from "./VideoUrlField";
 
@@ -11,6 +11,17 @@ export default function PropertyVideoForm({
   videoUrl,
 }) {
   const [formVideoSuccess, setFormVideoSuccess] = useState(false);
+
+  useEffect(() => {
+    if (formVideoSuccess) {
+      const handler = window.setTimeout(() => {
+        setFormVideoSuccess(false);
+      }, 1000);
+      return () => {
+        window.clearTimeout(handler);
+      };
+    }
+  }, [formVideoSuccess]);
 
   return (
     <div className="mt-5 md:mt-0 md:col-span-2">
@@ -98,7 +109,7 @@ export default function PropertyVideoForm({
                   </button>
                   {formVideoSuccess && (
                     <p className="text-sm text-green-500 py-2 px-4">
-                      Property Saved!
+                      Video Saved!
                     </p>
                   )}
                 </div>

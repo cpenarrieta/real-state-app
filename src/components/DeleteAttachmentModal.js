@@ -3,7 +3,7 @@ import { Transition } from "@tailwindui/react";
 import { useMutation, gql } from "@apollo/client";
 
 const DELETE_ATTACHMENT_MUTATION = gql`
-  mutation SeleteAttachment($id: Int) {
+  mutation SeleteAttachment($id: Int!) {
     deleteAttachment(id: $id)
   }
 `;

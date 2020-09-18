@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Formik, Form } from "formik";
 import { useDropzone } from "react-dropzone";
 import { useParams } from "react-router-dom";
@@ -57,6 +57,17 @@ export default function PropertyPicturesForm({
     maxSize: 3000000,
     accept: "image/jpeg, image/png",
   });
+
+  useEffect(() => {
+    if (formPicturesSuccess) {
+      const handler = window.setTimeout(() => {
+        setFormPicturesSuccess(false);
+      }, 1000);
+      return () => {
+        window.clearTimeout(handler);
+      };
+    }
+  }, [formPicturesSuccess]);
 
   return (
     <div className="mt-5 md:mt-0 md:col-span-2">
@@ -246,7 +257,7 @@ export default function PropertyPicturesForm({
                   </button>
                   {formPicturesSuccess && (
                     <p className="text-sm text-green-500 py-2 px-4">
-                      Property Saved!
+                      Pictures Saved!
                     </p>
                   )}
                 </div>
