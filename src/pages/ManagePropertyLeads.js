@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import { format, parseISO } from "date-fns";
+import { Transition } from "@tailwindui/react";
 
 const GET_LEADS = gql`
   query GetLeads($uuid: String!) {
@@ -61,6 +62,8 @@ export default function ManagePropertyLeads() {
     updateLead,
     { loading: loadingUpdateLead, error: errorUpdateLead },
   ] = useMutation(UPDATE_LEAD_MUTATION);
+  const [showDetails, setShowDetails] = useState(false);
+  const [selectedLead, setSelectedLead] = useState(null);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error...</p>;
@@ -88,6 +91,21 @@ export default function ManagePropertyLeads() {
               </p>
             </div>
           </li>
+          {notContactedLeads && notContactedLeads.length <= 0 && (
+            <li key="noNotcontactedLeads">
+              <div className="block bg-gray-50 focus:outline-none transition duration-150 ease-in-out">
+                <div className="px-4 py-4 sm:px-6">
+                  <div className="grid grid-cols-4 gap-6">
+                    <div className="col-span-4">
+                      <span className="mt-1 text-sm leading-5 text-gray-500">
+                        No more new leads.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          )}
           {notContactedLeads.map((lead) => {
             return (
               <li key={lead.id}>
@@ -95,7 +113,7 @@ export default function ManagePropertyLeads() {
                   <div className="px-4 py-4 sm:px-6">
                     <div className="grid grid-cols-4 gap-6">
                       <div className="col-span-4 sm:col-span-1">
-                        <div className="text-sm leading-5 font-medium text-indigo-600 truncate">
+                        <div className="text-sm leading-5 font-medium text-green-500 truncate">
                           {lead.name}
                         </div>
                         <div className="mt-2 flex">
@@ -168,7 +186,7 @@ export default function ManagePropertyLeads() {
                         <div className="flex flex-row-reverse justify-between overflow-hidden">
                           {/* ARCHIVED */}
                           <svg
-                            className="h-6 w-6 text-gray-500 mr-2 cursor-pointer hover:text-red-500"
+                            className="h-6 w-6 text-gray-500 mr-2 cursor-pointer hover:text-red-500 focus:text-red-500"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 20 20"
                             fill="currentColor"
@@ -195,11 +213,15 @@ export default function ManagePropertyLeads() {
                           </svg>
                           {/* ANALYTICS */}
                           <svg
-                            className="h-6 w-6 text-gray-500 mr-2 cursor-pointer hover:text-indigo-500"
+                            className="h-6 w-6 text-gray-500 mr-2 cursor-pointer hover:text-indigo-500 focus:text-indigo-500"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
+                            onClick={() => {
+                              setSelectedLead(lead);
+                              setShowDetails(true);
+                            }}
                           >
                             <path
                               strokeLinecap="round"
@@ -210,7 +232,7 @@ export default function ManagePropertyLeads() {
                           </svg>
                           {/* CONTACTED */}
                           <svg
-                            className="h-6 w-6 text-gray-500 mr-2 cursor-pointer hover:text-green-500"
+                            className="h-6 w-6 text-gray-500 mr-2 cursor-pointer hover:text-green-500 focus:text-green-500"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
@@ -238,7 +260,7 @@ export default function ManagePropertyLeads() {
                           </svg>
                           {/* STARRED */}
                           <svg
-                            className="h-6 w-6 text-gray-500 mr-2 cursor-pointer hover:text-yellow-300"
+                            className="h-6 w-6 text-gray-500 mr-2 cursor-pointer hover:text-yellow-300 focus:text-yellow-300"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
@@ -294,6 +316,21 @@ export default function ManagePropertyLeads() {
               </p>
             </div>
           </li>
+          {contactedLeads && contactedLeads.length <= 0 && (
+            <li key="noNotcontactedLeads">
+              <div className="block bg-gray-50 focus:outline-none transition duration-150 ease-in-out">
+                <div className="px-4 py-4 sm:px-6">
+                  <div className="grid grid-cols-4 gap-6">
+                    <div className="col-span-4">
+                      <span className="mt-1 text-sm leading-5 text-gray-500">
+                        Empty list.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          )}
           {contactedLeads.map((lead) => {
             return (
               <li key={lead.id}>
@@ -374,7 +411,7 @@ export default function ManagePropertyLeads() {
                         <div className="flex flex-row-reverse justify-between overflow-hidden">
                           {/* ARCHIVED */}
                           <svg
-                            className="h-6 w-6 text-gray-500 mr-2 cursor-pointer hover:text-red-500"
+                            className="h-6 w-6 text-gray-500 mr-2 cursor-pointer hover:text-red-500 focus:text-red-500"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 20 20"
                             fill="currentColor"
@@ -401,11 +438,15 @@ export default function ManagePropertyLeads() {
                           </svg>
                           {/* ANALYTICS */}
                           <svg
-                            className="h-6 w-6 text-gray-500 mr-2 cursor-pointer hover:text-indigo-500"
+                            className="h-6 w-6 text-gray-500 mr-2 cursor-pointer hover:text-indigo-500 focus:text-indigo-500"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
+                            onClick={() => {
+                              setSelectedLead(lead);
+                              setShowDetails(true);
+                            }}
                           >
                             <path
                               strokeLinecap="round"
@@ -451,8 +492,8 @@ export default function ManagePropertyLeads() {
                           <svg
                             className={`h-6 w-6 mr-2 cursor-pointer ${
                               lead.leadStatus === "STARRED"
-                                ? "text-yellow-300 hover:text-gray-300"
-                                : "text-gray-500 hover:text-yellow-300"
+                                ? "text-yellow-300 hover:text-gray-300 focus:text-gray-300"
+                                : "text-gray-500 hover:text-yellow-300 focus:text-yellow-300"
                             }  `}
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 20 20"
@@ -498,18 +539,33 @@ export default function ManagePropertyLeads() {
                 Archived leads
               </h3>
               <p className="mt-1 text-sm leading-5 text-gray-500">
-                The leads below have been archived
+                Here are the list you mark as archived.
               </p>
             </div>
           </li>
+          {archivedLeads && archivedLeads.length <= 0 && (
+            <li key="noNotcontactedLeads">
+              <div className="block bg-gray-50 focus:outline-none transition duration-150 ease-in-out">
+                <div className="px-4 py-4 sm:px-6">
+                  <div className="grid grid-cols-4 gap-6">
+                    <div className="col-span-4">
+                      <span className="mt-1 text-sm leading-5 text-gray-500">
+                        No archived leads.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          )}
           {archivedLeads.map((lead) => {
             return (
               <li key={lead.id}>
-                <div className="block hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition duration-150 ease-in-out">
+                <div className="block bg-gray-50 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
                   <div className="px-4 py-4 sm:px-6">
                     <div className="grid grid-cols-4 gap-6">
                       <div className="col-span-4 sm:col-span-1">
-                        <div className="text-sm leading-5 font-medium text-indigo-600 truncate">
+                        <div className="text-sm leading-5 font-medium text-gray-500 truncate">
                           {lead.name}
                         </div>
                         <div className="mt-2 flex">
@@ -582,7 +638,7 @@ export default function ManagePropertyLeads() {
                         <div className="flex flex-row-reverse overflow-hidden">
                           {/* ARCHIVED */}
                           <svg
-                            className={`h-6 w-6 mr-2 cursor-pointer text-red-300 hover:text-gray-300  `}
+                            className={`h-6 w-6 mr-2 cursor-pointer text-red-300 hover:text-gray-300 focus:text-gray-300`}
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 20 20"
                             fill="currentColor"
@@ -609,11 +665,15 @@ export default function ManagePropertyLeads() {
                           </svg>
                           {/* ANALYTICS */}
                           <svg
-                            className="h-6 w-6 text-gray-500 mr-2 cursor-pointer hover:text-indigo-500"
+                            className="h-6 w-6 text-gray-500 mr-2 cursor-pointer hover:text-indigo-500 focus:text-indigo-500"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
+                            onClick={() => {
+                              setSelectedLead(lead);
+                              setShowDetails(true);
+                            }}
                           >
                             <path
                               strokeLinecap="round"
@@ -631,6 +691,90 @@ export default function ManagePropertyLeads() {
             );
           })}
         </ul>
+      </div>
+
+      <div
+        className={`${
+          showDetails ? "fixed inset-0 overflow-hidden" : "hidden"
+        }`}
+      >
+        <div className="absolute inset-0 overflow-hidden">
+          <Transition
+            show={showDetails}
+            enter="ease-in-out duration-500"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in-out duration-500"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            {(ref) => (
+              <div
+                ref={ref}
+                className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+                onClick={() => setShowDetails(false)}
+              ></div>
+            )}
+          </Transition>
+
+          <section className="absolute inset-y-0 right-0 pl-10 max-w-full flex">
+            <Transition
+              show={showDetails}
+              enter="transform transition ease-in-out duration-500 sm:duration-700"
+              enterFrom="translate-x-full"
+              enterTo="translate-x-0"
+              leave="transform transition ease-in-out duration-500 sm:duration-700"
+              leaveFrom="translate-x-0"
+              leaveTo="translate-x-full"
+            >
+              {(ref) => (
+                <div ref={ref} className="relative w-screen max-w-md">
+                  <div className="h-full flex flex-col space-y-6 pb-6 bg-white shadow-xl overflow-y-scroll">
+                    <header className="space-y-1 py-6 px-4 bg-indigo-700 sm:px-6">
+                      <div className="flex items-center justify-between space-x-3">
+                        <h2 className="text-lg leading-7 font-medium text-white">
+                          {selectedLead.name}
+                        </h2>
+                        <div className="h-7 flex items-center">
+                          <button
+                            aria-label="Close panel"
+                            className="text-indigo-200 hover:text-white transition ease-in-out duration-150"
+                          >
+                            <svg
+                              className="h-6 w-6"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              onClick={() => setShowDetails(false)}
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                      <div>
+                        <p className="text-sm leading-5 text-indigo-300">
+                          Lorem, ipsum dolor sit amet consectetur adipisicing
+                          elit aliquam ad hic recusandae soluta.
+                        </p>
+                      </div>
+                    </header>
+                    <div className="relative flex-1 px-4 sm:px-6">
+                      <div className="absolute inset-0 px-4 sm:px-6">
+                        <div className="h-full border-2 border-dashed border-gray-200"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </Transition>
+          </section>
+        </div>
       </div>
     </div>
   );
