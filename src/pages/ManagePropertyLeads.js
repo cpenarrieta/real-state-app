@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import { format, parseISO } from "date-fns";
-import { Transition } from "@tailwindui/react";
+import PropertyLeadSlide from "../components/PropertyLeadSlide";
 
 const GET_LEADS = gql`
   query GetLeads($uuid: String!) {
@@ -14,15 +14,20 @@ const GET_LEADS = gql`
       visitorId
       leadStatus
       createdAt
-      updatedAt
       order
+      notes
     }
   }
 `;
 
 const UPDATE_LEAD_MUTATION = gql`
-  mutation UpdateLead($id: Int!, $uuid: String!, $leadStatus: LEAD_STATUS!) {
-    updateLead(id: $id, uuid: $uuid, leadStatus: $leadStatus)
+  mutation UpdateLead(
+    $id: Int!
+    $uuid: String!
+    $leadStatus: LEAD_STATUS!
+    $notes: String
+  ) {
+    updateLead(id: $id, uuid: $uuid, leadStatus: $leadStatus, notes: $notes)
   }
 `;
 
@@ -132,7 +137,7 @@ export default function ManagePropertyLeads() {
                             <span>
                               <time dateTime="2020-01-07">
                                 {format(
-                                  parseISO(lead.updatedAt),
+                                  parseISO(lead.createdAt),
                                   "MMM do yyyy"
                                 )}
                               </time>
@@ -357,7 +362,7 @@ export default function ManagePropertyLeads() {
                             <span>
                               <time dateTime="2020-01-07">
                                 {format(
-                                  parseISO(lead.updatedAt),
+                                  parseISO(lead.createdAt),
                                   "MMM do yyyy"
                                 )}
                               </time>
@@ -584,7 +589,7 @@ export default function ManagePropertyLeads() {
                             <span>
                               <time dateTime="2020-01-07">
                                 {format(
-                                  parseISO(lead.updatedAt),
+                                  parseISO(lead.createdAt),
                                   "MMM do yyyy"
                                 )}
                               </time>
@@ -693,89 +698,13 @@ export default function ManagePropertyLeads() {
         </ul>
       </div>
 
-      <div
-        className={`${
-          showDetails ? "fixed inset-0 overflow-hidden" : "hidden"
-        }`}
-      >
-        <div className="absolute inset-0 overflow-hidden">
-          <Transition
-            show={showDetails}
-            enter="ease-in-out duration-500"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in-out duration-500"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            {(ref) => (
-              <div
-                ref={ref}
-                className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-                onClick={() => setShowDetails(false)}
-              ></div>
-            )}
-          </Transition>
-
-          <section className="absolute inset-y-0 right-0 pl-10 max-w-full flex">
-            <Transition
-              show={showDetails}
-              enter="transform transition ease-in-out duration-500 sm:duration-700"
-              enterFrom="translate-x-full"
-              enterTo="translate-x-0"
-              leave="transform transition ease-in-out duration-500 sm:duration-700"
-              leaveFrom="translate-x-0"
-              leaveTo="translate-x-full"
-            >
-              {(ref) => (
-                <div ref={ref} className="relative w-screen max-w-md">
-                  <div className="h-full flex flex-col space-y-6 pb-6 bg-white shadow-xl overflow-y-scroll">
-                    <header className="space-y-1 py-6 px-4 bg-indigo-700 sm:px-6">
-                      <div className="flex items-center justify-between space-x-3">
-                        <h2 className="text-lg leading-7 font-medium text-white">
-                          {selectedLead.name}
-                        </h2>
-                        <div className="h-7 flex items-center">
-                          <button
-                            aria-label="Close panel"
-                            className="text-indigo-200 hover:text-white transition ease-in-out duration-150"
-                          >
-                            <svg
-                              className="h-6 w-6"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              onClick={() => setShowDetails(false)}
-                            >
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12"
-                              />
-                            </svg>
-                          </button>
-                        </div>
-                      </div>
-                      <div>
-                        <p className="text-sm leading-5 text-indigo-300">
-                          Lorem, ipsum dolor sit amet consectetur adipisicing
-                          elit aliquam ad hic recusandae soluta.
-                        </p>
-                      </div>
-                    </header>
-                    <div className="relative flex-1 px-4 sm:px-6">
-                      <div className="absolute inset-0 px-4 sm:px-6">
-                        <div className="h-full border-2 border-dashed border-gray-200"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </Transition>
-          </section>
-        </div>
-      </div>
+      <PropertyLeadSlide
+        showDetails={showDetails}
+        selectedLead={selectedLead}
+        setShowDetails={setShowDetails}
+        updateLead={updateLead}
+        refetch={refetch}
+      />
     </div>
   );
 }
