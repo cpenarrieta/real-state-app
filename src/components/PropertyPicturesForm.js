@@ -55,7 +55,7 @@ export default function PropertyPicturesForm({
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     maxSize: 3000000,
-    accept: "image/jpeg, image/png",
+    accept: "image/jpg, image/jpeg, image/jfif, image/pjpeg, image/pjp, image/png, image/apng, image/bmp, image/gif, image/x-icon, image/svg+xml, image/tiff, image/webp",
   });
 
   useEffect(() => {

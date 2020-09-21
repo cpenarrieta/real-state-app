@@ -67,9 +67,11 @@ export default function PropertyLeadSlide({
                   </dt>
                   <dd className="mt-1 flex justify-between items-baseline  ">
                     <div className="flex items-baseline text-2xl leading-8 font-semibold text-indigo-600">
-                      {leadAnalytics.totalViews}
+                      {new Intl.NumberFormat("en-us").format(
+                        leadAnalytics.totalViews
+                      )}
                       <span className="ml-2 text-sm leading-5 font-medium text-gray-500">
-                        visits
+                        sessions
                       </span>
                     </div>
                   </dd>
@@ -84,9 +86,11 @@ export default function PropertyLeadSlide({
                   </dt>
                   <dd className="mt-1 flex justify-between items-baseline ">
                     <div className="flex items-baseline text-2xl leading-8 font-semibold text-indigo-600">
-                      {leadAnalytics.today}
+                      {new Intl.NumberFormat("en-us").format(
+                        leadAnalytics.today
+                      )}
                       <span className="ml-2 text-sm leading-5 font-medium text-gray-500">
-                        visits
+                        sessions
                       </span>
                     </div>
                   </dd>
@@ -101,9 +105,11 @@ export default function PropertyLeadSlide({
                   </dt>
                   <dd className="mt-1 flex justify-between items-baseline ">
                     <div className="flex items-baseline text-2xl leading-8 font-semibold text-indigo-600">
-                      {leadAnalytics.yesterday}
+                      {new Intl.NumberFormat("en-us").format(
+                        leadAnalytics.yesterday
+                      )}
                       <span className="ml-2 text-sm leading-5 font-medium text-gray-500">
-                        visits
+                        sessions
                       </span>
                     </div>
                   </dd>
@@ -118,9 +124,11 @@ export default function PropertyLeadSlide({
                   </dt>
                   <dd className="mt-1 flex justify-between items-baseline ">
                     <div className="flex items-baseline text-2xl leading-8 font-semibold text-indigo-600">
-                      {leadAnalytics.last7Days}
+                      {new Intl.NumberFormat("en-us").format(
+                        leadAnalytics.last7Days
+                      )}
                       <span className="ml-2 text-sm leading-5 font-medium text-gray-500">
-                        visits
+                        sessions
                       </span>
                     </div>
                   </dd>
@@ -136,9 +144,11 @@ export default function PropertyLeadSlide({
                     </dt>
                     <dd className="mt-1 flex justify-between items-baseline ">
                       <div className="flex items-baseline text-2xl leading-8 font-semibold text-indigo-600">
-                        {leadAnalytics.last15Days}
+                        {new Intl.NumberFormat("en-us").format(
+                          leadAnalytics.last15Days
+                        )}
                         <span className="ml-2 text-sm leading-5 font-medium text-gray-500">
-                          visits
+                          sessions
                         </span>
                       </div>
                     </dd>
@@ -155,9 +165,11 @@ export default function PropertyLeadSlide({
                     </dt>
                     <dd className="mt-1 flex justify-between items-baseline ">
                       <div className="flex items-baseline text-2xl leading-8 font-semibold text-indigo-600">
-                        {leadAnalytics.last30Days}
+                        {new Intl.NumberFormat("en-us").format(
+                          leadAnalytics.last30Days
+                        )}
                         <span className="ml-2 text-sm leading-5 font-medium text-gray-500">
-                          visits
+                          sessions
                         </span>
                       </div>
                     </dd>
@@ -170,13 +182,15 @@ export default function PropertyLeadSlide({
                 <div className="px-4 py-5 sm:p-6">
                   <dl>
                     <dt className="text-base leading-6 font-normal text-gray-900">
-                      Last 180 days
+                      Last 6 Months
                     </dt>
                     <dd className="mt-1 flex justify-between items-baseline ">
                       <div className="flex items-baseline text-2xl leading-8 font-semibold text-indigo-600">
-                        {leadAnalytics.last180Days}
+                        {new Intl.NumberFormat("en-us").format(
+                          leadAnalytics.last180Days
+                        )}
                         <span className="ml-2 text-sm leading-5 font-medium text-gray-500">
-                          visits
+                          sessions
                         </span>
                       </div>
                     </dd>
