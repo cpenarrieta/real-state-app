@@ -13,6 +13,7 @@ import ManagePropertyLeads from "./ManagePropertyLeads";
 import ManagePropertyPreview from "./ManagePropertyPreview";
 import ManagePropertySettings from "./ManagePropertySettings";
 import ManagePropertyAnalytics from "./ManagePropertyAnalytics";
+import ManagePropertyPayment from "./ManagePropertyPayment";
 import { getPropertyBadge } from "../util/propertyStatus";
 import { format, parseISO, compareAsc } from "date-fns";
 
@@ -72,6 +73,7 @@ export default function ManageProperty() {
   const matchAnalytics = useRouteMatch(
     "/manage-property/:propertyId/analytics"
   );
+  const matchPayment = useRouteMatch("/manage-property/:propertyId/payment");
   const matchSettings = useRouteMatch("/manage-property/:propertyId/settings");
   const matchPreview = useRouteMatch("/manage-property/:propertyId/preview");
   const { loading, error, data, refetch } = useQuery(PROPERTY_QUERY, {
@@ -83,7 +85,8 @@ export default function ManageProperty() {
     !matchLeads &&
     !matchAnalytics &&
     !matchPreview &&
-    !matchSettings;
+    !matchSettings &&
+    !matchPayment;
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error...</p>;
@@ -98,7 +101,7 @@ export default function ManageProperty() {
 
   const [badgeText, badgeColor] = getPropertyBadge(status, publishedStatus);
 
-  const validPayment =
+  const isPropertyActive =
     webPaidUntil && compareAsc(parseISO(webPaidUntil), new Date()) === 1;
 
   return (
@@ -136,7 +139,7 @@ export default function ManageProperty() {
           </div>
         </div>
         <div className="mt-5 flex lg:mt-0 lg:ml-4">
-          {validPayment && (
+          {isPropertyActive && (
             <span className="sm:block ml-3 shadow-sm rounded-md">
               <button
                 type="button"
@@ -161,7 +164,7 @@ export default function ManageProperty() {
             </span>
           )}
 
-          {validPayment && (
+          {isPropertyActive && (
             <a
               href={`${process.env.REACT_APP_STATIC_URI}${username}/${propertyId}`}
               rel="noopener noreferrer"
@@ -189,13 +192,13 @@ export default function ManageProperty() {
             </a>
           )}
 
-          {!validPayment && (
+          {!isPropertyActive && (
             <span className="sm:ml-3 shadow-sm rounded-md">
               <button
                 type="button"
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-green-500 hover:bg-green-400 focus:outline-none focus:shadow-outline-green focus:border-green-700 active:bg-green-700 transition duration-150 ease-in-out"
                 onClick={() => {
-                  history.push(`/payment/${propertyId}`);
+                  history.push(`/manage-property/${propertyId}/payment`);
                 }}
               >
                 <svg
@@ -265,43 +268,69 @@ export default function ManageProperty() {
                 </svg>
                 <span>Preview</span>
               </button>
-              <button
-                className={`ml-8 ${
-                  matchLeads ? ButtonSelected : ButtonNotSelected
-                }`}
-                onClick={() =>
-                  history.push(`/manage-property/${propertyId}/leads`)
-                }
-              >
-                <svg
-                  className={`${matchLeads ? IconSelected : IconNotSelected}`}
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
-                </svg>
-                <span>Leads</span>
-              </button>
-              <button
-                onClick={() =>
-                  history.push(`/manage-property/${propertyId}/analytics`)
-                }
-                className={`ml-8 ${
-                  matchAnalytics ? ButtonSelected : ButtonNotSelected
-                }`}
-              >
-                <svg
-                  className={`${
-                    matchAnalytics ? IconSelected : IconNotSelected
+              {isPropertyActive && (
+                <button
+                  className={`ml-8 ${
+                    matchLeads ? ButtonSelected : ButtonNotSelected
                   }`}
-                  xmlns="http://www.w3.org/2000/svg"
+                  onClick={() =>
+                    history.push(`/manage-property/${propertyId}/leads`)
+                  }
+                >
+                  <svg
+                    className={`${matchLeads ? IconSelected : IconNotSelected}`}
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                  </svg>
+                  <span>Leads</span>
+                </button>
+              )}
+              {isPropertyActive && (
+                <button
+                  onClick={() =>
+                    history.push(`/manage-property/${propertyId}/analytics`)
+                  }
+                  className={`ml-8 ${
+                    matchAnalytics ? ButtonSelected : ButtonNotSelected
+                  }`}
+                >
+                  <svg
+                    className={`${
+                      matchAnalytics ? IconSelected : IconNotSelected
+                    }`}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+                  </svg>
+                  <span>Analytics</span>
+                </button>
+              )}
+              {!isPropertyActive && <button
+                onClick={() =>
+                  history.push(`/manage-property/${propertyId}/payment`)
+                }
+                className={`ml-8 ${
+                  matchPayment ? ButtonSelected : ButtonNotSelected
+                }`}
+              >
+                <svg
+                  className={`${matchPayment ? IconSelected : IconNotSelected}`}
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >
-                  <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+                  <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                  <path
+                    fillRule="evenodd"
+                    d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
+                    clipRule="evenodd"
+                  />
                 </svg>
-                <span>Analytics</span>
-              </button>
+                <span>Activate</span>
+              </button>}
               <button
                 onClick={() =>
                   history.push(`/manage-property/${propertyId}/settings`)
@@ -351,7 +380,9 @@ export default function ManageProperty() {
           <Route exact path={`${path}/analytics`}>
             <ManagePropertyAnalytics />
           </Route>
-
+          <Route exact path={`${path}/payment`}>
+            <ManagePropertyPayment />
+          </Route>
           <Redirect to={path} />
         </Switch>
       </div>

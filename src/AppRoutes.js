@@ -12,7 +12,6 @@ const Users = lazy(() => import("./pages/Users"));
 const AuthDebugger = lazy(() => import("./pages/AuthDebugger"));
 const ManageProperty = lazy(() => import("./pages/ManageProperty"));
 const MyAccount = lazy(() => import("./pages/MyAccount"));
-const Payment = lazy(() => import("./pages/Payment"));
 const SuccessPayment = lazy(() => import("./pages/SuccessPayment"));
 const Leads = lazy(() => import("./pages/Leads"));
 const Analytics = lazy(() => import("./pages/Analytics"));
@@ -100,9 +99,6 @@ export const AppRoutes = () => {
           </AuthenticatedRoute>
           <AuthenticatedRoute path="/manage-property/:propertyId">
             <ManageProperty />
-          </AuthenticatedRoute>
-          <AuthenticatedRoute exact path="/payment/:propertyId">
-            <Payment />
           </AuthenticatedRoute>
           <AuthenticatedRoute exact path="/my-properties">
             <Properties />
