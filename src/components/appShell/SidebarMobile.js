@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, gql } from "@apollo/client";
 import { useHistory } from "react-router-dom";
-import { useUser } from "../context/UserContext";
 import { useAuth0 } from "@auth0/auth0-react";
-import userDefault from "../images/user-default.png";
 import { Transition } from "@tailwindui/react";
-import { useAlert } from "../context/AlertContext";
+import userDefault from "../../images/user-default.png";
+import { useUser } from "../../context/UserContext";
+import { useAlert } from "../../context/AlertContext";
 
 const NEW_PROPERTY_MUTATION = gql`
   mutation SaveProperty {

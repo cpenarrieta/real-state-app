@@ -4,13 +4,13 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import FourOFour from "./pages/FourOFour";
 import Home from "./pages/Home";
 import VerifyUserCallBack from "./pages/VerifyUserCallBack";
-import AppShell from "./components/AppShell";
+import AppShell from "./components/appShell/AppShell";
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Properties = lazy(() => import("./pages/Properties"));
 const Users = lazy(() => import("./pages/Users"));
 const AuthDebugger = lazy(() => import("./pages/AuthDebugger"));
-const ManageProperty = lazy(() => import("./pages/ManageProperty"));
+const ManageProperty = lazy(() => import("./pages/manageProperty"));
 const MyAccount = lazy(() => import("./pages/MyAccount"));
 const SuccessPayment = lazy(() => import("./pages/SuccessPayment"));
 const Leads = lazy(() => import("./pages/Leads"));

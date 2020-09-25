@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import TextField from "./TextField";
+import TextField from "../details/TextField";
 import { useFormikContext } from "formik";
 
 const componentForm = {

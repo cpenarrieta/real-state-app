@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import { format, parseISO } from "date-fns";
-import PropertyLeadSlide from "../components/PropertyLeadSlide";
+import PropertyLeadSlide from "../../components/leads/PropertyLeadSlide";
 
 const GET_LEADS = gql`
   query GetLeads($uuid: String!) {

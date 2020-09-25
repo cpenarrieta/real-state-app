@@ -19,7 +19,7 @@ const IMAGES_QUERY = gql`
 export default function PropertyPicturesFormWrapper({
   saveProperty,
   savePropertyLoading,
-  refetch,
+  refetch: refetchGetProperty,
   mainImageId,
   mainPictureLowRes,
 }) {
@@ -40,7 +40,7 @@ export default function PropertyPicturesFormWrapper({
       <PropertyPicturesForm
         saveProperty={saveProperty}
         savePropertyLoading={savePropertyLoading}
-        refetchGetProperty={refetch}
+        refetchGetProperty={refetchGetProperty}
         refetchGetImages={refetchGetImages}
         mainImageId={mainImageId}
         mainPictureLowRes={mainPictureLowRes}

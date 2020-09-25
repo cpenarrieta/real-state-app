@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { useMutation, gql } from "@apollo/client";
-import { useAlert } from "../context/AlertContext";
-import PropertyVideoForm from "../components/PropertyVideoForm";
-import PropertyAttachmentsForm from "../components/PropertyAttachmentsForm";
-import PropertyLocationForm from "../components/PropertyLocationForm";
-import PropertyDetailsForm from "../components/PropertyDetailsForm";
-import PropertyPicturesFormWrapper from "../components/PropertyPicturesFormWrapper";
-import PropertyThemeForm from "../components/PropertyThemeForm";
+import { useAlert } from "../../context/AlertContext";
+import PropertyVideoForm from "../../components/video/PropertyVideoForm";
+import PropertyAttachmentsForm from "../../components/attachments/PropertyAttachmentsForm";
+import PropertyLocationForm from "../../components/address/PropertyLocationForm";
+import PropertyDetailsForm from "../../components/details/PropertyDetailsForm";
+import PropertyPicturesFormWrapper from "../../components/pictures/PropertyPicturesFormWrapper";
+import PropertyThemeForm from "../../components/theme/PropertyThemeForm";
 
 const SAVE_PROPERTY_MUTATION = gql`
   mutation SaveProperty($property: PropertyInput) {

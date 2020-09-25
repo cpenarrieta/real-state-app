@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import RadioButtons from "../components/RadioButtons";
-import TextField from "../components/TextField";
-import PriceField from "../components/PriceField";
+import RadioButtons from "./RadioButtons";
+import TextField from "./TextField";
+import PriceField from "./PriceField";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
 

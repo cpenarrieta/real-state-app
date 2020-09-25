@@ -3,7 +3,7 @@ import { Formik, Form } from "formik";
 import { useDropzone } from "react-dropzone";
 import { useParams } from "react-router-dom";
 import { useMutation, gql } from "@apollo/client";
-import { multipleImageUpload } from "../util/imageUpload";
+import { multipleImageUpload } from "../../util/imageUpload";
 import PropertyPicture from "./PropertyPicture";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";

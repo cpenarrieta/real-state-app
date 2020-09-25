@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { useParams } from "react-router-dom";
-import { useAccessToken } from "../context/AccessTokenContext";
-import { useUser } from "../context/UserContext";
+import { useAccessToken } from "../../context/AccessTokenContext";
+import { useUser } from "../../context/UserContext";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC);
 

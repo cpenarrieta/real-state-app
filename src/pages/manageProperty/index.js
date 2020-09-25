@@ -14,7 +14,7 @@ import ManagePropertyPreview from "./ManagePropertyPreview";
 import ManagePropertySettings from "./ManagePropertySettings";
 import ManagePropertyAnalytics from "./ManagePropertyAnalytics";
 import ManagePropertyPayment from "./ManagePropertyPayment";
-import { getPropertyBadge } from "../util/propertyStatus";
+import { getPropertyBadge } from "../../util/propertyStatus";
 import { format, parseISO, compareAsc } from "date-fns";
 
 const ButtonNotSelected =
@@ -366,7 +366,7 @@ export default function ManageProperty() {
             <ManagePropertyEdit {...data?.property} refetch={refetch} />
           </Route>
           <Route exact path={`${path}/edit`}>
-            <ManagePropertyEdit {...data?.property} />
+            <ManagePropertyEdit {...data?.property} refetch={refetch} />
           </Route>
           <Route exact path={`${path}/leads`}>
             <ManagePropertyLeads />

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import SidebarDesktop from "./SidebarDesktop";
 import SidebarMobile from "./SidebarMobile";
-import { UserProvider } from "../context/UserContext";
-import ErrorAlert from './ErrorAlert'
+import { UserProvider } from "../../context/UserContext";
+import ErrorAlert from '../ErrorAlert'
 
 const AppShell = ({ children }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

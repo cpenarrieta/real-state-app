@@ -5,7 +5,7 @@ import { Formik, Form } from "formik";
 import { useParams } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
 import { useQuery, useMutation, gql } from "@apollo/client";
-import TextField from "./TextField";
+import TextField from "../details/TextField";
 import DeleteAttachmentModal from "./DeleteAttachmentModal";
 
 const S3_SIGN_MUTATION = gql`

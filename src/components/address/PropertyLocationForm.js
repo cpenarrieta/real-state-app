@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AddressLookUpField from "./AddressLookUpField";
-import TextField from "./TextField";
+import TextField from "../details/TextField";
 import { Formik, Field, Form } from "formik";
 
 export default function PropertyLocationForm({

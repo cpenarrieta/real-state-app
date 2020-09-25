@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Field, Form } from "formik";
-import themeDefault from "../images/theme_1.png";
+import themeDefault from "../../images/theme_1.png";
 
 export default function PropertyThemeForm({
   uuid,
