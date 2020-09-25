@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Route,
   Switch,
@@ -8,6 +8,7 @@ import {
   useHistory,
 } from "react-router-dom";
 import { useQuery, gql } from "@apollo/client";
+import { format, parseISO, compareAsc } from "date-fns";
 import ManagePropertyEdit from "./ManagePropertyEdit";
 import ManagePropertyLeads from "./ManagePropertyLeads";
 import ManagePropertyPreview from "./ManagePropertyPreview";
@@ -15,7 +16,7 @@ import ManagePropertySettings from "./ManagePropertySettings";
 import ManagePropertyAnalytics from "./ManagePropertyAnalytics";
 import ManagePropertyPayment from "./ManagePropertyPayment";
 import { getPropertyBadge } from "../../util/propertyStatus";
-import { format, parseISO, compareAsc } from "date-fns";
+import ShareModal from "../../components/share/ShareModal";
 
 const ButtonNotSelected =
   "group inline-flex items-center py-4 px-1 border-b-2 border-transparent font-medium text-sm leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300";
@@ -79,6 +80,7 @@ export default function ManageProperty() {
   const { loading, error, data, refetch } = useQuery(PROPERTY_QUERY, {
     variables: { uuid: propertyId },
   });
+  const [showShareModal, setShowShareModal] = useState(false);
 
   const isRoot =
     !matchEdit &&
@@ -103,6 +105,8 @@ export default function ManageProperty() {
 
   const isPropertyActive =
     webPaidUntil && compareAsc(parseISO(webPaidUntil), new Date()) === 1;
+
+  const liveWebsiteUrl = `${process.env.REACT_APP_STATIC_URI}${username}/${propertyId}`;
 
   return (
     <div>
@@ -144,6 +148,7 @@ export default function ManageProperty() {
               <button
                 type="button"
                 className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-gray-300 active:text-gray-800 active:bg-gray-50 active:text-gray-800 transition duration-150 ease-in-out hover:bg-indigo-100"
+                onClick={() => setShowShareModal(true)}
               >
                 <svg
                   className="-ml-1 mr-2 h-5 w-5 text-gray-500"
@@ -165,11 +170,7 @@ export default function ManageProperty() {
           )}
 
           {isPropertyActive && (
-            <a
-              href={`${process.env.REACT_APP_STATIC_URI}${username}/${propertyId}`}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
+            <a href={liveWebsiteUrl} rel="noopener noreferrer" target="_blank">
               <span className="sm:block ml-3 shadow-sm rounded-md">
                 <button
                   type="button"
@@ -186,7 +187,7 @@ export default function ManageProperty() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  View
+                  Live Website
                 </button>
               </span>
             </a>
@@ -309,28 +310,32 @@ export default function ManageProperty() {
                   <span>Analytics</span>
                 </button>
               )}
-              {!isPropertyActive && <button
-                onClick={() =>
-                  history.push(`/manage-property/${propertyId}/payment`)
-                }
-                className={`ml-8 ${
-                  matchPayment ? ButtonSelected : ButtonNotSelected
-                }`}
-              >
-                <svg
-                  className={`${matchPayment ? IconSelected : IconNotSelected}`}
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
+              {!isPropertyActive && (
+                <button
+                  onClick={() =>
+                    history.push(`/manage-property/${propertyId}/payment`)
+                  }
+                  className={`ml-8 ${
+                    matchPayment ? ButtonSelected : ButtonNotSelected
+                  }`}
                 >
-                  <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
-                  <path
-                    fillRule="evenodd"
-                    d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <span>Activate</span>
-              </button>}
+                  <svg
+                    className={`${
+                      matchPayment ? IconSelected : IconNotSelected
+                    }`}
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                    <path
+                      fillRule="evenodd"
+                      d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span>Activate</span>
+                </button>
+              )}
               <button
                 onClick={() =>
                   history.push(`/manage-property/${propertyId}/settings`)
@@ -386,6 +391,11 @@ export default function ManageProperty() {
           <Redirect to={path} />
         </Switch>
       </div>
+      <ShareModal
+        showModal={showShareModal}
+        setShowModal={setShowShareModal}
+        liveWebsiteUrl={liveWebsiteUrl}
+      />
     </div>
   );
 }

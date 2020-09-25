@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery, gql } from "@apollo/client";
 import PropertyPicturesForm from "./PropertyPicturesForm";
 import { ImagesGridProvider } from "./ImagesGridContext";
+import { useAlert } from "../../context/AlertContext";
 
 const IMAGES_QUERY = gql`
   query PropertyImages($uuid: String!) {
@@ -30,6 +31,13 @@ export default function PropertyPicturesFormWrapper({
       variables: { uuid: propertyId },
     }
   );
+  const { setShowAlert } = useAlert();
+
+  useEffect(() => {
+    if (error) {
+      setShowAlert(true);
+    }
+  }, [error, setShowAlert]);
 
   if (loading) return <p>loading</p>;
 

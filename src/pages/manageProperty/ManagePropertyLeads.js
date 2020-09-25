@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import { format, parseISO } from "date-fns";
 import PropertyLeadSlide from "../../components/leads/PropertyLeadSlide";
+import { useAlert } from "../../context/AlertContext";
 
 const GET_LEADS = gql`
   query GetLeads($uuid: String!) {
@@ -63,12 +64,18 @@ export default function ManagePropertyLeads() {
   const { loading, error, data, refetch } = useQuery(GET_LEADS, {
     variables: { uuid: propertyId },
   });
-  const [
-    updateLead,
-    { loading: loadingUpdateLead, error: errorUpdateLead },
-  ] = useMutation(UPDATE_LEAD_MUTATION);
+  const [updateLead, { error: errorUpdateLead }] = useMutation(
+    UPDATE_LEAD_MUTATION
+  );
   const [showDetails, setShowDetails] = useState(false);
   const [selectedLead, setSelectedLead] = useState(null);
+  const { setShowAlert } = useAlert();
+
+  useEffect(() => {
+    if (errorUpdateLead) {
+      setShowAlert(true);
+    }
+  }, [errorUpdateLead, setShowAlert]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error...</p>;

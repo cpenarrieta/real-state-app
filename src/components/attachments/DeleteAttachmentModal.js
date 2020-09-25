@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Transition } from "@tailwindui/react";
 import { useMutation, gql } from "@apollo/client";
+import { useAlert } from "../../context/AlertContext";
 
 const DELETE_ATTACHMENT_MUTATION = gql`
   mutation SeleteAttachment($id: Int!) {
@@ -14,9 +15,14 @@ export default function DeleteAttachmentModal({
   attachmentToDelete,
   refetch,
 }) {
-  const [deleteAttachment, { loading, error }] = useMutation(
-    DELETE_ATTACHMENT_MUTATION
-  );
+  const [deleteAttachment, { error }] = useMutation(DELETE_ATTACHMENT_MUTATION);
+  const { setShowAlert } = useAlert();
+
+  useEffect(() => {
+    if (error) {
+      setShowAlert(true);
+    }
+  }, [error, setShowAlert]);
 
   return (
     <div

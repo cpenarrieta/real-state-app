@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { Formik, Field, Form } from "formik";
 import { Transition } from "@tailwindui/react";
 import { useParams } from "react-router-dom";
 import { useQuery, gql } from "@apollo/client";
-import { Formik, Field, Form } from "formik";
+import { useAlert } from "../../context/AlertContext";
 
 const LEADS_QUERY = gql`
   query LeadAnalytics($id: Int!, $uuid: String!) {
@@ -32,6 +33,13 @@ export default function PropertyLeadSlide({
     skip: !showDetails || !selectedLead,
   });
   const [formNotesSuccess, setFormNotesSuccess] = useState(false);
+  const { setShowAlert } = useAlert();
+
+  useEffect(() => {
+    if (error) {
+      setShowAlert(true);
+    }
+  }, [error, setShowAlert]);
 
   useEffect(() => {
     if (formNotesSuccess) {

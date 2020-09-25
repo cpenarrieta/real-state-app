@@ -7,6 +7,7 @@ import { useDropzone } from "react-dropzone";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import TextField from "../details/TextField";
 import DeleteAttachmentModal from "./DeleteAttachmentModal";
+import { useAlert } from "../../context/AlertContext";
 
 const S3_SIGN_MUTATION = gql`
   mutation SignS3($filename: String!, $filetype: String!) {
@@ -47,8 +48,7 @@ export default function PropertyAttachmentsForm() {
   const [formAttachmentsSuccess, setFormAttachmentsSuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [attachmentToDelete, setAttachmentToDelete] = useState();
-
-  const { loading, error, data, refetch } = useQuery(ATTACHMENTS_QUERY, {
+  const { error, data, refetch } = useQuery(ATTACHMENTS_QUERY, {
     variables: { uuid: propertyId },
   });
   const [signS3, { loading: loadingSignS3, error: errorSignS3 }] = useMutation(
@@ -58,6 +58,13 @@ export default function PropertyAttachmentsForm() {
     saveAttachment,
     { loading: loadingSaveAttachment, error: errorSaveAttachment },
   ] = useMutation(SAVE_ATTACHMENT_MUTATION);
+  const { setShowAlert } = useAlert();
+
+  useEffect(() => {
+    if (errorSignS3 || errorSaveAttachment || error) {
+      setShowAlert(true);
+    }
+  }, [error, errorSignS3, errorSaveAttachment, setShowAlert]);
 
   const onDrop = useCallback((acceptedFiles) => {
     setFile(acceptedFiles[0]);

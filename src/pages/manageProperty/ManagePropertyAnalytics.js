@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery, gql } from "@apollo/client";
+import { useAlert } from "../../context/AlertContext";
 
 const ANALYTICS_QUERY = gql`
   query PropertyAnalytics($uuid: String!) {
@@ -101,6 +102,13 @@ export default function ManagePropertyAnalytics() {
   const { loading, error, data } = useQuery(ANALYTICS_QUERY, {
     variables: { uuid: propertyId },
   });
+  const { setShowAlert } = useAlert();
+
+  useEffect(() => {
+    if (error) {
+      setShowAlert(true);
+    }
+  }, [error, setShowAlert]);
 
   if (loading) {
     return <p>loading</p>;

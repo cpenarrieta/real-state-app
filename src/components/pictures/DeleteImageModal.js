@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Transition } from "@tailwindui/react";
 import { useMutation, gql } from "@apollo/client";
 import { useImagesGrid } from "./ImagesGridContext";
+import { useAlert } from "../../context/AlertContext";
 
 const DELETE_IMAGES_MUTATION = gql`
   mutation DeleteImage($id: Int!, $uuid: String!) {
@@ -16,8 +17,15 @@ export default function DeleteImageModal({
   propertyId,
   refetchGetImages,
 }) {
-  const [deleteImage, { loading, error }] = useMutation(DELETE_IMAGES_MUTATION);
+  const [deleteImage, { error }] = useMutation(DELETE_IMAGES_MUTATION);
   const { setItems } = useImagesGrid();
+  const { setShowAlert } = useAlert();
+
+  useEffect(() => {
+    if (error) {
+      setShowAlert(true);
+    }
+  }, [error, setShowAlert]);
 
   return (
     <div

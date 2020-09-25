@@ -1,6 +1,13 @@
-import React, { useContext, useState, useMemo, createContext } from "react";
+import React, {
+  useContext,
+  useState,
+  useMemo,
+  createContext,
+  useEffect,
+} from "react";
 import { useMutation, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
+import { useAlert } from "../../context/AlertContext";
 
 const UPDATE_IMAGES_ORDER_MUTATION = gql`
   mutation UpdateImagesOrder($images: [ImagesInput]!, $uuid: String!) {
@@ -27,47 +34,53 @@ const useImagesGrid = () => useContext(ImagesGridContext);
 
 function ImagesGridProvider({ children, initialItems }) {
   const { propertyId } = useParams();
-  const [updateImagesOrder, { loading, error }] = useMutation(
+  const [updateImagesOrder, { error }] = useMutation(
     UPDATE_IMAGES_ORDER_MUTATION
   );
-
   const [items, setItems] = useState(initialItems);
+  const { setShowAlert } = useAlert();
 
-  const moveItem = (sourceId, destinationId) => {
-    const sourceIndex = items.findIndex((item) => item.id === sourceId);
-    const destinationIndex = items.findIndex(
-      (item) => item.id === destinationId
-    );
-
-    if (sourceId === -1 || destinationId === -1) {
-      return;
+  useEffect(() => {
+    if (error) {
+      setShowAlert(true);
     }
+  }, [error, setShowAlert]);
 
-    const offset = destinationIndex - sourceIndex;
+  /* eslint-disable react-hooks/exhaustive-deps */
+  const value = useMemo(() => {
+    const moveItem = (sourceId, destinationId) => {
+      const sourceIndex = items.findIndex((item) => item.id === sourceId);
+      const destinationIndex = items.findIndex(
+        (item) => item.id === destinationId
+      );
 
-    const newItems = moveElement(items, sourceIndex, offset);
-    setItems(newItems);
-
-    let itemsToUpdate = [];
-    newItems.forEach((item, i) => {
-      if (i + 1 !== item.order) {
-        itemsToUpdate.push({ ...item, order: i + 1 });
+      if (sourceId === -1 || destinationId === -1) {
+        return;
       }
-    });
 
-    updateImagesOrder({
-      variables: {
-        images: itemsToUpdate.map((i) => ({ id: i.id, order: i.order })),
-        uuid: propertyId,
-      },
-    });
-  };
+      const offset = destinationIndex - sourceIndex;
 
-  const value = useMemo(() => ({ items, setItems, moveItem }), [
-    items,
-    setItems,
-    moveItem,
-  ]);
+      const newItems = moveElement(items, sourceIndex, offset);
+      setItems(newItems);
+
+      let itemsToUpdate = [];
+      newItems.forEach((item, i) => {
+        if (i + 1 !== item.order) {
+          itemsToUpdate.push({ ...item, order: i + 1 });
+        }
+      });
+
+      updateImagesOrder({
+        variables: {
+          images: itemsToUpdate.map((i) => ({ id: i.id, order: i.order })),
+          uuid: propertyId,
+        },
+      });
+    };
+
+    return { items, setItems, moveItem };
+  }, [items, setItems]);
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   return (
     <ImagesGridContext.Provider value={value}>

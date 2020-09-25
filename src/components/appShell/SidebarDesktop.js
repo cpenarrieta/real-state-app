@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, gql } from "@apollo/client";
 import { useHistory } from "react-router-dom";
@@ -27,7 +27,7 @@ export default function SidebarDesktop({
   ] = useMutation(NEW_PROPERTY_MUTATION);
   let history = useHistory();
   const useUserCtx = useUser();
-  const user = useUserCtx?.user
+  const user = useUserCtx?.user;
   const { logout } = useAuth0();
   const { setShowAlert } = useAlert();
 

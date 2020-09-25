@@ -9,6 +9,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useImagesGrid } from "./ImagesGridContext";
 import DragItem from "./DragItem";
+import { useAlert } from "../../context/AlertContext";
 
 const SAVE_IMAGES_MUTATION = gql`
   mutation SavePropertyImages($images: [ImagesInput]!, $uuid: String!) {
@@ -24,13 +25,19 @@ export default function PropertyPicturesForm({
   mainPictureLowRes,
 }) {
   const { propertyId } = useParams();
-  const [
-    savePropertyImages,
-    { loading: loadingSavePropertyImages, error: errorSavePropertyImages },
-  ] = useMutation(SAVE_IMAGES_MUTATION);
+  const [savePropertyImages, { error: errorSavePropertyImages }] = useMutation(
+    SAVE_IMAGES_MUTATION
+  );
   const [files, setFiles] = useState([]);
   const [formPicturesSuccess, setFormPicturesSuccess] = useState(false);
   const { items, moveItem, setItems } = useImagesGrid();
+  const { setShowAlert } = useAlert();
+
+  useEffect(() => {
+    if (errorSavePropertyImages) {
+      setShowAlert(true);
+    }
+  }, [errorSavePropertyImages, setShowAlert]);
 
   const onDrop = useCallback((acceptedFiles) => {
     if (!acceptedFiles || acceptedFiles.length <= 0) return;
@@ -55,7 +62,8 @@ export default function PropertyPicturesForm({
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     maxSize: 3000000,
-    accept: "image/jpg, image/jpeg, image/jfif, image/pjpeg, image/pjp, image/png, image/apng, image/bmp, image/gif, image/x-icon, image/svg+xml, image/tiff, image/webp",
+    accept:
+      "image/jpg, image/jpeg, image/jfif, image/pjpeg, image/pjp, image/png, image/apng, image/bmp, image/gif, image/x-icon, image/svg+xml, image/tiff, image/webp",
   });
 
   useEffect(() => {
