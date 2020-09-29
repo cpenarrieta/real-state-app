@@ -153,7 +153,9 @@ export default function ManagePropertySettings({
                 Package
               </dt>
               <dd className="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-                {pricePackage}
+                {pricePackage === "year" && "One year"}
+                {pricePackage === "month" && "One month"}
+                {pricePackage === "lifetime" && "Lifetime"}
               </dd>
             </div>
           )}

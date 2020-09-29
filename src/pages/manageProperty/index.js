@@ -194,7 +194,7 @@ export default function ManageProperty() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  Live Website
+                  Go to live Website
                 </button>
               </span>
             </a>
