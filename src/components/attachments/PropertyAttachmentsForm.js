@@ -72,7 +72,7 @@ export default function PropertyAttachmentsForm() {
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    maxSize: 3000000,
+    maxSize: 5000000,
     accept: "application/pdf",
   });
 
