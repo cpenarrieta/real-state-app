@@ -15,7 +15,7 @@ import ManagePropertyPreview from "./ManagePropertyPreview";
 import ManagePropertySettings from "./ManagePropertySettings";
 import ManagePropertyAnalytics from "./ManagePropertyAnalytics";
 import ManagePropertyPayment from "./ManagePropertyPayment";
-import { getPropertyBadge } from "../../util/propertyStatus";
+import { getPublishedStatus } from "../../util/propertyStatus";
 import ShareModal from "../../components/share/ShareModal";
 
 const ButtonNotSelected =
@@ -101,7 +101,7 @@ export default function ManageProperty() {
     username,
   } = data?.property;
 
-  const [badgeText, badgeColor] = getPropertyBadge(status, publishedStatus);
+  const [publishedText, publishedColor] = getPublishedStatus(publishedStatus);
 
   const isPropertyActive =
     webPaidUntil && compareAsc(parseISO(webPaidUntil), new Date()) === 1;
@@ -117,10 +117,17 @@ export default function ManageProperty() {
           </h2>
           <div className="mt-1 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap">
             <span
-              className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium leading-5 bg-${badgeColor}-100 text-${badgeColor}-800 mt-2 flex items-center text-sm leading-5 sm:mr-6`}
+              className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium leading-5 bg-${publishedColor}-100 text-${publishedColor}-800 mt-2 flex items-center text-sm leading-5 sm:mr-6`}
             >
-              {badgeText}
+              {publishedText}
             </span>
+            {status === "SOLD" && (
+              <span
+                className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium leading-5 bg-orange-100 text-orange-800 mt-2 flex items-center text-sm leading-5 sm:mr-6`}
+              >
+                sold
+              </span>
+            )}
             {webPaidUntil && (
               <div className="mt-2 flex items-center text-sm leading-5 text-gray-500">
                 <svg
@@ -380,7 +387,12 @@ export default function ManageProperty() {
             <ManagePropertyPreview />
           </Route>
           <Route exact path={`${path}/settings`}>
-            <ManagePropertySettings />
+            <ManagePropertySettings
+              status={status}
+              publishedStatus={publishedStatus}
+              webPaidUntil={webPaidUntil}
+              refetch={refetch}
+            />
           </Route>
           <Route exact path={`${path}/analytics`}>
             <ManagePropertyAnalytics />
