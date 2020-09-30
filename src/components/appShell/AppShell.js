@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import SidebarDesktop from "./SidebarDesktop";
 import SidebarMobile from "./SidebarMobile";
 import { UserProvider } from "../../context/UserContext";
-import ErrorAlert from '../ErrorAlert'
+import ErrorAlert from "../ErrorAlert";
 
 const AppShell = ({ children }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const history = useHistory();
+  const matchOnboarding = useRouteMatch("/onboarding");
 
   useEffect(() => {
     history.listen(() => {
@@ -19,7 +20,11 @@ const AppShell = ({ children }) => {
 
   return (
     <UserProvider>
-      <div className="h-screen flex overflow-hidden bg-gray-100">
+      <div
+        className={`h-screen flex overflow-hidden ${
+          matchOnboarding ? "bg-white" : "bg-gray-100"
+        } `}
+      >
         <SidebarMobile
           mobileMenuOpen={mobileMenuOpen}
           setMobileMenuOpen={setMobileMenuOpen}

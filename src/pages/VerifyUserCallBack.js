@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useMutation, gql } from "@apollo/client";
 import { Redirect } from "react-router-dom";
+import { useAccessToken } from "../context/AccessTokenContext";
 
 const VERIFY_USER_MUTATION = gql`
   mutation VerifyUser {
@@ -9,19 +10,25 @@ const VERIFY_USER_MUTATION = gql`
 `;
 
 export default function VerifyUserCallBack() {
-  const [finished, setFinished] = useState(false);
+  const [finished, setFinished] = useState(null);
+  const { accessToken } = useAccessToken();
   const [verifyUser] = useMutation(VERIFY_USER_MUTATION);
 
   useEffect(() => {
     async function verifyUserFunction() {
-      await verifyUser();
-      setFinished(true);
+      const response = await verifyUser();
+      setFinished(response?.data?.verifyUser);
     }
-    verifyUserFunction();
-  }, [verifyUser]);
 
-  if (finished) {
+    if (accessToken) {
+      verifyUserFunction();
+    }
+  }, [verifyUser, accessToken]);
+
+  if (finished === "existing") {
     return <Redirect to="/dashboard" />;
+  } else if (finished === "new") {
+    return <Redirect to="/onboarding" />;
   }
 
   return <div>loading...</div>;

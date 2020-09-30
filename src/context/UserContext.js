@@ -17,6 +17,7 @@ const ME_QUERY = gql`
       zipCode
       country
       pictureLowRes
+      onboardingComplete
     }
   }
 `;

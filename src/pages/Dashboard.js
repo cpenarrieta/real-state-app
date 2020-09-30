@@ -1,10 +1,18 @@
 import React from "react";
 import { useQuery } from "@apollo/client";
+import { Redirect } from "react-router-dom";
 import PropertyCard from "../components/PropertyCard";
 import { DASHBOARD_QUERY } from "../queries/dashboard";
+import { useUser } from "../context/UserContext";
 
 export default function Dashboard() {
   const { loading, error, data } = useQuery(DASHBOARD_QUERY);
+  const useUserCtx = useUser();
+  const user = useUserCtx?.user;
+
+  if (user && !user?.onboardingComplete) {
+    return <Redirect to="/onboarding" />;
+  }
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error...</p>;

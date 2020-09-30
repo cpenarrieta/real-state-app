@@ -7,6 +7,7 @@ import VerifyUserCallBack from "./pages/VerifyUserCallBack";
 import AppShell from "./components/appShell/AppShell";
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Onboarding = lazy(() => import("./pages/onboarding"));
 const Properties = lazy(() => import("./pages/Properties"));
 const Users = lazy(() => import("./pages/Users"));
 const AuthDebugger = lazy(() => import("./pages/AuthDebugger"));
@@ -96,6 +97,9 @@ export const AppRoutes = () => {
           </AuthenticatedRouteNoAppShell>
           <AuthenticatedRoute exact path="/dashboard">
             <Dashboard />
+          </AuthenticatedRoute>
+          <AuthenticatedRoute path="/onboarding">
+            <Onboarding />
           </AuthenticatedRoute>
           <AuthenticatedRoute path="/manage-property/:propertyId">
             <ManageProperty />
