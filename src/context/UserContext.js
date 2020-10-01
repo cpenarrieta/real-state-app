@@ -16,8 +16,12 @@ const ME_QUERY = gql`
       province
       zipCode
       country
+      picture
       pictureLowRes
+      username
       onboardingComplete
+      profileComplete
+      smallBio
     }
   }
 `;

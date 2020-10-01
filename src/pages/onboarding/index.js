@@ -16,7 +16,11 @@ export default function Onboarding() {
   const user = useUserCtx?.user;
   const { user: authUser } = useAuth0();
 
-  const profileCompleted = user?.onboardingCompleted;
+  if (!user) {
+    return <p>loading</p>
+  }
+
+  const profileCompleted = user?.profileComplete;
   const emailVerified = authUser.email_verified;
 
   return (
@@ -82,7 +86,9 @@ export default function Onboarding() {
                         Profile Information
                       </h3>
                       <p className="text-sm leading-5 font-medium text-gray-500">
-                        fill your profile information
+                        {profileCompleted
+                          ? "profile information completed"
+                          : "fill your profile information"}
                       </p>
                     </div>
                   </div>
@@ -142,7 +148,9 @@ export default function Onboarding() {
                         Verrify Email
                       </h3>
                       <p className="text-sm leading-5 font-medium text-gray-500">
-                        we need to verify your email
+                        {emailVerified
+                          ? "email verified"
+                          : "we need to verify your email"}
                       </p>
                     </div>
                   </div>
@@ -227,7 +235,7 @@ export default function Onboarding() {
 
       <Switch>
         <Route exact path={path}>
-          <OnboardingProfile />
+          <OnboardingProfile {...user} email={authUser.email} />
         </Route>
         <Route exact path={`${path}/email_verify`}>
           <EmailVerify />

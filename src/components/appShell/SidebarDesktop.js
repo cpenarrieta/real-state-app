@@ -67,31 +67,6 @@ export default function SidebarDesktop({
             </div>
             <nav className="mt-5 flex-1 px-2 bg-white space-y-1">
               <Link
-                to="/onboarding"
-                className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-900 rounded-md ${
-                  currentPath?.startsWith("/onboarding") ? "bg-gray-100" : ""
-                } hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:bg-gray-${
-                  currentPath?.startsWith("/onboarding") ? "200" : "50"
-                } transition ease-in-out duration-150`}
-              >
-                <svg
-                  className="mr-3 h-6 w-6 text-gray-500 group-hover:text-gray-500 group-focus:text-gray-600 transition ease-in-out duration-150"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                  />
-                </svg>
-                Finish User Setup
-              </Link>
-
-              <Link
                 to="/dashboard"
                 className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-900 rounded-md ${
                   currentPath === "/dashboard" ? "bg-gray-100" : ""

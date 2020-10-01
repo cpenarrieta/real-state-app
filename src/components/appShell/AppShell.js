@@ -25,17 +25,21 @@ const AppShell = ({ children }) => {
           matchOnboarding ? "bg-white" : "bg-gray-100"
         } `}
       >
-        <SidebarMobile
-          mobileMenuOpen={mobileMenuOpen}
-          setMobileMenuOpen={setMobileMenuOpen}
-          currentPath={history?.location?.pathname}
-        />
+        {!matchOnboarding && (
+          <>
+            <SidebarMobile
+              mobileMenuOpen={mobileMenuOpen}
+              setMobileMenuOpen={setMobileMenuOpen}
+              currentPath={history?.location?.pathname}
+            />
 
-        <SidebarDesktop
-          dropdownOpen={dropdownOpen}
-          setDropdownOpen={setDropdownOpen}
-          currentPath={history?.location?.pathname}
-        />
+            <SidebarDesktop
+              dropdownOpen={dropdownOpen}
+              setDropdownOpen={setDropdownOpen}
+              currentPath={history?.location?.pathname}
+            />
+          </>
+        )}
 
         <div className="flex flex-col w-0 flex-1 overflow-hidden">
           <div className="md:hidden pl-1 pt-1 sm:pl-3 sm:pt-3">
