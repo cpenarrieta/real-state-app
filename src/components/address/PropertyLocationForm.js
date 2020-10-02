@@ -121,7 +121,7 @@ export default function PropertyLocationForm({
                           name="provinceCA"
                           className="mt-1 block form-select w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                         >
-                          <option>Select...</option>
+                          <option value="">Select...</option>
                           <option>BC</option>
                           <option>ON</option>
                           <option>AB</option>
@@ -153,7 +153,7 @@ export default function PropertyLocationForm({
                           name="provinceUSA"
                           className="mt-1 block form-select w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                         >
-                          <option>Select...</option>
+                          <option value="">Select...</option>
                           <option>AL</option>
                           <option>AZ</option>
                           <option>AR</option>

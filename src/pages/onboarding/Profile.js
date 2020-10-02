@@ -4,12 +4,14 @@ import { Formik, Field, Form } from "formik";
 import { useMutation, gql } from "@apollo/client";
 import { singleImageUpload } from "../../util/imageUpload";
 import { useDropzone } from "react-dropzone";
+import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 const SAVE_USER_MUTATION = gql`
   mutation SaveUser($user: UserInput) {
     saveUser(user: $user) {
       uuid
+      duplicateUsername
     }
   }
 `;
@@ -28,6 +30,14 @@ const UserProfileSchema = Yup.object().shape({
     .max(500, "Too Long!")
     .required("Last Name is required"),
   phone: Yup.string().max(10, "Too Long!").required("Phone is required"),
+  country: Yup.string()
+    .oneOf(["US", "CA"], "invalid country")
+    .required("Country is required"),
+  zipCode: Yup.string().max(6, "Too Long!"),
+  address1: Yup.string().max(150, "Too Long!"),
+  provinceCA: Yup.string().max(2, "Too Long!"),
+  provinceUSA: Yup.string().max(2, "Too Long!"),
+  city: Yup.string().max(150, "Too Long!"),
 });
 
 export default function OnboardingProfile({
@@ -44,11 +54,16 @@ export default function OnboardingProfile({
   smallBio,
   email,
 }) {
+  const history = useHistory();
   const [profilePicture, setProfilePictture] = useState();
+  const [errorUsername, setErrorUsername] = useState(false);
   const [
     saveUser,
     //TODO { loading: saveUserLoading, error: saveUserError },
-  ] = useMutation(SAVE_USER_MUTATION);
+  ] = useMutation(SAVE_USER_MUTATION, {
+    refetchQueries: ["MeQuery"],
+    awaitRefetchQueries: true,
+  });
 
   const onDrop = useCallback((acceptedFiles) => {
     setProfilePictture(
@@ -109,11 +124,20 @@ export default function OnboardingProfile({
             varInput.pictureLowRes = lowImageRes;
           }
 
-          await saveUser({
+          const result = await saveUser({
             variables: {
               user: varInput,
             },
           });
+
+          if (
+            result?.data?.saveUser &&
+            !result?.data?.saveUser?.duplicateUsername
+          ) {
+            history.push("/onboarding/email_verify");
+          } else {
+            setErrorUsername(true);
+          }
         }}
       >
         {({ isSubmitting, errors, touched, values }) => {
@@ -370,7 +394,7 @@ export default function OnboardingProfile({
                               name="provinceCA"
                               className="mt-1 block form-select w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                             >
-                              <option>Select...</option>
+                              <option value="">Select...</option>
                               <option>BC</option>
                               <option>ON</option>
                               <option>AB</option>
@@ -406,7 +430,7 @@ export default function OnboardingProfile({
                               name="provinceUSA"
                               className="mt-1 block form-select w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                             >
-                              <option>Select...</option>
+                              <option value="">Select...</option>
                               <option>AL</option>
                               <option>AZ</option>
                               <option>AR</option>
@@ -501,6 +525,11 @@ export default function OnboardingProfile({
               </div>
               <div className="mt-8 border-t border-gray-200 pt-5">
                 <div className="flex justify-end">
+                  {errorUsername && (
+                    <span className="text-sm text-red-400">
+                      Username already taken, please try a different one.
+                    </span>
+                  )}
                   <span className="ml-3 inline-flex rounded-md shadow-sm">
                     <button
                       className={`inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out ${
