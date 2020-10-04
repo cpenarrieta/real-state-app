@@ -29,6 +29,8 @@ export default function VerifyUserCallBack() {
     return <Redirect to="/dashboard" />;
   } else if (finished === "new") {
     return <Redirect to="/onboarding" />;
+  } else if (finished === "inactive") {
+    return <Redirect to="/reactivate_account" />;
   }
 
   return <div>loading...</div>;

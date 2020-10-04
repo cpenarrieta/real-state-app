@@ -1,6 +1,7 @@
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
 import PropertyCard from "../components/PropertyCard";
+import PageHeader from '../components/PageHeader'
 
 export const PROPERTIES_QUERY = gql`
   query GetProperties {
@@ -26,6 +27,7 @@ export default function Properties() {
 
   return (
     <div>
+      <PageHeader title="Properties" />
       <div className="px-2">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
           {data.properties.map((property) => (

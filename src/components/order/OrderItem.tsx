@@ -1,5 +1,6 @@
 import React from "react";
 import { format, parseISO } from "date-fns";
+import { Link } from "react-router-dom";
 
 type OrderItemProps = {
   receiptUrl: string;
@@ -8,6 +9,9 @@ type OrderItemProps = {
   currency: string;
   paid: boolean;
   priceType: string;
+  uuid?: string;
+  title?: string;
+  image?: string;
 };
 
 export default function OrderItem({
@@ -17,6 +21,9 @@ export default function OrderItem({
   currency,
   paid,
   priceType,
+  uuid,
+  title,
+  image,
 }: OrderItemProps) {
   const dateFormat = format(parseISO(createdAt), "MMM do yyyy");
 
@@ -56,6 +63,28 @@ export default function OrderItem({
             </div>
           </div>
         </div>
+
+        {uuid && (
+          <div className="mt-4 sm:mt-0 sm:ml-6 sm:flex-shrink-0">
+            <span className="inline-flex rounded-md shadow-sm">
+              <Link
+                className="inline-flex items-center rounded-md text-indigo-600 focus:outline-none focus:shadow-outline-blue active:text-gray-800 transition ease-in-out duration-150"
+                to={`/manage-property/${uuid}`}
+              >
+                {image ? (
+                  <img
+                    className="h-12 rounded-lg shadow-md transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105"
+                    src={image}
+                    alt="order property house"
+                  />
+                ) : (
+                  <>{title || uuid}</>
+                )}
+              </Link>
+            </span>
+          </div>
+        )}
+
         <div className="mt-4 sm:mt-0 sm:ml-6 sm:flex-shrink-0">
           <span className="inline-flex rounded-md shadow-sm">
             <a

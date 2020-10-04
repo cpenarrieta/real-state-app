@@ -53,6 +53,7 @@ export default function OnboardingProfile({
   username,
   smallBio,
   email,
+  onboardingComplete,
 }) {
   const history = useHistory();
   const [profilePicture, setProfilePictture] = useState();
@@ -78,6 +79,8 @@ export default function OnboardingProfile({
     accept:
       "image/jpg, image/jpeg, image/jfif, image/pjpeg, image/pjp, image/png, image/apng, image/bmp, image/gif, image/x-icon, image/svg+xml, image/tiff, image/webp",
   });
+
+  const submitLabel = onboardingComplete ? "Save" : "Save & Continue";
 
   return (
     <div>
@@ -134,7 +137,11 @@ export default function OnboardingProfile({
             result?.data?.saveUser &&
             !result?.data?.saveUser?.duplicateUsername
           ) {
-            history.push("/onboarding/email_verify");
+            if (onboardingComplete) {
+              history.push("/dashboard");
+            } else {
+              history.push("/onboarding/email_verify");
+            }
           } else {
             setErrorUsername(true);
           }
@@ -173,8 +180,11 @@ export default function OnboardingProfile({
                           <Field
                             id="username"
                             name="username"
-                            className="flex-1 form-input block w-full min-w-0 rounded-none rounded-r-md transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                            className={`flex-1 form-input block w-full min-w-0 rounded-none rounded-r-md transition duration-150 ease-in-out sm:text-sm sm:leading-5 ${
+                              onboardingComplete ? "bg-gray-100" : ""
+                            }`}
                             type="text"
+                            disabled={onboardingComplete ? true : false}
                           />
                         </div>
                         {errors.username && touched.username ? (
@@ -338,7 +348,7 @@ export default function OnboardingProfile({
                         placeholder=""
                         label="Email address"
                         labelClass="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2"
-                        className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                        className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5 bg-gray-100"
                         disabled
                       />
                     </div>
@@ -562,7 +572,7 @@ export default function OnboardingProfile({
                           ></path>
                         </svg>
                       )}
-                      {isSubmitting ? "Processing" : "Save & Continue"}
+                      {isSubmitting ? "Processing" : submitLabel}
                     </button>
                   </span>
                 </div>

@@ -10,6 +10,8 @@ const AppShell = ({ children }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const history = useHistory();
   const matchOnboarding = useRouteMatch("/onboarding");
+  const matchReactivateAccount = useRouteMatch("/reactivate_account");
+  const hideMenu = matchOnboarding || matchReactivateAccount
 
   useEffect(() => {
     history.listen(() => {
@@ -22,10 +24,10 @@ const AppShell = ({ children }) => {
     <UserProvider>
       <div
         className={`h-screen flex overflow-hidden ${
-          matchOnboarding ? "bg-white" : "bg-gray-100"
+          hideMenu ? "bg-white" : "bg-gray-100"
         } `}
       >
-        {!matchOnboarding && (
+        {!hideMenu && (
           <>
             <SidebarMobile
               mobileMenuOpen={mobileMenuOpen}

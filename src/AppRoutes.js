@@ -18,6 +18,7 @@ const Leads = lazy(() => import("./pages/Leads"));
 const Analytics = lazy(() => import("./pages/Analytics"));
 const Settings = lazy(() => import("./pages/Settings"));
 const Support = lazy(() => import("./pages/Support"));
+const ReactivateAccount = lazy(() => import("./pages/ReactivateAccount"));
 
 const LoadingFallback = () => <div className="p-4">Loading...</div>;
 
@@ -124,6 +125,9 @@ export const AppRoutes = () => {
           </AuthenticatedRoute>
           <AuthenticatedRoute exact path="/support">
             <Support />
+          </AuthenticatedRoute>
+          <AuthenticatedRoute exact path="/reactivate_account">
+            <ReactivateAccount />
           </AuthenticatedRoute>
           <AdminRoute exact path="/users">
             <Users />
