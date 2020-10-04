@@ -14,7 +14,7 @@ const AuthDebugger = lazy(() => import("./pages/AuthDebugger"));
 const ManageProperty = lazy(() => import("./pages/manageProperty"));
 const MyAccount = lazy(() => import("./pages/MyAccount"));
 const SuccessPayment = lazy(() => import("./pages/SuccessPayment"));
-const Leads = lazy(() => import("./pages/Leads"));
+const Leads = lazy(() => import("./pages/leads/UserLeads"));
 const Analytics = lazy(() => import("./pages/Analytics"));
 const Settings = lazy(() => import("./pages/Settings"));
 const Support = lazy(() => import("./pages/Support"));

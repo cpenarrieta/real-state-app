@@ -73,7 +73,7 @@ export default function OrderItem({
               >
                 {image ? (
                   <img
-                    className="h-12 rounded-lg shadow-md transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105"
+                    className="h-12 rounded-lg shadow-md transition duration-500 ease-in-out transform hover:translate-y-1 hover:scale-105"
                     src={image}
                     alt="order property house"
                   />

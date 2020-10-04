@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Field, Form } from "formik";
 import { Transition } from "@tailwindui/react";
-import { useParams } from "react-router-dom";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery, useMutation, gql } from "@apollo/client";
 import { useAlert } from "../../context/AlertContext";
+import { formatPhoneNumber } from "../../util/formatPhoneNumber";
 
 const LEADS_QUERY = gql`
   query LeadAnalytics($id: Int!, $uuid: String!) {
@@ -20,26 +20,43 @@ const LEADS_QUERY = gql`
   }
 `;
 
+const UPDATE_LEAD_MUTATION = gql`
+  mutation UpdateLead(
+    $id: Int!
+    $uuid: String!
+    $leadStatus: LEAD_STATUS!
+    $notes: String
+  ) {
+    updateLead(id: $id, uuid: $uuid, leadStatus: $leadStatus, notes: $notes)
+  }
+`;
+
 export default function PropertyLeadSlide({
   showDetails,
   selectedLead,
   setShowDetails,
-  updateLead,
-  refetch,
+  fromProperty,
+  propertyId,
 }) {
-  const { propertyId } = useParams();
   const { loading, error, data } = useQuery(LEADS_QUERY, {
     variables: { uuid: propertyId, id: selectedLead?.id },
     skip: !showDetails || !selectedLead,
   });
+  const [updateLead, { error: errorUpdateLead }] = useMutation(
+    UPDATE_LEAD_MUTATION,
+    {
+      refetchQueries: [fromProperty ? "GetPropertyLeads" : "GetLeads"],
+      awaitRefetchQueries: true,
+    }
+  );
   const [formNotesSuccess, setFormNotesSuccess] = useState(false);
   const { setShowAlert } = useAlert();
 
   useEffect(() => {
-    if (error) {
+    if (error || errorUpdateLead) {
       setShowAlert(true);
     }
-  }, [error, setShowAlert]);
+  }, [error, errorUpdateLead, setShowAlert]);
 
   useEffect(() => {
     if (formNotesSuccess) {
@@ -61,7 +78,9 @@ export default function PropertyLeadSlide({
       <div className="h-full">
         <div>
           <h3 className="text-md leading-6 font-medium text-gray-700">
-            Visits for this property
+            <span className="text-teal-500">{selectedLead.name}</span> session
+            history{" "}
+            {fromProperty ? "for this property" : `for ${selectedLead.title}`}
           </h3>
           <span className="text-sm leading-5 font-medium text-gray-500">
             Analytics for last 6 months.
@@ -222,7 +241,6 @@ export default function PropertyLeadSlide({
                   notes: values.notes,
                 },
               });
-              await refetch();
               setFormNotesSuccess(true);
             }}
           >
@@ -342,7 +360,8 @@ export default function PropertyLeadSlide({
                     </div>
                     <div>
                       <p className="text-sm leading-5 text-indigo-300">
-                        {selectedLead.phone} - {selectedLead.email}
+                        {formatPhoneNumber(selectedLead.phone)} -{" "}
+                        {selectedLead.email}
                       </p>
                     </div>
                   </header>
