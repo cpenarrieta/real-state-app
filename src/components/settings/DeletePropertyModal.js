@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { Transition } from "@tailwindui/react";
-import { useMutation, useLazyQuery, gql } from "@apollo/client";
+import { useMutation, gql } from "@apollo/client";
 import { useAlert } from "../../context/AlertContext";
-import { DASHBOARD_QUERY } from "../../queries/dashboard";
 
 const DELETE_PROPERTY_MUTATION = gql`
   mutation DeleteProperty($uuid: String!) {
@@ -14,8 +13,10 @@ const DELETE_PROPERTY_MUTATION = gql`
 export default function DeletePropertyModal({ showModal, setShowModal }) {
   const { propertyId } = useParams();
   const history = useHistory();
-  const [deleteProperty, { error }] = useMutation(DELETE_PROPERTY_MUTATION);
-  const [getDashboard] = useLazyQuery(DASHBOARD_QUERY);
+  const [deleteProperty, { error }] = useMutation(DELETE_PROPERTY_MUTATION, {
+    refetchQueries: ['GetDashboardData'],
+    awaitRefetchQueries: true,
+  });
   const { setShowAlert } = useAlert();
 
   useEffect(() => {
@@ -110,7 +111,6 @@ export default function DeletePropertyModal({ showModal, setShowModal }) {
                           uuid: propertyId,
                         },
                       });
-                      await getDashboard();
                       setShowModal(false);
                       history.push("/dashboard");
                     }}

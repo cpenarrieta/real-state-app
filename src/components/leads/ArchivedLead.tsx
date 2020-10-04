@@ -141,7 +141,7 @@ export default function ArchivedLead({
                   <span className="font-normal text-sm text-gray-500">
                     <Link
                       to={`/manage-property/${lead.uuid}/leads`}
-                      className="hover:text-orange-400 truncate"
+                      className="hover:text-indigo-400 truncate"
                     >
                       {lead.title}
                     </Link>

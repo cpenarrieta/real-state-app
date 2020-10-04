@@ -114,9 +114,30 @@ export default function ManagePropertyAnalytics() {
     return <p>loading</p>;
   }
 
-  const visits = data?.propertyAnalytics?.visits;
-  const leads = data?.propertyAnalytics?.leads;
-  const users = data?.propertyAnalytics?.users;
+  const visits = data?.propertyAnalytics?.visits || {
+    totalViews: 0,
+    today: 0,
+    yesterday: 0,
+    last7Days: 0,
+    last15Days: 0,
+    last30Days: 0,
+  };
+  const leads = data?.propertyAnalytics?.leads || {
+    totalViews: 0,
+    today: 0,
+    yesterday: 0,
+    last7Days: 0,
+    last15Days: 0,
+    last30Days: 0,
+  };
+  const users = data?.propertyAnalytics?.users || {
+    totalViews: 0,
+    today: 0,
+    yesterday: 0,
+    last7Days: 0,
+    last15Days: 0,
+    last30Days: 0,
+  };
 
   return (
     <div>
