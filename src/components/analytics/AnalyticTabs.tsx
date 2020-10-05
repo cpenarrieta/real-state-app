@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import AnalyticRow from "./AnalyticRow";
-import GraphSevenDays from "./GraphSevenDays";
+import GraphPropertyAnalytics from "./GraphPropertyAnalytics";
+import GraphPropertyAnalyticsBars from "./GraphPropertyAnalyticsBars";
 import { parseISO, isToday, isYesterday, differenceInDays } from "date-fns";
 
 type AnalyticRaw = {
@@ -32,6 +33,49 @@ type AnalyticTabsProps = {
   usersRaw: AnalyticRaw[];
 };
 
+const splitRawData = (raw: AnalyticRaw[]) => {
+  const today = new Date();
+
+  let rawToday: AnalyticRawDate[] = [];
+  let rawYesterday: AnalyticRawDate[] = [];
+  let rawLast7Days: AnalyticRawDate[] = [];
+  let rawLast15Days: AnalyticRawDate[] = [];
+  let rawLast30Days: AnalyticRawDate[] = [];
+  let rawLast180Days: AnalyticRawDate[] = [];
+
+  raw.forEach((a) => {
+    const d = parseISO(a.day.slice(0, 10));
+    const newObj = { day: d, count: a.count };
+
+    rawLast180Days.push(newObj);
+    if (isToday(d)) {
+      rawToday.push(newObj);
+      rawYesterday.push(newObj);
+    }
+    if (isYesterday(d)) {
+      rawYesterday.push(newObj);
+    }
+    if (differenceInDays(today, d) <= 7) {
+      rawLast7Days.push(newObj);
+    }
+    if (differenceInDays(today, d) <= 15) {
+      rawLast15Days.push(newObj);
+    }
+    if (differenceInDays(today, d) <= 30) {
+      rawLast30Days.push(newObj);
+    }
+  });
+
+  return [
+    rawToday,
+    rawYesterday,
+    rawLast7Days,
+    rawLast15Days,
+    rawLast30Days,
+    rawLast180Days,
+  ];
+};
+
 export default function AnalyticTabs({
   sessions,
   users,
@@ -49,98 +93,32 @@ export default function AnalyticTabs({
   const selected =
     "px-3 py-2 font-medium text-sm leading-5 rounded-md text-indigo-700 bg-indigo-100 focus:outline-none focus:text-indigo-800 focus:bg-indigo-200";
 
-  const today = new Date();
+  const [
+    visitsRawToday,
+    visitsRawYesterday,
+    visitsRawLast7Days,
+    visitsRawLast15Days,
+    visitsRawLast30Days,
+    visitsRawLast180Days,
+  ] = splitRawData(visitsRaw);
 
-  let visitsRawToday: AnalyticRawDate[] = [];
-  let visitsRawYesterday: AnalyticRawDate[] = [];
-  let visitsRawLast7Days: AnalyticRawDate[] = [];
-  let visitsRawLast15Days: AnalyticRawDate[] = [];
-  let visitsRawLast30Days: AnalyticRawDate[] = [];
-  let visitsRawLast180Days: AnalyticRawDate[] = [];
+  const [
+    leadsRawToday,
+    leadsRawYesterday,
+    leadsRawLast7Days,
+    leadsRawLast15Days,
+    leadsRawLast30Days,
+    leadsRawLast180Days,
+  ] = splitRawData(leadsRaw);
 
-  visitsRaw.forEach((a) => {
-    const d = parseISO(a.day.slice(0, 10));
-    const newObj = { day: d, count: a.count };
-
-    visitsRawLast180Days.push(newObj);
-    if (isToday(d)) {
-      visitsRawToday.push(newObj);
-      visitsRawYesterday.push(newObj);
-    }
-    if (isYesterday(d)) {
-      visitsRawYesterday.push(newObj);
-    }
-    if (differenceInDays(today, d) <= 7) {
-      visitsRawLast7Days.push(newObj);
-    }
-    if (differenceInDays(today, d) <= 15) {
-      visitsRawLast15Days.push(newObj);
-    }
-    if (differenceInDays(today, d) <= 30) {
-      visitsRawLast30Days.push(newObj);
-    }
-  });
-
-  let leadsRawToday: AnalyticRawDate[] = [];
-  let leadsRawYesterday: AnalyticRawDate[] = [];
-  let leadsRawLast7Days: AnalyticRawDate[] = [];
-  let leadsRawLast15Days: AnalyticRawDate[] = [];
-  let leadsRawLast30Days: AnalyticRawDate[] = [];
-  let leadsRawLast180Days: AnalyticRawDate[] = [];
-
-  leadsRaw.forEach((a) => {
-    const d = parseISO(a.day.slice(0, 10));
-    const newObj = { day: d, count: a.count };
-
-    leadsRawLast180Days.push(newObj);
-    if (isToday(d)) {
-      leadsRawToday.push(newObj);
-      leadsRawYesterday.push(newObj);
-    }
-    if (isYesterday(d)) {
-      leadsRawYesterday.push(newObj);
-    }
-    if (differenceInDays(today, d) <= 7) {
-      leadsRawLast7Days.push(newObj);
-    }
-    if (differenceInDays(today, d) <= 15) {
-      leadsRawLast15Days.push(newObj);
-    }
-    if (differenceInDays(today, d) <= 30) {
-      leadsRawLast30Days.push(newObj);
-    }
-  });
-
-
-  let usersRawToday: AnalyticRawDate[] = [];
-  let usersRawYesterday: AnalyticRawDate[] = [];
-  let usersRawLast7Days: AnalyticRawDate[] = [];
-  let usersRawLast15Days: AnalyticRawDate[] = [];
-  let usersRawLast30Days: AnalyticRawDate[] = [];
-  let usersRawLast180Days: AnalyticRawDate[] = [];
-
-  usersRaw.forEach((a) => {
-    const d = parseISO(a.day.slice(0, 10));
-    const newObj = { day: d, count: a.count };
-
-    usersRawLast180Days.push(newObj);
-    if (isToday(d)) {
-      usersRawToday.push(newObj);
-      usersRawYesterday.push(newObj);
-    }
-    if (isYesterday(d)) {
-      usersRawYesterday.push(newObj);
-    }
-    if (differenceInDays(today, d) <= 7) {
-      usersRawLast7Days.push(newObj);
-    }
-    if (differenceInDays(today, d) <= 15) {
-      usersRawLast15Days.push(newObj);
-    }
-    if (differenceInDays(today, d) <= 30) {
-      usersRawLast30Days.push(newObj);
-    }
-  });
+  const [
+    usersRawToday,
+    usersRawYesterday,
+    usersRawLast7Days,
+    usersRawLast15Days,
+    usersRawLast30Days,
+    usersRawLast180Days,
+  ] = splitRawData(usersRaw);
 
   return (
     <div>
@@ -205,18 +183,34 @@ export default function AnalyticTabs({
       </div>
 
       {tab === "TODAY" && (
-        <AnalyticRow
-          sessions={sessions.today}
-          users={users.today}
-          leads={leads.today}
-        />
+        <>
+          <AnalyticRow
+            sessions={sessions.today}
+            users={users.today}
+            leads={leads.today}
+          />
+          <GraphPropertyAnalyticsBars
+            visitsRaw={visitsRawToday}
+            leadsRaw={leadsRawToday}
+            usersRaw={usersRawToday}
+            days={1}
+          />
+        </>
       )}
       {tab === "YESTERDAY" && (
-        <AnalyticRow
-          sessions={sessions.yesterday}
-          users={users.yesterday}
-          leads={leads.yesterday}
-        />
+        <>
+          <AnalyticRow
+            sessions={sessions.yesterday}
+            users={users.yesterday}
+            leads={leads.yesterday}
+          />
+          <GraphPropertyAnalytics
+            visitsRaw={visitsRawYesterday}
+            leadsRaw={leadsRawYesterday}
+            usersRaw={usersRawYesterday}
+            days={2}
+          />
+        </>
       )}
       {tab === "7DAYS" && (
         <>
@@ -225,33 +219,58 @@ export default function AnalyticTabs({
             users={users.last7Days}
             leads={leads.last7Days}
           />
-          <GraphSevenDays
+          <GraphPropertyAnalytics
             visitsRaw={visitsRawLast7Days}
             leadsRaw={leadsRawLast7Days}
             usersRaw={usersRawLast7Days}
+            days={7}
           />
         </>
       )}
       {tab === "15DAYS" && (
-        <AnalyticRow
-          sessions={sessions.last15Days}
-          users={users.last15Days}
-          leads={leads.last15Days}
-        />
+        <>
+          <AnalyticRow
+            sessions={sessions.last15Days}
+            users={users.last15Days}
+            leads={leads.last15Days}
+          />
+          <GraphPropertyAnalytics
+            visitsRaw={visitsRawLast15Days}
+            leadsRaw={leadsRawLast15Days}
+            usersRaw={usersRawLast15Days}
+            days={15}
+          />
+        </>
       )}
       {tab === "30DAYS" && (
-        <AnalyticRow
-          sessions={sessions.last30Days}
-          users={users.last30Days}
-          leads={leads.last30Days}
-        />
+        <>
+          <AnalyticRow
+            sessions={sessions.last30Days}
+            users={users.last30Days}
+            leads={leads.last30Days}
+          />
+          <GraphPropertyAnalytics
+            visitsRaw={visitsRawLast30Days}
+            leadsRaw={leadsRawLast30Days}
+            usersRaw={usersRawLast30Days}
+            days={30}
+          />
+        </>
       )}
       {tab === "180DAYS" && (
-        <AnalyticRow
-          sessions={sessions.last180Days}
-          users={users.last180Days}
-          leads={leads.last180Days}
-        />
+        <>
+          <AnalyticRow
+            sessions={sessions.last180Days}
+            users={users.last180Days}
+            leads={leads.last180Days}
+          />
+          <GraphPropertyAnalytics
+            visitsRaw={visitsRawLast180Days}
+            leadsRaw={leadsRawLast180Days}
+            usersRaw={usersRawLast180Days}
+            days={180}
+          />
+        </>
       )}
     </div>
   );

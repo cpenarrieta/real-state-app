@@ -12,21 +12,21 @@ const config = {
         backgroundColor: "rgba(54, 162, 235, 0.2)",
         borderColor: "rgba(54, 162, 235, 1)",
         data: [],
-        fill: false,
+        fill: true,
       },
       {
         label: "Users",
         backgroundColor: "rgba(255, 206, 86, 0.2)",
         borderColor: "rgba(255, 206, 86, 1)",
         data: [],
-        fill: false,
+        fill: true,
       },
       {
         label: "Leads",
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         borderColor: "rgba(75, 192, 192, 1)",
         data: [],
-        fill: false,
+        fill: true,
       },
     ],
   },
@@ -61,13 +61,23 @@ const config = {
             display: true,
             labelString: "Value",
           },
+          ticks: {
+            beginAtZero: true,
+            stepSize: 1,
+            min: 0,
+          },
         },
       ],
     },
   },
 };
 
-export default function GraphSevenDays({ visitsRaw, leadsRaw, usersRaw }) {
+export default function GraphPropertyAnalytics({
+  visitsRaw,
+  leadsRaw,
+  usersRaw,
+  days = 7,
+}) {
   const chartContainer = useRef(null);
   const [chartInstance, setChartInstance] = useState(null);
 
@@ -85,7 +95,7 @@ export default function GraphSevenDays({ visitsRaw, leadsRaw, usersRaw }) {
       const leadsDataSet = [];
       const usersDataSet = [];
 
-      for (let i = 0; i < 7; i++) {
+      for (let i = 0; i < days; i++) {
         const d = subDays(new Date(), i);
 
         // SESSIONS
@@ -122,7 +132,7 @@ export default function GraphSevenDays({ visitsRaw, leadsRaw, usersRaw }) {
       chartInstance.data.labels = labels;
       chartInstance.update();
     }
-  }, [chartInstance, visitsRaw, leadsRaw, usersRaw]);
+  }, [chartInstance, visitsRaw, leadsRaw, usersRaw, days]);
 
   return (
     <div className="bg-white rounded-md mt-5">
