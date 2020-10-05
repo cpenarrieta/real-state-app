@@ -8,7 +8,7 @@ type HeaderProps = {
 };
 
 export default function Header({ sessions, users, leads }: HeaderProps) {
-  const [tab, selectTab] = useState("TODAY");
+  const [tab, selectTab] = useState("7DAYS");
 
   const notSelected =
     "px-3 py-2 font-medium text-sm leading-5 rounded-md text-gray-500 hover:text-gray-700 focus:outline-none focus:text-indigo-600 focus:bg-indigo-50";
@@ -23,9 +23,9 @@ export default function Header({ sessions, users, leads }: HeaderProps) {
             aria-label="Selected tab"
             className="form-select block w-full"
           >
-            <option selected={tab === "TODAY"}>Today</option>
-            <option selected={tab === "YESTERDAY"}>Yesterday</option>
-            <option selected={tab === "7DAYS"}>Last 7 Days</option>
+            <option>Today</option>
+            <option>Yesterday</option>
+            <option>Last 7 Days</option>
           </select>
         </div>
         <div className="hidden sm:block">
@@ -58,6 +58,7 @@ export default function Header({ sessions, users, leads }: HeaderProps) {
           sessions={sessions.today}
           users={users.today}
           leads={leads.today}
+          tab={tab}
         />
       )}
       {tab === "YESTERDAY" && (
@@ -65,6 +66,7 @@ export default function Header({ sessions, users, leads }: HeaderProps) {
           sessions={sessions.yesterday}
           users={users.yesterday}
           leads={leads.yesterday}
+          tab={tab}
         />
       )}
       {tab === "7DAYS" && (
@@ -72,6 +74,7 @@ export default function Header({ sessions, users, leads }: HeaderProps) {
           sessions={sessions.last7Days}
           users={users.last7Days}
           leads={leads.last7Days}
+          tab={tab}
         />
       )}
     </div>
