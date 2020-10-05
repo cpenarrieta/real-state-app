@@ -33,8 +33,7 @@ const config = {
   options: {
     responsive: true,
     title: {
-      display: true,
-      text: "Sessions last 7 Days",
+      display: false,
     },
     tooltips: {
       mode: "index",
@@ -123,7 +122,7 @@ export default function GraphSevenDays({ visitsRaw, leadsRaw, usersRaw }) {
       chartInstance.data.labels = labels;
       chartInstance.update();
     }
-  }, [chartInstance, visitsRaw]);
+  }, [chartInstance, visitsRaw, leadsRaw, usersRaw]);
 
   return (
     <div className="bg-white rounded-md mt-5">
