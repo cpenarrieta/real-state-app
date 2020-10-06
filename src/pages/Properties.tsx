@@ -80,39 +80,26 @@ export default function Properties() {
       <PageHeader title="Properties" />
       <div className="px-2">
         <div>
-          <div className="sm:hidden">
-            <select
-              aria-label="Selected tab"
-              className="form-select block w-full"
-            >
-              <option>Today</option>
-              <option>Yesterday</option>
-              <option>Last 7 Days</option>
-              <option>Last 15 Days</option>
-              <option>Last 30 Days</option>
-              <option>Last 6 Months</option>
-            </select>
-          </div>
           <div className="hidden sm:block">
             <nav className="flex">
               <button
                 className={`${tab === "LIVE" ? selected : notSelected}`}
                 onClick={() => selectTab("LIVE")}
               >
-                LIVE
+                Live
               </button>
               <button
                 className={`ml-4 ${tab === "DRAFT" ? selected : notSelected}`}
                 onClick={() => selectTab("DRAFT")}
               >
-                DRAFT
+                Draft
               </button>
               <button
                 className={`ml-4 ${tab === "SOLD" ? selected : notSelected}`}
                 aria-current="page"
                 onClick={() => selectTab("SOLD")}
               >
-                SOLD
+                Sold
               </button>
               <button
                 className={`ml-4 ${
@@ -121,7 +108,7 @@ export default function Properties() {
                 aria-current="page"
                 onClick={() => selectTab("INACTIVE")}
               >
-                INACTIVE
+                Inactive
               </button>
             </nav>
           </div>
