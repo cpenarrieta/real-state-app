@@ -4,18 +4,14 @@ import { Transition } from "@tailwindui/react";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { useAlert } from "../../context/AlertContext";
 import { formatPhoneNumber } from "../../util/formatPhoneNumber";
+import { splitRawData } from "../../util/splitRawData";
+import { formatNumber } from "../../util/formatNumber";
 
 const LEADS_QUERY = gql`
   query LeadAnalytics($id: Int!, $uuid: String!) {
     leadAnalytics(id: $id, uuid: $uuid) {
-      id
-      today
-      yesterday
-      last7Days
-      last15Days
-      last30Days
-      last180Days
-      totalViews
+      day
+      count
     }
   }
 `;
@@ -30,6 +26,19 @@ const UPDATE_LEAD_MUTATION = gql`
     updateLead(id: $id, uuid: $uuid, leadStatus: $leadStatus, notes: $notes)
   }
 `;
+
+const sumData = (raw) => {
+  let sum = 0;
+  if (raw && raw.length >= 0) {
+    raw.forEach((r) => {
+      sum += r.count;
+    });
+
+    return sum;
+  }
+
+  return 0;
+};
 
 export default function PropertyLeadSlide({
   showDetails,
@@ -69,11 +78,30 @@ export default function PropertyLeadSlide({
     }
   }, [formNotesSuccess]);
 
-  const leadAnalytics = data?.leadAnalytics;
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error...</p>;
+
+  const visitsRaw = data?.leadAnalytics || [];
+
+  const [
+    visitsRawToday,
+    visitsRawYesterday,
+    visitsRawLast7Days,
+    visitsRawLast15Days,
+    visitsRawLast30Days,
+    visitsRawLast180Days,
+  ] = splitRawData(visitsRaw);
 
   let mainbody = <p>loading</p>;
 
-  if (!loading && leadAnalytics) {
+  const sumToday = sumData(visitsRawToday);
+  const sumYesterday = sumData(visitsRawYesterday);
+  const sumLast7Days = sumData(visitsRawLast7Days);
+  const sumLast15Days = sumData(visitsRawLast15Days);
+  const sumLast30Days = sumData(visitsRawLast30Days);
+  const sumLast180Days = sumData(visitsRawLast180Days);
+
+  if (!loading && visitsRaw.length > 0) {
     mainbody = (
       <div className="h-full">
         <div>
@@ -86,25 +114,6 @@ export default function PropertyLeadSlide({
             Analytics for last 6 months.
           </span>
           <div className="mt-5 grid grid-cols-2 rounded-lg bg-white overflow-hidden shadow">
-            <div className="col-span-2 border-b border-gray-200">
-              <div className="px-4 py-5 sm:p-6">
-                <dl>
-                  <dt className="text-base leading-6 font-normal text-gray-900">
-                    Total
-                  </dt>
-                  <dd className="mt-1 flex justify-between items-baseline  ">
-                    <div className="flex items-baseline text-2xl leading-8 font-semibold text-indigo-600">
-                      {new Intl.NumberFormat("en-us").format(
-                        leadAnalytics.totalViews
-                      )}
-                      <span className="ml-2 text-sm leading-5 font-medium text-gray-500">
-                        sessions
-                      </span>
-                    </div>
-                  </dd>
-                </dl>
-              </div>
-            </div>
             <div className="col-span-1 border-b border-gray-200">
               <div className="px-4 py-5 sm:p-6">
                 <dl>
@@ -113,9 +122,7 @@ export default function PropertyLeadSlide({
                   </dt>
                   <dd className="mt-1 flex justify-between items-baseline ">
                     <div className="flex items-baseline text-2xl leading-8 font-semibold text-indigo-600">
-                      {new Intl.NumberFormat("en-us").format(
-                        leadAnalytics.today
-                      )}
+                      {formatNumber(sumToday)}
                       <span className="ml-2 text-sm leading-5 font-medium text-gray-500">
                         sessions
                       </span>
@@ -132,9 +139,7 @@ export default function PropertyLeadSlide({
                   </dt>
                   <dd className="mt-1 flex justify-between items-baseline ">
                     <div className="flex items-baseline text-2xl leading-8 font-semibold text-indigo-600">
-                      {new Intl.NumberFormat("en-us").format(
-                        leadAnalytics.yesterday
-                      )}
+                      {formatNumber(sumYesterday)}
                       <span className="ml-2 text-sm leading-5 font-medium text-gray-500">
                         sessions
                       </span>
@@ -151,9 +156,7 @@ export default function PropertyLeadSlide({
                   </dt>
                   <dd className="mt-1 flex justify-between items-baseline ">
                     <div className="flex items-baseline text-2xl leading-8 font-semibold text-indigo-600">
-                      {new Intl.NumberFormat("en-us").format(
-                        leadAnalytics.last7Days
-                      )}
+                      {formatNumber(sumLast7Days)}
                       <span className="ml-2 text-sm leading-5 font-medium text-gray-500">
                         sessions
                       </span>
@@ -162,7 +165,7 @@ export default function PropertyLeadSlide({
                 </dl>
               </div>
             </div>
-            {leadAnalytics.last15Days !== leadAnalytics.last7Days && (
+            {sumLast15Days !== sumLast7Days && (
               <div className="col-span-1 border-b border-gray-200">
                 <div className="px-4 py-5 sm:p-6">
                   <dl>
@@ -171,9 +174,7 @@ export default function PropertyLeadSlide({
                     </dt>
                     <dd className="mt-1 flex justify-between items-baseline ">
                       <div className="flex items-baseline text-2xl leading-8 font-semibold text-indigo-600">
-                        {new Intl.NumberFormat("en-us").format(
-                          leadAnalytics.last15Days
-                        )}
+                        {formatNumber(sumLast15Days)}
                         <span className="ml-2 text-sm leading-5 font-medium text-gray-500">
                           sessions
                         </span>
@@ -183,7 +184,7 @@ export default function PropertyLeadSlide({
                 </div>
               </div>
             )}
-            {leadAnalytics.last30Days !== leadAnalytics.last15Days && (
+            {sumLast30Days !== sumLast15Days && (
               <div className="col-span-1 border-b border-gray-200">
                 <div className="px-4 py-5 sm:p-6">
                   <dl>
@@ -192,9 +193,7 @@ export default function PropertyLeadSlide({
                     </dt>
                     <dd className="mt-1 flex justify-between items-baseline ">
                       <div className="flex items-baseline text-2xl leading-8 font-semibold text-indigo-600">
-                        {new Intl.NumberFormat("en-us").format(
-                          leadAnalytics.last30Days
-                        )}
+                        {formatNumber(sumLast30Days)}
                         <span className="ml-2 text-sm leading-5 font-medium text-gray-500">
                           sessions
                         </span>
@@ -204,7 +203,7 @@ export default function PropertyLeadSlide({
                 </div>
               </div>
             )}
-            {leadAnalytics.last180Days !== leadAnalytics.totalViews && (
+            {sumLast180Days !== sumLast30Days && (
               <div className="col-span-1 border-b border-gray-200">
                 <div className="px-4 py-5 sm:p-6">
                   <dl>
@@ -213,9 +212,7 @@ export default function PropertyLeadSlide({
                     </dt>
                     <dd className="mt-1 flex justify-between items-baseline ">
                       <div className="flex items-baseline text-2xl leading-8 font-semibold text-indigo-600">
-                        {new Intl.NumberFormat("en-us").format(
-                          leadAnalytics.last180Days
-                        )}
+                        {formatNumber(sumLast180Days)}
                         <span className="ml-2 text-sm leading-5 font-medium text-gray-500">
                           sessions
                         </span>

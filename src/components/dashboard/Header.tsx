@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AnalyticRow from "./AnalyticRow";
 import { AnalyticTabsProps, AnalyticRawDate } from "../../types";
 import { splitRawData } from "../../util/splitRawData";
+import { formatNumber } from "../../util/formatNumber";
 
 const sumData = (raw: AnalyticRawDate[]) => {
   let sum = 0;
@@ -70,25 +71,25 @@ export default function Header({
 
       {tab === "TODAY" && (
         <AnalyticRow
-          sessions={sumData(visitsRawToday)}
-          users={sumData(usersRawToday)}
-          leads={sumData(leadsRawToday)}
+          sessions={formatNumber(sumData(visitsRawToday))}
+          users={formatNumber(sumData(usersRawToday))}
+          leads={formatNumber(sumData(leadsRawToday))}
           tab={tab}
         />
       )}
       {tab === "YESTERDAY" && (
         <AnalyticRow
-          sessions={sumData(visitsRawYesterday)}
-          users={sumData(usersRawYesterday)}
-          leads={sumData(leadsRawYesterday)}
+          sessions={formatNumber(sumData(visitsRawYesterday))}
+          users={formatNumber(sumData(usersRawYesterday))}
+          leads={formatNumber(sumData(leadsRawYesterday))}
           tab={tab}
         />
       )}
       {tab === "7DAYS" && (
         <AnalyticRow
-          sessions={sumData(visitsRawLast7Days)}
-          users={sumData(usersRawLast7Days)}
-          leads={sumData(leadsRawLast7Days)}
+          sessions={formatNumber(sumData(visitsRawLast7Days))}
+          users={formatNumber(sumData(usersRawLast7Days))}
+          leads={formatNumber(sumData(leadsRawLast7Days))}
           tab={tab}
         />
       )}
