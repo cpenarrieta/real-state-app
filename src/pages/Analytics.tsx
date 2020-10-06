@@ -2,34 +2,11 @@ import React from "react";
 import { useQuery, gql } from "@apollo/client";
 import PageHeader from "../components/PageHeader";
 import AnalyticTabs from "../components/analytics/AnalyticTabs";
+import { AnalyticRaw } from "../types";
 
 export const ANALYTICS_QUERY = gql`
   query GetAnalyticsData {
     analytics {
-      visits {
-        today
-        yesterday
-        last7Days
-        last15Days
-        last30Days
-        last180Days
-      }
-      leads {
-        today
-        yesterday
-        last7Days
-        last15Days
-        last30Days
-        last180Days
-      }
-      users {
-        today
-        yesterday
-        last7Days
-        last15Days
-        last30Days
-        last180Days
-      }
       visitsRaw {
         day
         count
@@ -52,22 +29,16 @@ export default function Analytics() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error...</p>;
 
-  const sessions = data.analytics?.visits;
-  const users = data.analytics?.users;
-  const leads = data.analytics?.leads;
-  const visitsRaw = data.analytics?.visitsRaw;
-  const leadsRaw = data.analytics?.leadsRaw;
-  const usersRaw = data.analytics?.usersRaw;
+  const visitsRaw: AnalyticRaw[] = data.analytics?.visitsRaw;
+  const leadsRaw: AnalyticRaw[] = data.analytics?.leadsRaw;
+  const usersRaw: AnalyticRaw[] = data.analytics?.usersRaw;
 
   return (
     <div>
       <PageHeader title="Analytics" />
 
-      {sessions && (
+      {visitsRaw && visitsRaw.length > 0 && (
         <AnalyticTabs
-          sessions={sessions}
-          users={users}
-          leads={leads}
           visitsRaw={visitsRaw}
           leadsRaw={leadsRaw}
           usersRaw={usersRaw}

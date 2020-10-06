@@ -3,6 +3,18 @@ import { Link } from "react-router-dom";
 import { getPropertyBadge } from "../util/propertyStatus";
 import propertyDefault from "../images/home-default.png";
 
+type PropertyCardProps = {
+  uuid?: string;
+  title?: string;
+  mainPictureLowRes?: string;
+  bedrooms?: number;
+  bathrooms?: number;
+  price?: number;
+  status?: string;
+  publishedStatus?: string;
+  currency?: string;
+};
+
 export default function PropertyCard({
   uuid,
   title,
@@ -13,9 +25,9 @@ export default function PropertyCard({
   status,
   publishedStatus,
   currency,
-}) {
+}: PropertyCardProps) {
   const [badgeText, badgeColor] = getPropertyBadge(status, publishedStatus);
-  const formattedPrice = new Intl.NumberFormat("en-us").format(price);
+  const formattedPrice = new Intl.NumberFormat("en-us").format(price || 0);
 
   return (
     <div className="">

@@ -3,38 +3,12 @@ import { useParams } from "react-router-dom";
 import { useQuery, gql } from "@apollo/client";
 import { useAlert } from "../../context/AlertContext";
 import AnalyticTabs from "../../components/analytics/AnalyticTabs";
+import { AnalyticRaw } from "../../types";
 
 const ANALYTICS_QUERY = gql`
   query PropertyAnalytics($uuid: String!) {
     propertyAnalytics(uuid: $uuid) {
       id
-      visits {
-        today
-        yesterday
-        last7Days
-        last15Days
-        last30Days
-        last180Days
-        totalViews
-      }
-      leads {
-        today
-        yesterday
-        last7Days
-        last15Days
-        last30Days
-        last180Days
-        totalViews
-      }
-      users {
-        today
-        yesterday
-        last7Days
-        last15Days
-        last30Days
-        last180Days
-        totalViews
-      }
       visitsRaw {
         day
         count
@@ -52,7 +26,7 @@ const ANALYTICS_QUERY = gql`
 `;
 
 export default function ManagePropertyAnalytics() {
-  const { propertyId } = useParams();
+  const { propertyId } = useParams<{ propertyId: string }>();
   const { loading, error, data } = useQuery(ANALYTICS_QUERY, {
     variables: { uuid: propertyId },
   });
@@ -68,20 +42,14 @@ export default function ManagePropertyAnalytics() {
     return <p>loading</p>;
   }
 
-  const sessions = data.propertyAnalytics?.visits;
-  const users = data.propertyAnalytics?.users;
-  const leads = data.propertyAnalytics?.leads;
-  const visitsRaw = data.propertyAnalytics?.visitsRaw;
-  const leadsRaw = data.propertyAnalytics?.leadsRaw;
-  const usersRaw = data.propertyAnalytics?.usersRaw;
+  const visitsRaw: AnalyticRaw[] = data.propertyAnalytics?.visitsRaw;
+  const leadsRaw: AnalyticRaw[] = data.propertyAnalytics?.leadsRaw;
+  const usersRaw: AnalyticRaw[] = data.propertyAnalytics?.usersRaw;
 
   return (
     <div>
-      {sessions && (
+      {visitsRaw && visitsRaw.length > 0 && (
         <AnalyticTabs
-          sessions={sessions}
-          users={users}
-          leads={leads}
           visitsRaw={visitsRaw}
           leadsRaw={leadsRaw}
           usersRaw={usersRaw}

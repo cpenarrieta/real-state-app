@@ -128,7 +128,7 @@ export default function PropertyLeadSlide({
               <div className="px-4 py-5 sm:p-6">
                 <dl>
                   <dt className="text-base leading-6 font-normal text-gray-900">
-                    Yesterday
+                    Last 2 Days
                   </dt>
                   <dd className="mt-1 flex justify-between items-baseline ">
                     <div className="flex items-baseline text-2xl leading-8 font-semibold text-indigo-600">

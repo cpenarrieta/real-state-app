@@ -3,83 +3,23 @@ import { useLocation } from "react-router-dom";
 import AnalyticRow from "./AnalyticRow";
 import GraphPropertyAnalytics from "./GraphPropertyAnalytics";
 import GraphPropertyAnalyticsBars from "./GraphPropertyAnalyticsBars";
-import { parseISO, isToday, isYesterday, differenceInDays } from "date-fns";
+import { AnalyticRawDate, AnalyticTabsProps } from "../../types";
+import { splitRawData } from "../../util/splitRawData";
 
-type AnalyticRaw = {
-  day: string;
-  count: number;
-};
+const sumData = (raw: AnalyticRawDate[]) => {
+  let sum = 0;
+  if (raw && raw.length >= 0) {
+    raw.forEach((r) => {
+      sum += r.count;
+    });
 
-type AnalyticRawDate = {
-  day: Date;
-  count: number;
-};
+    return sum;
+  }
 
-type AnalyticRow = {
-  today: number;
-  yesterday: number;
-  last7Days: number;
-  last15Days: number;
-  last30Days: number;
-  last180Days: number;
-};
-
-type AnalyticTabsProps = {
-  sessions: AnalyticRow;
-  users: AnalyticRow;
-  leads: AnalyticRow;
-  visitsRaw: AnalyticRaw[];
-  leadsRaw: AnalyticRaw[];
-  usersRaw: AnalyticRaw[];
-};
-
-const splitRawData = (raw: AnalyticRaw[]) => {
-  const today = new Date();
-
-  let rawToday: AnalyticRawDate[] = [];
-  let rawYesterday: AnalyticRawDate[] = [];
-  let rawLast7Days: AnalyticRawDate[] = [];
-  let rawLast15Days: AnalyticRawDate[] = [];
-  let rawLast30Days: AnalyticRawDate[] = [];
-  let rawLast180Days: AnalyticRawDate[] = [];
-
-  raw.forEach((a) => {
-    const d = parseISO(a.day.slice(0, 10));
-    const newObj = { day: d, count: a.count };
-
-    rawLast180Days.push(newObj);
-    if (isToday(d)) {
-      rawToday.push(newObj);
-      rawYesterday.push(newObj);
-    }
-    if (isYesterday(d)) {
-      rawYesterday.push(newObj);
-    }
-    if (differenceInDays(today, d) <= 7) {
-      rawLast7Days.push(newObj);
-    }
-    if (differenceInDays(today, d) <= 15) {
-      rawLast15Days.push(newObj);
-    }
-    if (differenceInDays(today, d) <= 30) {
-      rawLast30Days.push(newObj);
-    }
-  });
-
-  return [
-    rawToday,
-    rawYesterday,
-    rawLast7Days,
-    rawLast15Days,
-    rawLast30Days,
-    rawLast180Days,
-  ];
+  return 0;
 };
 
 export default function AnalyticTabs({
-  sessions,
-  users,
-  leads,
   visitsRaw,
   leadsRaw,
   usersRaw,
@@ -148,7 +88,7 @@ export default function AnalyticTabs({
               className={`ml-4 ${tab === "YESTERDAY" ? selected : notSelected}`}
               onClick={() => selectTab("YESTERDAY")}
             >
-              Yesterday
+              Last 2 Days
             </button>
             <button
               className={`ml-4 ${tab === "7DAYS" ? selected : notSelected}`}
@@ -185,14 +125,14 @@ export default function AnalyticTabs({
       {tab === "TODAY" && (
         <>
           <AnalyticRow
-            sessions={sessions.today}
-            users={users.today}
-            leads={leads.today}
+            sessions={sumData(visitsRawToday)}
+            users={sumData(usersRawToday)}
+            leads={sumData(leadsRawToday)}
           />
           <GraphPropertyAnalyticsBars
             visitsRaw={visitsRawToday}
-            leadsRaw={leadsRawToday}
             usersRaw={usersRawToday}
+            leadsRaw={leadsRawToday}
             days={1}
           />
         </>
@@ -200,14 +140,14 @@ export default function AnalyticTabs({
       {tab === "YESTERDAY" && (
         <>
           <AnalyticRow
-            sessions={sessions.yesterday}
-            users={users.yesterday}
-            leads={leads.yesterday}
+            sessions={sumData(visitsRawYesterday)}
+            users={sumData(usersRawYesterday)}
+            leads={sumData(leadsRawYesterday)}
           />
           <GraphPropertyAnalytics
             visitsRaw={visitsRawYesterday}
-            leadsRaw={leadsRawYesterday}
             usersRaw={usersRawYesterday}
+            leadsRaw={leadsRawYesterday}
             days={2}
           />
         </>
@@ -215,14 +155,14 @@ export default function AnalyticTabs({
       {tab === "7DAYS" && (
         <>
           <AnalyticRow
-            sessions={sessions.last7Days}
-            users={users.last7Days}
-            leads={leads.last7Days}
+            sessions={sumData(visitsRawLast7Days)}
+            users={sumData(usersRawLast7Days)}
+            leads={sumData(leadsRawLast7Days)}
           />
           <GraphPropertyAnalytics
             visitsRaw={visitsRawLast7Days}
-            leadsRaw={leadsRawLast7Days}
             usersRaw={usersRawLast7Days}
+            leadsRaw={leadsRawLast7Days}
             days={7}
           />
         </>
@@ -230,14 +170,14 @@ export default function AnalyticTabs({
       {tab === "15DAYS" && (
         <>
           <AnalyticRow
-            sessions={sessions.last15Days}
-            users={users.last15Days}
-            leads={leads.last15Days}
+            sessions={sumData(visitsRawLast15Days)}
+            users={sumData(usersRawLast15Days)}
+            leads={sumData(leadsRawLast15Days)}
           />
           <GraphPropertyAnalytics
             visitsRaw={visitsRawLast15Days}
-            leadsRaw={leadsRawLast15Days}
             usersRaw={usersRawLast15Days}
+            leadsRaw={leadsRawLast15Days}
             days={15}
           />
         </>
@@ -245,14 +185,14 @@ export default function AnalyticTabs({
       {tab === "30DAYS" && (
         <>
           <AnalyticRow
-            sessions={sessions.last30Days}
-            users={users.last30Days}
-            leads={leads.last30Days}
+            sessions={sumData(visitsRawLast30Days)}
+            users={sumData(usersRawLast30Days)}
+            leads={sumData(leadsRawLast30Days)}
           />
           <GraphPropertyAnalytics
             visitsRaw={visitsRawLast30Days}
-            leadsRaw={leadsRawLast30Days}
             usersRaw={usersRawLast30Days}
+            leadsRaw={leadsRawLast30Days}
             days={30}
           />
         </>
@@ -260,14 +200,14 @@ export default function AnalyticTabs({
       {tab === "180DAYS" && (
         <>
           <AnalyticRow
-            sessions={sessions.last180Days}
-            users={users.last180Days}
-            leads={leads.last180Days}
+            sessions={sumData(visitsRawLast180Days)}
+            users={sumData(usersRawLast180Days)}
+            leads={sumData(leadsRawLast180Days)}
           />
           <GraphPropertyAnalytics
             visitsRaw={visitsRawLast180Days}
-            leadsRaw={leadsRawLast180Days}
             usersRaw={usersRawLast180Days}
+            leadsRaw={leadsRawLast180Days}
             days={180}
           />
         </>

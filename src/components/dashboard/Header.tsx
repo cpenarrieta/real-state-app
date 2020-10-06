@@ -1,13 +1,26 @@
 import React, { useState } from "react";
 import AnalyticRow from "./AnalyticRow";
+import { AnalyticTabsProps, AnalyticRawDate } from "../../types";
+import { splitRawData } from "../../util/splitRawData";
 
-type HeaderProps = {
-  sessions: { today: number; yesterday: number; last7Days: number };
-  users: { today: number; yesterday: number; last7Days: number };
-  leads: { today: number; yesterday: number; last7Days: number };
+const sumData = (raw: AnalyticRawDate[]) => {
+  let sum = 0;
+  if (raw && raw.length >= 0) {
+    raw.forEach((r) => {
+      sum += r.count;
+    });
+
+    return sum;
+  }
+
+  return 0;
 };
 
-export default function Header({ sessions, users, leads }: HeaderProps) {
+export default function Header({
+  visitsRaw,
+  leadsRaw,
+  usersRaw,
+}: AnalyticTabsProps) {
   const [tab, selectTab] = useState("7DAYS");
 
   const notSelected =
@@ -15,19 +28,21 @@ export default function Header({ sessions, users, leads }: HeaderProps) {
   const selected =
     "px-3 py-2 font-medium text-sm leading-5 rounded-md text-indigo-700 bg-indigo-100 focus:outline-none focus:text-indigo-800 focus:bg-indigo-200";
 
+  const [visitsRawToday, visitsRawYesterday, visitsRawLast7Days] = splitRawData(
+    visitsRaw
+  );
+
+  const [leadsRawToday, leadsRawYesterday, leadsRawLast7Days] = splitRawData(
+    leadsRaw
+  );
+
+  const [usersRawToday, usersRawYesterday, usersRawLast7Days] = splitRawData(
+    usersRaw
+  );
+
   return (
     <div>
       <div>
-        <div className="sm:hidden">
-          <select
-            aria-label="Selected tab"
-            className="form-select block w-full"
-          >
-            <option>Today</option>
-            <option>Yesterday</option>
-            <option>Last 7 Days</option>
-          </select>
-        </div>
         <div className="hidden sm:block">
           <nav className="flex">
             <button
@@ -40,7 +55,7 @@ export default function Header({ sessions, users, leads }: HeaderProps) {
               className={`ml-4 ${tab === "YESTERDAY" ? selected : notSelected}`}
               onClick={() => selectTab("YESTERDAY")}
             >
-              Yesterday
+              Last 2 Days
             </button>
             <button
               className={`ml-4 ${tab === "7DAYS" ? selected : notSelected}`}
@@ -55,25 +70,25 @@ export default function Header({ sessions, users, leads }: HeaderProps) {
 
       {tab === "TODAY" && (
         <AnalyticRow
-          sessions={sessions.today}
-          users={users.today}
-          leads={leads.today}
+          sessions={sumData(visitsRawToday)}
+          users={sumData(usersRawToday)}
+          leads={sumData(leadsRawToday)}
           tab={tab}
         />
       )}
       {tab === "YESTERDAY" && (
         <AnalyticRow
-          sessions={sessions.yesterday}
-          users={users.yesterday}
-          leads={leads.yesterday}
+          sessions={sumData(visitsRawYesterday)}
+          users={sumData(usersRawYesterday)}
+          leads={sumData(leadsRawYesterday)}
           tab={tab}
         />
       )}
       {tab === "7DAYS" && (
         <AnalyticRow
-          sessions={sessions.last7Days}
-          users={users.last7Days}
-          leads={leads.last7Days}
+          sessions={sumData(visitsRawLast7Days)}
+          users={sumData(usersRawLast7Days)}
+          leads={sumData(leadsRawLast7Days)}
           tab={tab}
         />
       )}

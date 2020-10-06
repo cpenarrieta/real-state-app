@@ -5,25 +5,11 @@ import { useUser } from "../context/UserContext";
 import PropertyCard from "../components/PropertyCard";
 import PageHeader from "../components/PageHeader";
 import Header from "../components/dashboard/Header";
+import { AnalyticRaw, PropertyDashboard } from "../types";
 
 export const DASHBOARD_QUERY = gql`
   query GetDashboardData {
     dashboard {
-      visits {
-        today
-        yesterday
-        last7Days
-      }
-      leads {
-        today
-        yesterday
-        last7Days
-      }
-      users {
-        today
-        yesterday
-        last7Days
-      }
       properties {
         uuid
         title
@@ -34,6 +20,20 @@ export const DASHBOARD_QUERY = gql`
         status
         publishedStatus
         currency
+      }
+    }
+    analytics {
+      visitsRaw {
+        day
+        count
+      }
+      leadsRaw {
+        day
+        count
+      }
+      usersRaw {
+        day
+        count
       }
     }
   }
@@ -51,22 +51,24 @@ export default function Dashboard() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error...</p>;
 
-  const sessions = data.dashboard?.visits;
-  const users = data.dashboard?.users;
-  const leads = data.dashboard?.leads;
+  const visitsRaw: AnalyticRaw[] = data.analytics?.visitsRaw;
+  const leadsRaw: AnalyticRaw[] = data.analytics?.leadsRaw;
+  const usersRaw: AnalyticRaw[] = data.analytics?.usersRaw;
 
   return (
     <div>
       <PageHeader title="Dashboard" />
 
-      {sessions && <Header sessions={sessions} users={users} leads={leads} />}
+      {visitsRaw && visitsRaw.length > 0 && (
+        <Header visitsRaw={visitsRaw} leadsRaw={leadsRaw} usersRaw={usersRaw} />
+      )}
 
       <div className="mt-5 py-5 font-medium text-md leading-5 rounded-md text-gray-500">
         Last Properties
       </div>
       <div className="">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
-          {data.dashboard.properties.map((property) => (
+          {data.dashboard.properties.map((property: PropertyDashboard) => (
             <div key={property.uuid}>
               <PropertyCard {...property} />
             </div>
