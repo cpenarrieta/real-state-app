@@ -7,6 +7,7 @@ import PropertyLocationForm from "../../components/address/PropertyLocationForm"
 import PropertyDetailsForm from "../../components/details/PropertyDetailsForm";
 import PropertyPicturesFormWrapper from "../../components/pictures/PropertyPicturesFormWrapper";
 import PropertyThemeForm from "../../components/theme/PropertyThemeForm";
+import { PROPERTY_QUERY } from "../../queries/getProperty";
 
 const SAVE_PROPERTY_MUTATION = gql`
   mutation SaveProperty($property: PropertyInput) {
@@ -41,7 +42,6 @@ export default function ManagePropertyEdit({
   lon,
   mainImageId,
   mainPictureLowRes,
-  refetch,
   color,
   hidePrice,
   strata,
@@ -49,7 +49,15 @@ export default function ManagePropertyEdit({
   const [
     saveProperty,
     { loading: savePropertyLoading, error: savePropertyError },
-  ] = useMutation(SAVE_PROPERTY_MUTATION);
+  ] = useMutation(SAVE_PROPERTY_MUTATION, {
+    refetchQueries: [
+      {
+        query: PROPERTY_QUERY,
+        variables: { uuid },
+      },
+    ],
+    awaitRefetchQueries: true,
+  });
   const { setShowAlert } = useAlert();
 
   useEffect(() => {
@@ -77,7 +85,6 @@ export default function ManagePropertyEdit({
             uuid={uuid}
             saveProperty={saveProperty}
             savePropertyLoading={savePropertyLoading}
-            refetch={refetch}
             price={price}
             currency={currency}
             lotSize={lotSize}
@@ -116,7 +123,6 @@ export default function ManagePropertyEdit({
             uuid={uuid}
             saveProperty={saveProperty}
             savePropertyLoading={savePropertyLoading}
-            refetch={refetch}
             address1={address1}
             zipCode={zipCode}
             city={city}
@@ -150,7 +156,6 @@ export default function ManagePropertyEdit({
           <PropertyPicturesFormWrapper
             saveProperty={saveProperty}
             savePropertyLoading={savePropertyLoading}
-            refetch={refetch}
             mainImageId={mainImageId}
             mainPictureLowRes={mainPictureLowRes}
           />
@@ -230,7 +235,6 @@ export default function ManagePropertyEdit({
             saveProperty={saveProperty}
             savePropertyLoading={savePropertyLoading}
             color={color}
-            refetch={refetch}
           />
         </div>
       </div>

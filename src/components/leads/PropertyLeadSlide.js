@@ -6,6 +6,7 @@ import { useAlert } from "../../context/AlertContext";
 import { formatPhoneNumber } from "../../util/formatPhoneNumber";
 import { splitRawData } from "../../util/splitRawData";
 import { formatNumber } from "../../util/formatNumber";
+import { sumData } from '../../util/sumRawData'
 
 const LEADS_QUERY = gql`
   query LeadAnalytics($id: Int!, $uuid: String!) {
@@ -26,19 +27,6 @@ const UPDATE_LEAD_MUTATION = gql`
     updateLead(id: $id, uuid: $uuid, leadStatus: $leadStatus, notes: $notes)
   }
 `;
-
-const sumData = (raw) => {
-  let sum = 0;
-  if (raw && raw.length >= 0) {
-    raw.forEach((r) => {
-      sum += r.count;
-    });
-
-    return sum;
-  }
-
-  return 0;
-};
 
 export default function PropertyLeadSlide({
   showDetails,

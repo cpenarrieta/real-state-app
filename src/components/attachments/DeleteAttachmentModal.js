@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
 import { Transition } from "@tailwindui/react";
 import { useMutation, gql } from "@apollo/client";
+import { useParams } from "react-router-dom";
 import { useAlert } from "../../context/AlertContext";
+import { ATTACHMENTS_QUERY } from "../../queries/getAttachments";
 
 const DELETE_ATTACHMENT_MUTATION = gql`
   mutation SeleteAttachment($id: Int!) {
@@ -13,9 +15,20 @@ export default function DeleteAttachmentModal({
   showModal,
   setShowModal,
   attachmentToDelete,
-  refetch,
 }) {
-  const [deleteAttachment, { error }] = useMutation(DELETE_ATTACHMENT_MUTATION);
+  const { propertyId } = useParams();
+  const [deleteAttachment, { error }] = useMutation(
+    DELETE_ATTACHMENT_MUTATION,
+    {
+      refetchQueries: [
+        {
+          query: ATTACHMENTS_QUERY,
+          variables: { uuid: propertyId },
+        },
+      ],
+      awaitRefetchQueries: true,
+    }
+  );
   const { setShowAlert } = useAlert();
 
   useEffect(() => {
@@ -110,7 +123,6 @@ export default function DeleteAttachmentModal({
                           id: attachmentToDelete,
                         },
                       });
-                      await refetch();
                       setShowModal(false);
                     }}
                   >

@@ -1,21 +1,9 @@
 import React, { useState } from "react";
 import AnalyticRow from "./AnalyticRow";
-import { AnalyticTabsProps, AnalyticRawDate } from "../../types";
+import { AnalyticTabsProps } from "../../types";
 import { splitRawData } from "../../util/splitRawData";
 import { formatNumber } from "../../util/formatNumber";
-
-const sumData = (raw: AnalyticRawDate[]) => {
-  let sum = 0;
-  if (raw && raw.length >= 0) {
-    raw.forEach((r) => {
-      sum += r.count;
-    });
-
-    return sum;
-  }
-
-  return 0;
-};
+import { sumData } from '../../util/sumRawData'
 
 export default function Header({
   visitsRaw,

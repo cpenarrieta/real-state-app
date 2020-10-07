@@ -7,7 +7,6 @@ export default function PropertyThemeForm({
   saveProperty,
   savePropertyLoading,
   color,
-  refetch,
 }) {
   const [formThemeSuccess, setFormThemeSuccess] = useState(false);
 
@@ -38,7 +37,6 @@ export default function PropertyThemeForm({
             },
           });
           setFormThemeSuccess(true);
-          refetch();
         }}
       >
         {({ isSubmitting, errors, touched }) => {

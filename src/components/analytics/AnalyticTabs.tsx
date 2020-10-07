@@ -3,22 +3,10 @@ import { useLocation } from "react-router-dom";
 import AnalyticRow from "./AnalyticRow";
 import GraphPropertyAnalytics from "./GraphPropertyAnalytics";
 import GraphPropertyAnalyticsBars from "./GraphPropertyAnalyticsBars";
-import { AnalyticRawDate, AnalyticTabsProps } from "../../types";
+import { AnalyticTabsProps } from "../../types";
 import { splitRawData } from "../../util/splitRawData";
 import { formatNumber } from '../../util/formatNumber'
-
-const sumData = (raw: AnalyticRawDate[]) => {
-  let sum = 0;
-  if (raw && raw.length >= 0) {
-    raw.forEach((r) => {
-      sum += r.count;
-    });
-
-    return sum;
-  }
-
-  return 0;
-};
+import { sumData } from '../../util/sumRawData'
 
 export default function AnalyticTabs({
   visitsRaw,

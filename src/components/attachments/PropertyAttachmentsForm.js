@@ -8,6 +8,7 @@ import { useQuery, useMutation, gql } from "@apollo/client";
 import TextField from "../details/TextField";
 import DeleteAttachmentModal from "./DeleteAttachmentModal";
 import { useAlert } from "../../context/AlertContext";
+import { ATTACHMENTS_QUERY } from "../../queries/getAttachments";
 
 const S3_SIGN_MUTATION = gql`
   mutation SignS3($filename: String!, $filetype: String!) {
@@ -21,16 +22,6 @@ const S3_SIGN_MUTATION = gql`
 const SAVE_ATTACHMENT_MUTATION = gql`
   mutation SaveAttachment($url: String!, $title: String!, $uuid: String!) {
     saveAttachment(url: $url, title: $title, uuid: $uuid)
-  }
-`;
-
-const ATTACHMENTS_QUERY = gql`
-  query Attachments($uuid: String!) {
-    attachments(uuid: $uuid) {
-      id
-      title
-      url
-    }
   }
 `;
 
@@ -48,7 +39,7 @@ export default function PropertyAttachmentsForm() {
   const [formAttachmentsSuccess, setFormAttachmentsSuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [attachmentToDelete, setAttachmentToDelete] = useState();
-  const { error, data, refetch } = useQuery(ATTACHMENTS_QUERY, {
+  const { error, data } = useQuery(ATTACHMENTS_QUERY, {
     variables: { uuid: propertyId },
   });
   const [signS3, { loading: loadingSignS3, error: errorSignS3 }] = useMutation(
@@ -57,7 +48,15 @@ export default function PropertyAttachmentsForm() {
   const [
     saveAttachment,
     { loading: loadingSaveAttachment, error: errorSaveAttachment },
-  ] = useMutation(SAVE_ATTACHMENT_MUTATION);
+  ] = useMutation(SAVE_ATTACHMENT_MUTATION, {
+    refetchQueries: [
+      {
+        query: ATTACHMENTS_QUERY,
+        variables: { uuid: propertyId },
+      },
+    ],
+    awaitRefetchQueries: true,
+  });
   const { setShowAlert } = useAlert();
 
   useEffect(() => {
@@ -115,7 +114,6 @@ export default function PropertyAttachmentsForm() {
     });
     setFile(null);
     setFormAttachmentsSuccess(true);
-    await refetch();
   };
 
   const attachments = data?.attachments;
@@ -316,7 +314,6 @@ export default function PropertyAttachmentsForm() {
         showModal={showModal}
         setShowModal={setShowModal}
         attachmentToDelete={attachmentToDelete}
-        refetch={refetch}
       />
     </div>
   );

@@ -7,7 +7,6 @@ export default function PropertyLocationForm({
   uuid,
   saveProperty,
   savePropertyLoading,
-  refetch,
   address1,
   zipCode,
   city,
@@ -64,7 +63,6 @@ export default function PropertyLocationForm({
             },
           });
           setFormLocationSuccess(true);
-          refetch();
         }}
       >
         {({ values, isSubmitting }) => {

@@ -10,7 +10,6 @@ const PropertyPicture = memo(
     id,
     saveProperty,
     propertyId,
-    refetchGetProperty,
     refetchGetImages,
     forwardedRef,
     title,
@@ -92,7 +91,6 @@ const PropertyPicture = memo(
                       },
                     },
                   });
-                  refetchGetProperty();
                 }}
               >
                 Set Cover

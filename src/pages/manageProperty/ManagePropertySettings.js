@@ -6,6 +6,7 @@ import DeletePropertyModal from "../../components/settings/DeletePropertyModal";
 import { useAlert } from "../../context/AlertContext";
 import { differenceInDays, format, parseISO } from "date-fns";
 import { getPublishedStatus } from "../../util/propertyStatus";
+import { PROPERTY_QUERY } from "../../queries/getProperty";
 
 const PROPERTY_ORDERS_QUERY = gql`
   query PropertyOrders($uuid: String!) {
@@ -30,7 +31,6 @@ const SET_AS_SOLD_MUTATION = gql`
 `;
 
 export default function ManagePropertySettings({
-  refetch,
   status,
   publishedStatus,
   webPaidUntil,
@@ -42,7 +42,16 @@ export default function ManagePropertySettings({
     variables: { uuid: propertyId },
   });
   const [markAsSold, { error: errorSetAsSold }] = useMutation(
-    SET_AS_SOLD_MUTATION
+    SET_AS_SOLD_MUTATION,
+    {
+      refetchQueries: [
+        {
+          query: PROPERTY_QUERY,
+          variables: { uuid: propertyId },
+        },
+      ],
+      awaitRefetchQueries: true,
+    }
   );
 
   useEffect(() => {
@@ -114,7 +123,6 @@ export default function ManagePropertySettings({
                           undo: false,
                         },
                       });
-                      await refetch();
                     }}
                   >
                     Mark As Sold
@@ -138,7 +146,6 @@ export default function ManagePropertySettings({
                           undo: true,
                         },
                       });
-                      await refetch();
                     }}
                   >
                     Remove Sold Status

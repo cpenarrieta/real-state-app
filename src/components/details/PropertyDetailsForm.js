@@ -38,7 +38,6 @@ export default function PropertyDetailsForm({
   uuid,
   saveProperty,
   savePropertyLoading,
-  refetch,
   price,
   currency,
   lotSize,
@@ -104,7 +103,6 @@ export default function PropertyDetailsForm({
             },
           });
           setFormDetailsSuccess(true);
-          refetch();
         }}
       >
         {({ isSubmitting, errors, touched }) => {

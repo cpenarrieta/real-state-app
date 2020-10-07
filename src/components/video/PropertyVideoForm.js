@@ -6,7 +6,6 @@ export default function PropertyVideoForm({
   uuid,
   saveProperty,
   savePropertyLoading,
-  refetch,
   videoType,
   videoUrl,
 }) {
@@ -42,7 +41,6 @@ export default function PropertyVideoForm({
             },
           });
           setFormVideoSuccess(true);
-          refetch();
         }}
       >
         {({ values, isSubmitting }) => {

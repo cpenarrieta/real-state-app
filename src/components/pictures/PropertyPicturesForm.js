@@ -19,7 +19,6 @@ const SAVE_IMAGES_MUTATION = gql`
 
 export default function PropertyPicturesForm({
   saveProperty,
-  refetchGetProperty,
   refetchGetImages,
   mainImageId,
   mainPictureLowRes,
@@ -144,7 +143,6 @@ export default function PropertyPicturesForm({
                                   <PropertyPicture
                                     {...image}
                                     saveProperty={saveProperty}
-                                    refetchGetProperty={refetchGetProperty}
                                     refetchGetImages={refetchGetImages}
                                     propertyId={propertyId}
                                   />

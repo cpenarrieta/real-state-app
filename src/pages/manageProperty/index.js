@@ -7,7 +7,7 @@ import {
   useParams,
   useHistory,
 } from "react-router-dom";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { format, parseISO, compareAsc } from "date-fns";
 import ManagePropertyEdit from "./ManagePropertyEdit";
 import ManagePropertyLeads from "./ManagePropertyLeads";
@@ -17,6 +17,7 @@ import ManagePropertyAnalytics from "./ManagePropertyAnalytics";
 import ManagePropertyPayment from "./ManagePropertyPayment";
 import { getPublishedStatus } from "../../util/propertyStatus";
 import ShareModal from "../../components/share/ShareModal";
+import { PROPERTY_QUERY } from "../../queries/getProperty";
 
 const ButtonNotSelected =
   "group inline-flex items-center py-4 px-1 border-b-2 border-transparent font-medium text-sm leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300";
@@ -27,43 +28,6 @@ const IconNotSelected =
 const IconSelected =
   "-ml-0.5 mr-2 h-5 w-5 text-indigo-500 group-focus:text-indigo-600";
 
-const PROPERTY_QUERY = gql`
-  query GetProperty($uuid: String!) {
-    property(uuid: $uuid) {
-      title
-      uuid
-      price
-      currency
-      lotSize
-      builtYear
-      grossTaxesLastYear
-      bedrooms
-      bathrooms
-      propertyType
-      description
-      listingId
-      mainPictureLowRes
-      mainImageId
-      status
-      publishedStatus
-      webPaidUntil
-      username
-      videoUrl
-      videoType
-      address1
-      zipCode
-      city
-      province
-      community
-      country
-      lat
-      lon
-      color
-      hidePrice
-      strata
-    }
-  }
-`;
 
 export default function ManageProperty() {
   const { path } = useRouteMatch();
@@ -77,7 +41,7 @@ export default function ManageProperty() {
   const matchPayment = useRouteMatch("/manage-property/:propertyId/payment");
   const matchSettings = useRouteMatch("/manage-property/:propertyId/settings");
   const matchPreview = useRouteMatch("/manage-property/:propertyId/preview");
-  const { loading, error, data, refetch } = useQuery(PROPERTY_QUERY, {
+  const { loading, error, data } = useQuery(PROPERTY_QUERY, {
     variables: { uuid: propertyId },
   });
   const [showShareModal, setShowShareModal] = useState(false);
@@ -375,10 +339,10 @@ export default function ManageProperty() {
       <div className="pt-5">
         <Switch>
           <Route exact path={path}>
-            <ManagePropertyEdit {...data?.property} refetch={refetch} />
+            <ManagePropertyEdit {...data?.property} />
           </Route>
           <Route exact path={`${path}/edit`}>
-            <ManagePropertyEdit {...data?.property} refetch={refetch} />
+            <ManagePropertyEdit {...data?.property} />
           </Route>
           <Route exact path={`${path}/leads`}>
             <ManagePropertyLeads />
@@ -391,7 +355,6 @@ export default function ManageProperty() {
               status={status}
               publishedStatus={publishedStatus}
               webPaidUntil={webPaidUntil}
-              refetch={refetch}
             />
           </Route>
           <Route exact path={`${path}/analytics`}>
