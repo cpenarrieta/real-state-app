@@ -229,50 +229,55 @@ export default function SidebarDesktop({
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <div className="origin-bottom-left relative left-0 mt-2 w-full rounded-md shadow-lg">
+              {(ref) => (
                 <div
-                  className="rounded-md bg-white shadow-xs"
-                  role="menu"
-                  aria-orientation="vertical"
-                  aria-labelledby="options-menu"
+                  ref={ref}
+                  className="origin-bottom-left relative left-0 mt-2 w-full rounded-md shadow-lg"
                 >
-                  <div className="px-4 py-3">
-                    <p className="text-sm leading-5">Signed in as</p>
-                    <p className="text-sm leading-5 font-medium text-gray-900 truncate">
-                      {user && user.email}
-                    </p>
-                  </div>
-                  <div className="border-t border-gray-100"></div>
-                  <div className="py-1">
-                    <Link
-                      to="/settings"
-                      className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
-                      role="menuitem"
-                    >
-                      Account settings
-                    </Link>
-                    <Link
-                      to="/support"
-                      className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
-                      role="menuitem"
-                    >
-                      Support
-                    </Link>
-                  </div>
-                  <div className="border-t border-gray-100"></div>
-                  <div className="py-1">
-                    <button
-                      className="block w-full text-left px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
-                      role="menuitem"
-                      onClick={() =>
-                        logout({ returnTo: window.location.origin })
-                      }
-                    >
-                      Sign out
-                    </button>
+                  <div
+                    className="rounded-md bg-white shadow-xs"
+                    role="menu"
+                    aria-orientation="vertical"
+                    aria-labelledby="options-menu"
+                  >
+                    <div className="px-4 py-3">
+                      <p className="text-sm leading-5">Signed in as</p>
+                      <p className="text-sm leading-5 font-medium text-gray-900 truncate">
+                        {user && user.email}
+                      </p>
+                    </div>
+                    <div className="border-t border-gray-100"></div>
+                    <div className="py-1">
+                      <Link
+                        to="/settings"
+                        className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                        role="menuitem"
+                      >
+                        Account settings
+                      </Link>
+                      <Link
+                        to="/support"
+                        className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                        role="menuitem"
+                      >
+                        Support
+                      </Link>
+                    </div>
+                    <div className="border-t border-gray-100"></div>
+                    <div className="py-1">
+                      <button
+                        className="block w-full text-left px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                        role="menuitem"
+                        onClick={() =>
+                          logout({ returnTo: window.location.origin })
+                        }
+                      >
+                        Sign out
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </Transition>
           </div>
           {user && (

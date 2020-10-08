@@ -28,12 +28,11 @@ const fetchCheckoutSession = async ({
   }).then((res) => res.json());
 };
 
-const fetchProducts = async ({ accessToken, country }) => {
+const fetchProducts = async (country) => {
   return fetch(`${process.env.REACT_APP_API_URI}config/${country}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      authorization: `Bearer ${accessToken}`,
     },
   }).then((res) => res.json());
 };
@@ -48,15 +47,12 @@ export default function ManagePropertyPayment() {
 
   useEffect(() => {
     async function asyncFetchProducts() {
-      const { lifetime, oneYear } = await fetchProducts({
-        accessToken,
-        country: user.country,
-      });
+      const { lifetime, oneYear } = await fetchProducts(user.country);
       setLifetime(lifetime);
       setOneYear(oneYear);
     }
     asyncFetchProducts();
-  }, [accessToken, user.country]);
+  }, [user.country]);
 
   const handleClick = async (tier) => {
     const { sessionId } = await fetchCheckoutSession({
