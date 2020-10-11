@@ -28,7 +28,7 @@ export default function ShareModal({
     if (copied) {
       const handler = window.setTimeout(() => {
         setCopied(false);
-      }, 1000);
+      }, 2000);
       return () => {
         window.clearTimeout(handler);
       };

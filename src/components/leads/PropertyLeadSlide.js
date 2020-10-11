@@ -59,7 +59,7 @@ export default function PropertyLeadSlide({
     if (formNotesSuccess) {
       const handler = window.setTimeout(() => {
         setFormNotesSuccess(false);
-      }, 1000);
+      }, 2000);
       return () => {
         window.clearTimeout(handler);
       };

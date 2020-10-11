@@ -57,7 +57,7 @@ export default function PropertyDetailsForm({
     if (formDetailsSuccess) {
       const handler = window.setTimeout(() => {
         setFormDetailsSuccess(false);
-      }, 1000);
+      }, 2000);
       return () => {
         window.clearTimeout(handler);
       };

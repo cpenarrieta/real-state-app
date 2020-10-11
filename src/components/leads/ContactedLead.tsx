@@ -19,7 +19,8 @@ const UPDATE_LEAD_MUTATION = gql`
 `;
 
 type ContactedLeadProps = {
-  lead: PropertyLead;  setSelectedLead: React.Dispatch<React.SetStateAction<PropertyLead | null>>;
+  lead: PropertyLead;
+  setSelectedLead: React.Dispatch<React.SetStateAction<PropertyLead | null>>;
   setShowDetails: React.Dispatch<React.SetStateAction<boolean>>;
   fromProperty: boolean;
 };

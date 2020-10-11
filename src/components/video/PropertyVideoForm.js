@@ -15,7 +15,7 @@ export default function PropertyVideoForm({
     if (formVideoSuccess) {
       const handler = window.setTimeout(() => {
         setFormVideoSuccess(false);
-      }, 1000);
+      }, 2000);
       return () => {
         window.clearTimeout(handler);
       };

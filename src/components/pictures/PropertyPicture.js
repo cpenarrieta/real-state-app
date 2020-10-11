@@ -36,7 +36,7 @@ const PropertyPicture = memo(
       if (state === "submitted") {
         const handler = window.setTimeout(() => {
           setState("idle");
-        }, 1000);
+        }, 2000);
         return () => {
           window.clearTimeout(handler);
         };

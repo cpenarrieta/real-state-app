@@ -22,7 +22,7 @@ export default function PropertyLocationForm({
     if (formLocationSuccess) {
       const handler = window.setTimeout(() => {
         setFormLocationSuccess(false);
-      }, 1000);
+      }, 2000);
       return () => {
         window.clearTimeout(handler);
       };

@@ -79,7 +79,7 @@ export default function PropertyAttachmentsForm() {
     if (formAttachmentsSuccess) {
       const handler = window.setTimeout(() => {
         setFormAttachmentsSuccess(false);
-      }, 1000);
+      }, 2000);
       return () => {
         window.clearTimeout(handler);
       };

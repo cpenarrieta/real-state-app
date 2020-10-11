@@ -69,7 +69,7 @@ export default function PropertyPicturesForm({
     if (formPicturesSuccess) {
       const handler = window.setTimeout(() => {
         setFormPicturesSuccess(false);
-      }, 1000);
+      }, 2000);
       return () => {
         window.clearTimeout(handler);
       };

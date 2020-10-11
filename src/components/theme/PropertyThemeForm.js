@@ -14,7 +14,7 @@ export default function PropertyThemeForm({
     if (formThemeSuccess) {
       const handler = window.setTimeout(() => {
         setFormThemeSuccess(false);
-      }, 1000);
+      }, 2000);
       return () => {
         window.clearTimeout(handler);
       };

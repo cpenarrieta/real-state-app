@@ -7,6 +7,7 @@ import PropertyLocationForm from "../../components/address/PropertyLocationForm"
 import PropertyDetailsForm from "../../components/details/PropertyDetailsForm";
 import PropertyPicturesFormWrapper from "../../components/pictures/PropertyPicturesFormWrapper";
 import PropertyThemeForm from "../../components/theme/PropertyThemeForm";
+import OpenHouseForm from "../../components/openhouse/OpenHouseForm";
 import { PROPERTY_QUERY } from "../../queries/getProperty";
 
 const SAVE_PROPERTY_MUTATION = gql`
@@ -45,6 +46,7 @@ export default function ManagePropertyEdit({
   color,
   hidePrice,
   strata,
+  openHouseActive,
 }) {
   const [
     saveProperty,
@@ -209,6 +211,32 @@ export default function ManagePropertyEdit({
             </div>
           </div>
           <PropertyAttachmentsForm />
+        </div>
+      </div>
+
+      <div className="hidden sm:block">
+        <div className="py-5">
+          <div className="border-t border-gray-200"></div>
+        </div>
+      </div>
+
+      <div className="mt-10 sm:mt-0">
+        <div className="md:grid md:grid-cols-3 md:gap-6">
+          <div className="md:col-span-1">
+            <div className="px-4 sm:px-0">
+              <h3 className="text-lg font-medium leading-6 text-gray-900">
+                Open House
+              </h3>
+              <p className="mt-1 text-sm leading-5 text-gray-600">
+                Set open house schedule
+              </p>
+            </div>
+          </div>
+          <OpenHouseForm
+            uuid={uuid}
+            openHouseActive={openHouseActive}
+            saveProperty={saveProperty}
+          />
         </div>
       </div>
 
