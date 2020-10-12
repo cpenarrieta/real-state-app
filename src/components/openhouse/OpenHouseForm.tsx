@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { MutationFunctionOptions, FetchResult } from "@apollo/client";
-import { Formik, Form } from "formik";
+import { Formik, Form, FieldArray } from "formik";
 import ToogleIcon from "./ToogleIcon";
 import OpenHouseRow from "./OpenHouseRow";
 
@@ -37,6 +37,13 @@ export default function OpenHouseForm({
       <Formik
         initialValues={{
           openHouseActive: openHouseActive || false,
+          openHouseDates: [
+            {
+              date: new Date(),
+              start: new Date(),
+              end: new Date(),
+            },
+          ],
         }}
         onSubmit={async (values) => {
           await saveProperty({
@@ -50,8 +57,9 @@ export default function OpenHouseForm({
           setFormOpenHouseFormSuccess(true);
         }}
       >
-        {({ isSubmitting }) => {
+        {({ isSubmitting, values }) => {
           const submitButtonDisabled = isSubmitting;
+          const { openHouseActive } = values;
 
           return (
             <Form>
@@ -65,10 +73,66 @@ export default function OpenHouseForm({
                       <ToogleIcon name="openHouseActive" />
                     </div>
 
-                    <OpenHouseRow />
-                    <OpenHouseRow />
-                    <OpenHouseRow />
-                    <OpenHouseRow />
+                    {openHouseActive && (
+                      <div className="col-span-6 border-b border-gray-200 sm:rounded-lg divide-gray-200 shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                        <div className="px-6 py-3  flex justify-between text-left text-xs leading-5 font-medium text-gray-500 bg-gray-50  leading-4 uppercase">
+                          <div>Date</div>
+                          <div>From</div>
+                          <div>To</div>
+                          <div>Action</div>
+                        </div>
+                        <div className="bg-white divide-y divide-gray-200">
+                          <FieldArray name="openHouseDates">
+                            {({ insert, remove, push }) => {
+                              return (
+                                <>
+                                  {values.openHouseDates.length > 0 &&
+                                    values.openHouseDates.map(
+                                      (openHouseDate, index) => (
+                                        <OpenHouseRow
+                                          key={`open-house-${index}`}
+                                          index={index}
+                                          remove={remove}
+                                        />
+                                      )
+                                    )}
+                                  <div className="col-span-6 py-3 px-6">
+                                    <span className="inline-flex rounded-md shadow-sm">
+                                      <button
+                                        type="button"
+                                        className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:border-green-700 focus:shadow-outline-green active:bg-green-700 transition ease-in-out duration-150"
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          push({
+                                            date: new Date(),
+                                            start: new Date(),
+                                            end: new Date(),
+                                          });
+                                        }}
+                                      >
+                                        <svg
+                                          className="-ml-0.5 mr-2 h-4 w-4"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          viewBox="0 0 20 20"
+                                          fill="currentColor"
+                                        >
+                                          <path
+                                            fillRule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                                            clipRule="evenodd"
+                                          />
+                                        </svg>
+                                        Add Date
+                                      </button>
+                                    </span>
+                                  </div>
+                                </>
+                              );
+                            }}
+                          </FieldArray>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
 
