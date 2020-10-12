@@ -3,6 +3,7 @@ import { MutationFunctionOptions, FetchResult } from "@apollo/client";
 import { Formik, Form, FieldArray } from "formik";
 import ToogleIcon from "./ToogleIcon";
 import OpenHouseRow from "./OpenHouseRow";
+import { parseISO } from "date-fns";
 
 type OpenHouseFormProps = {
   uuid: string;
@@ -40,8 +41,8 @@ export default function OpenHouseForm({
           openHouseDates: [
             {
               date: new Date(),
-              start: new Date(),
-              end: new Date(),
+              start: parseISO("2020-02-11T13:00:00"),
+              end: parseISO("2020-02-11T16:00:00"),
             },
           ],
         }}
@@ -105,8 +106,12 @@ export default function OpenHouseForm({
                                           e.preventDefault();
                                           push({
                                             date: new Date(),
-                                            start: new Date(),
-                                            end: new Date(),
+                                            start: parseISO(
+                                              "2020-02-11T13:00:00"
+                                            ),
+                                            end: parseISO(
+                                              "2020-02-11T16:00:00"
+                                            ),
                                           });
                                         }}
                                       >
