@@ -228,7 +228,9 @@ export default function ManagePropertyEdit({
                 Open House
               </h3>
               <p className="mt-1 text-sm leading-5 text-gray-600">
-                Set open house schedule
+                Set open house schedule. Your property website will show open
+                house information that is coming next, not if the open house
+                date already happened.
               </p>
             </div>
           </div>

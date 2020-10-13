@@ -3,7 +3,26 @@ import { MutationFunctionOptions, FetchResult } from "@apollo/client";
 import { Formik, Form, FieldArray } from "formik";
 import ToogleIcon from "./ToogleIcon";
 import OpenHouseRow from "./OpenHouseRow";
-import { parseISO } from "date-fns";
+import { useAlert } from "../../context/AlertContext";
+import { parseISO, format } from "date-fns";
+import { useQuery, useMutation, gql } from "@apollo/client";
+
+const SAVE_OPEN_HOUSE_MUTATION = gql`
+  mutation SaveOpenHouse($openHouse: [OpenHouseInput]!, $uuid: String!) {
+    saveOpenHouse(openHouse: $openHouse, uuid: $uuid)
+  }
+`;
+
+const OPEN_HOUSE_QUERY = gql`
+  query PropertyOpenHouse($uuid: String!) {
+    propertyOpenHouse(uuid: $uuid) {
+      id
+      date
+      timeStart
+      timeEnd
+    }
+  }
+`;
 
 type OpenHouseFormProps = {
   uuid: string;
@@ -11,6 +30,28 @@ type OpenHouseFormProps = {
   saveProperty: (
     options?: MutationFunctionOptions<any, Record<string, any>> | undefined
   ) => Promise<FetchResult<any, Record<string, any>, Record<string, any>>>;
+};
+
+interface OpenHouse {
+  id: number;
+  date: string;
+  timeStart: string;
+  timeEnd: string;
+}
+
+interface OpenHouseData {
+  propertyOpenHouse: OpenHouse[];
+}
+
+const formatData = (propertyOpenHouse: OpenHouse[]) => {
+  return propertyOpenHouse?.map((o) => {
+    return {
+      id: o.id,
+      date: parseISO(o.date.substring(0, o.date.length - 1)),
+      start: parseISO(o.timeStart.substring(0, o.timeStart.length - 1)),
+      end: parseISO(o.timeEnd.substring(0, o.timeEnd.length - 1)),
+    };
+  });
 };
 
 export default function OpenHouseForm({
@@ -21,6 +62,16 @@ export default function OpenHouseForm({
   const [formOpenHouseFormSuccess, setFormOpenHouseFormSuccess] = useState(
     false
   );
+  const { loading, error, data, refetch } = useQuery<OpenHouseData>(
+    OPEN_HOUSE_QUERY,
+    {
+      variables: { uuid },
+    }
+  );
+  const [saveOpenHouse, { error: errorSaveOpenHouse }] = useMutation(
+    SAVE_OPEN_HOUSE_MUTATION
+  );
+  const { setShowAlert } = useAlert();
 
   useEffect(() => {
     if (formOpenHouseFormSuccess) {
@@ -33,28 +84,71 @@ export default function OpenHouseForm({
     }
   }, [formOpenHouseFormSuccess]);
 
+  useEffect(() => {
+    if (errorSaveOpenHouse || error) {
+      setShowAlert(true);
+    }
+  }, [error, errorSaveOpenHouse, setShowAlert]);
+
+  if (loading) return <p>loading</p>;
+
+  const openHouseData = formatData(data?.propertyOpenHouse || []);
+
   return (
     <div className="mt-5 md:mt-0 md:col-span-2">
       <Formik
         initialValues={{
           openHouseActive: openHouseActive || false,
-          openHouseDates: [
-            {
-              date: new Date(),
-              start: parseISO("2020-02-11T13:00:00"),
-              end: parseISO("2020-02-11T16:00:00"),
-            },
-          ],
+          openHouseDates: openHouseData?.length
+            ? openHouseData
+            : [
+                {
+                  id: -1,
+                  date: new Date(),
+                  start: parseISO("2020-02-11T13:00:00"),
+                  end: parseISO("2020-02-11T16:00:00"),
+                },
+              ],
         }}
-        onSubmit={async (values) => {
-          await saveProperty({
-            variables: {
-              property: {
+        onSubmit={async (values, { setValues }) => {
+          if (values.openHouseDates && values.openHouseDates.length > 0) {
+            const input = values.openHouseDates.map((o) => {
+              return {
+                id: o.id,
+                date: format(o.date, "yyyy-MM-dd"),
+                start: format(o.start, "HH:mm"),
+                end: format(o.end, "HH:mm"),
+              };
+            });
+
+            await saveOpenHouse({
+              variables: {
                 uuid,
-                openHouseActive: values.openHouseActive,
+                openHouse: input,
               },
-            },
-          });
+            });
+
+            const refreshData = await refetch({
+              variables: uuid,
+            });
+
+            setValues({
+              openHouseActive: values.openHouseActive,
+              openHouseDates: formatData(refreshData?.data?.propertyOpenHouse),
+            });
+          }
+
+          if (values.openHouseActive !== openHouseActive) {
+            await saveProperty({
+              variables: {
+                property: {
+                  uuid,
+                  openHouseActive: values.openHouseActive,
+                },
+              },
+            });
+          }
+
           setFormOpenHouseFormSuccess(true);
         }}
       >
@@ -105,6 +199,7 @@ export default function OpenHouseForm({
                                         onClick={(e) => {
                                           e.preventDefault();
                                           push({
+                                            id: -1,
                                             date: new Date(),
                                             start: parseISO(
                                               "2020-02-11T13:00:00"
