@@ -4,7 +4,6 @@ import { useQuery, useMutation, gql } from "@apollo/client";
 import OrderItem from "../../components/order/OrderItem";
 import DeletePropertyModal from "../../components/settings/DeletePropertyModal";
 import { useAlert } from "../../context/AlertContext";
-import { differenceInDays, format, parseISO } from "date-fns";
 import { getPublishedStatus } from "../../util/propertyStatus";
 import { PROPERTY_QUERY } from "../../queries/getProperty";
 
@@ -30,11 +29,7 @@ const SET_AS_SOLD_MUTATION = gql`
   }
 `;
 
-export default function ManagePropertySettings({
-  status,
-  publishedStatus,
-  webPaidUntil,
-}) {
+export default function ManagePropertySettings({ status, publishedStatus }) {
   const { propertyId } = useParams();
   const [showModal, setShowModal] = useState(false);
   const { setShowAlert } = useAlert();
@@ -62,14 +57,6 @@ export default function ManagePropertySettings({
 
   if (loading) {
     return <p>loading...</p>;
-  }
-
-  let webPaidUntilDate = null;
-  let webPaidUntilStr = null;
-
-  if (webPaidUntil) {
-    webPaidUntilDate = parseISO(webPaidUntil);
-    webPaidUntilStr = format(parseISO(webPaidUntil), "MMM do yyyy");
   }
 
   const orders = data?.propertyOrders;
@@ -166,7 +153,7 @@ export default function ManagePropertySettings({
               </dd>
             </div>
           )}
-          {webPaidUntil && (
+          {publishedStatus === "PUBLISHED" && (
             <div className="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
               <dt className="text-sm leading-5 font-medium text-gray-500">
                 Valid until

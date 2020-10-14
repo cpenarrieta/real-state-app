@@ -8,7 +8,6 @@ import {
   useHistory,
 } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import { format, parseISO, compareAsc } from "date-fns";
 import ManagePropertyEdit from "./ManagePropertyEdit";
 import ManagePropertyLeads from "./ManagePropertyLeads";
 import ManagePropertyPreview from "./ManagePropertyPreview";
@@ -56,18 +55,11 @@ export default function ManageProperty() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error...</p>;
 
-  const {
-    title,
-    webPaidUntil,
-    status,
-    publishedStatus,
-    username,
-  } = data?.property;
+  const { title, status, publishedStatus, username } = data?.property;
 
   const [publishedText, publishedColor] = getPublishedStatus(publishedStatus);
 
-  const isPropertyActive =
-    webPaidUntil && compareAsc(parseISO(webPaidUntil), new Date()) === 1;
+  const isPropertyActive = publishedStatus === "PUBLISHED";
 
   const liveWebsiteUrl = `${process.env.REACT_APP_STATIC_URI}${username}/${propertyId}`;
 
@@ -91,7 +83,7 @@ export default function ManageProperty() {
                 sold
               </span>
             )}
-            {webPaidUntil && (
+            {isPropertyActive && (
               <div className="mt-2 flex items-center text-sm leading-5 text-gray-500">
                 <svg
                   className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
@@ -351,7 +343,6 @@ export default function ManageProperty() {
             <ManagePropertySettings
               status={status}
               publishedStatus={publishedStatus}
-              webPaidUntil={webPaidUntil}
             />
           </Route>
           <Route exact path={`${path}/analytics`}>

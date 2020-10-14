@@ -23,7 +23,6 @@ const PROPERTY_QUERY = gql`
       mainImageId
       status
       publishedStatus
-      webPaidUntil
       username
       videoUrl
       videoType
