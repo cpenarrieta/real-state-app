@@ -172,8 +172,7 @@ export default function ManagePropertySettings({
                 Valid until
               </dt>
               <dd className="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-                {webPaidUntilStr} (
-                {differenceInDays(webPaidUntilDate, new Date())} days left)
+                Lifetime Access
               </dd>
             </div>
           )}

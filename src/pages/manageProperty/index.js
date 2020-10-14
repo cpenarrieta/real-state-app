@@ -28,7 +28,6 @@ const IconNotSelected =
 const IconSelected =
   "-ml-0.5 mr-2 h-5 w-5 text-indigo-500 group-focus:text-indigo-600";
 
-
 export default function ManageProperty() {
   const { path } = useRouteMatch();
   const { propertyId } = useParams();
@@ -105,10 +104,8 @@ export default function ManageProperty() {
                     clipRule="evenodd"
                   />
                 </svg>
-                Active until
-                <span className="text-blue-500 pl-1">
-                  {format(parseISO(webPaidUntil), "MMM do yyyy")}
-                </span>
+
+                <span className="text-blue-500 pl-1">Lifetime Access</span>
               </div>
             )}
           </div>
