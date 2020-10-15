@@ -12,21 +12,21 @@ const config = {
         backgroundColor: "rgba(54, 162, 235, 0.2)",
         borderColor: "rgba(54, 162, 235, 1)",
         data: [],
-        fill: true,
+        fill: false,
       },
       {
         label: "Users",
         backgroundColor: "rgba(255, 206, 86, 0.2)",
         borderColor: "rgba(255, 206, 86, 1)",
         data: [],
-        fill: true,
+        fill: false,
       },
       {
         label: "Leads",
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         borderColor: "rgba(75, 192, 192, 1)",
         data: [],
-        fill: true,
+        fill: false,
       },
     ],
   },
@@ -90,12 +90,16 @@ export default function GraphPropertyAnalytics({
 
   useEffect(() => {
     if (chartInstance && visitsRaw) {
+
+      console.log(visitsRaw, days)
+
       const labels = [];
       const sessionsDataSet = [];
       const leadsDataSet = [];
       const usersDataSet = [];
 
-      for (let i = 0; i < days; i++) {
+      // TODO should I add + 1 here or check the lowest date from the array
+      for (let i = 0; i < days + 1; i++) {
         const d = subDays(new Date(), i);
 
         // SESSIONS
