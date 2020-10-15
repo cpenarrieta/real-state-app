@@ -2,6 +2,18 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useQuery, gql } from "@apollo/client";
 import { PropertyPage } from "@cpenarrieta/real-state-property-components";
+import { parseISO } from "date-fns";
+
+const formatData = (propertyOpenHouse) => {
+  return propertyOpenHouse?.map((o) => {
+    return {
+      id: o.id,
+      date: parseISO(o.date.substring(0, o.date.length - 1)),
+      start: parseISO(o.timeStart.substring(0, o.timeStart.length - 1)),
+      end: parseISO(o.timeEnd.substring(0, o.timeEnd.length - 1)),
+    };
+  });
+};
 
 const PROPERTY_QUERY = gql`
   query GetProperty($uuid: String!) {
@@ -44,6 +56,7 @@ const PROPERTY_QUERY = gql`
       url
     }
     me {
+      uuid
       email
       firstName
       lastName
@@ -61,8 +74,8 @@ const PROPERTY_QUERY = gql`
       smallBio
     }
     otherProperties(uuid: $uuid) {
-      title
       uuid
+      title
       bedrooms
       bathrooms
       price
@@ -78,6 +91,12 @@ const PROPERTY_QUERY = gql`
       description
       url
       urlLowRes
+    }
+    propertyOpenHouse(uuid: $uuid) {
+      id
+      date
+      timeStart
+      timeEnd
     }
   }
 `;
@@ -111,6 +130,7 @@ export default function ManagePropertyPreview() {
     smallBio: userSmallBio,
     username,
   } = data?.me;
+  const openHouseData = formatData(data?.propertyOpenHouse || []);
 
   return (
     <PropertyPage
@@ -134,6 +154,7 @@ export default function ManagePropertyPreview() {
       userZipCode={userZipCode}
       userCountry={userCountry}
       userSmallBio={userSmallBio}
+      openHouse={openHouseData}
     />
   );
 }

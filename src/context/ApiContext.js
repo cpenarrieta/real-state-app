@@ -66,7 +66,14 @@ export const ApiProvider = ({ children }) => {
 
   const apolloClient = new ApolloClient({
     link: link,
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      property: {
+        keyFields: ["uuid"],
+      },
+      me: {
+        keyFields: ["uuid"],
+      },
+    }),
   });
 
   if (accessToken && !tokenError) {

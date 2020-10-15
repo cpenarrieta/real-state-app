@@ -63,11 +63,13 @@ export default function OpenHouseRow({ id, index, remove, uuid }) {
           className="text-red-600 hover:text-red-900"
           onClick={async (e) => {
             e.preventDefault();
-            await deleteOpenHouse({
-              variables: {
-                id,
-              },
-            });
+            if (id && id > 0) {
+              await deleteOpenHouse({
+                variables: {
+                  id,
+                },
+              });
+            }
             remove(index);
           }}
         >
