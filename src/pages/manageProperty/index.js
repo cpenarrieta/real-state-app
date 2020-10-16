@@ -78,7 +78,7 @@ export default function ManageProperty() {
             </span>
             {status === "SOLD" && (
               <span
-                className={`items-center px-2.5 py-0.5 rounded-md text-sm font-medium leading-5 bg-orange-100 text-orange-800 mt-2 flex items-centersm:mr-6`}
+                className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium leading-5 bg-orange-100 text-orange-800 mt-2 items-centersm:mr-6`}
               >
                 sold
               </span>

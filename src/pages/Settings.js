@@ -49,7 +49,7 @@ export default function Settings() {
               </dt>
               <dd className="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
                 <span
-                  className={`items-center px-2.5 py-0.5 rounded-md text-sm font-medium leading-5 bg-green-100 text-green-800 mt-2 flex sm:mr-6`}
+                  className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium leading-5 bg-green-100 text-green-800 mt-2 sm:mr-6`}
                 >
                   Active
                 </span>
