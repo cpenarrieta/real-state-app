@@ -78,7 +78,7 @@ export default function ManageProperty() {
             </span>
             {status === "SOLD" && (
               <span
-                className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium leading-5 bg-orange-100 text-orange-800 mt-2 flex items-center text-sm leading-5 sm:mr-6`}
+                className={`items-center px-2.5 py-0.5 rounded-md text-sm font-medium leading-5 bg-orange-100 text-orange-800 mt-2 flex items-centersm:mr-6`}
               >
                 sold
               </span>
@@ -325,7 +325,7 @@ export default function ManageProperty() {
         </div>
       </div>
 
-      <div className={`${matchPreview ? 'pt-0' : 'pt-5'} `}>
+      <div className={`${matchPreview ? "pt-0" : "pt-5"} `}>
         <Switch>
           <Route exact path={path}>
             <ManagePropertyEdit {...data?.property} />

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PageHeader from "../components/PageHeader";
 import OrderItem from "../components/order/OrderItem";
-import DeleteAccountModal from '../components/settings/DeleteAccountModal'
+import DeleteAccountModal from "../components/settings/DeleteAccountModal";
 import { useQuery, gql } from "@apollo/client";
 import { useUser } from "../context/UserContext";
 
@@ -49,7 +49,7 @@ export default function Settings() {
               </dt>
               <dd className="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
                 <span
-                  className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium leading-5 bg-green-100 text-green-800 mt-2 flex items-center text-sm leading-5 sm:mr-6`}
+                  className={`items-center px-2.5 py-0.5 rounded-md text-sm font-medium leading-5 bg-green-100 text-green-800 mt-2 flex sm:mr-6`}
                 >
                   Active
                 </span>
@@ -61,10 +61,7 @@ export default function Settings() {
               </dt>
               <dd className="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
                 {orders.map((o) => (
-                  <OrderItem
-                    key={o.chargeId}
-                    {...o}
-                  />
+                  <OrderItem key={o.chargeId} {...o} />
                 ))}
               </dd>
             </div>
@@ -84,10 +81,7 @@ export default function Settings() {
             </div>
           </dl>
         </div>
-        <DeleteAccountModal
-          showModal={showModal}
-          setShowModal={setShowModal}
-        />
+        <DeleteAccountModal showModal={showModal} setShowModal={setShowModal} />
       </div>
     </div>
   );

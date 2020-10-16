@@ -58,7 +58,7 @@ export default function PropertyThemeForm({
                         More themes coming soon.
                       </p>
                       <img
-                        className="mt-1 rounded-lg shadow-xl rounded-lg border-2 border-indigo-600"
+                        className="mt-1 rounded-lg shadow-xl border-2 border-indigo-600"
                         src={themeDefault}
                         alt={uuid}
                       />

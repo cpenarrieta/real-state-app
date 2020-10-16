@@ -159,11 +159,11 @@ export default function OpenHouseForm({
                     </div>
 
                     <div
-                      className={`col-span-6 border-b border-gray-200 sm:rounded-lg divide-gray-200 shadow overflow-hidden border-b border-gray-200 sm:rounded-lg ${
+                      className={`col-span-6 border-b border-gray-200 sm:rounded-lg divide-gray-200 shadow overflow-hidden${
                         openHouseActive ? "" : "opacity-25"
                       }`}
                     >
-                      <div className="px-6 py-3  flex justify-between text-left text-xs leading-5 font-medium text-gray-500 bg-gray-50  leading-4 uppercase">
+                      <div className="px-6 py-3  flex justify-between text-left text-xs font-medium text-gray-500 bg-gray-50  leading-4 uppercase">
                         <div>Date</div>
                         <div>From</div>
                         <div>To</div>
