@@ -325,7 +325,7 @@ export default function ManageProperty() {
         </div>
       </div>
 
-      <div className="pt-5">
+      <div className={`${matchPreview ? 'pt-0' : 'pt-5'} `}>
         <Switch>
           <Route exact path={path}>
             <ManagePropertyEdit {...data?.property} />

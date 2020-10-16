@@ -19,6 +19,9 @@ const Analytics = lazy(() => import("./pages/Analytics"));
 const Settings = lazy(() => import("./pages/Settings"));
 const Support = lazy(() => import("./pages/Support"));
 const ReactivateAccount = lazy(() => import("./pages/ReactivateAccount"));
+const ManagePropertyPreview = lazy(() =>
+  import("./pages/manageProperty/ManagePropertyPreview")
+);
 
 const LoadingFallback = () => <div className="p-4">Loading...</div>;
 
@@ -105,6 +108,9 @@ export const AppRoutes = () => {
           <AuthenticatedRoute path="/manage-property/:propertyId">
             <ManageProperty />
           </AuthenticatedRoute>
+          <AuthenticatedRouteNoAppShell path="/preview/:propertyId">
+            <ManagePropertyPreview />
+          </AuthenticatedRouteNoAppShell>
           <AuthenticatedRoute exact path="/my-properties">
             <Properties />
           </AuthenticatedRoute>
