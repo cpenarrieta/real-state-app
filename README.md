@@ -1,3 +1,3 @@
 RealtorApp
 
-This is the app for the Realtor to use
+This is the app for the Realtor to use to create property websites.
