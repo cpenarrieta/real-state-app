@@ -105,11 +105,11 @@ export default function PropertyLeadSlide({
             <div className="col-span-1 border-b border-gray-200">
               <div className="px-4 py-5 sm:p-6">
                 <dl>
-                  <dt className="text-base leading-6 font-normal text-gray-900">
+                  <dt className="text-base leading-6 font-normal text-logoFont">
                     Today
                   </dt>
                   <dd className="mt-1 flex justify-between items-baseline ">
-                    <div className="flex items-baseline text-2xl leading-8 font-semibold text-indigo-600">
+                    <div className="flex items-baseline text-2xl leading-8 font-semibold text-logoRed">
                       {formatNumber(sumToday)}
                       <span className="ml-2 text-sm leading-5 font-medium text-gray-500">
                         sessions
@@ -122,11 +122,11 @@ export default function PropertyLeadSlide({
             <div className="col-span-1 border-b border-gray-200">
               <div className="px-4 py-5 sm:p-6">
                 <dl>
-                  <dt className="text-base leading-6 font-normal text-gray-900">
+                  <dt className="text-base leading-6 font-normal text-logoFont">
                     Last 2 Days
                   </dt>
                   <dd className="mt-1 flex justify-between items-baseline ">
-                    <div className="flex items-baseline text-2xl leading-8 font-semibold text-indigo-600">
+                    <div className="flex items-baseline text-2xl leading-8 font-semibold text-logoRed">
                       {formatNumber(sumYesterday)}
                       <span className="ml-2 text-sm leading-5 font-medium text-gray-500">
                         sessions
@@ -139,11 +139,11 @@ export default function PropertyLeadSlide({
             <div className="col-span-1 border-b border-gray-200">
               <div className="px-4 py-5 sm:p-6">
                 <dl>
-                  <dt className="text-base leading-6 font-normal text-gray-900">
+                  <dt className="text-base leading-6 font-normal text-logoFont">
                     Last 7 days
                   </dt>
                   <dd className="mt-1 flex justify-between items-baseline ">
-                    <div className="flex items-baseline text-2xl leading-8 font-semibold text-indigo-600">
+                    <div className="flex items-baseline text-2xl leading-8 font-semibold text-logoRed">
                       {formatNumber(sumLast7Days)}
                       <span className="ml-2 text-sm leading-5 font-medium text-gray-500">
                         sessions
@@ -157,11 +157,11 @@ export default function PropertyLeadSlide({
               <div className="col-span-1 border-b border-gray-200">
                 <div className="px-4 py-5 sm:p-6">
                   <dl>
-                    <dt className="text-base leading-6 font-normal text-gray-900">
+                    <dt className="text-base leading-6 font-normal text-logoFont">
                       Last 15 days
                     </dt>
                     <dd className="mt-1 flex justify-between items-baseline ">
-                      <div className="flex items-baseline text-2xl leading-8 font-semibold text-indigo-600">
+                      <div className="flex items-baseline text-2xl leading-8 font-semibold text-logoRed">
                         {formatNumber(sumLast15Days)}
                         <span className="ml-2 text-sm leading-5 font-medium text-gray-500">
                           sessions
@@ -176,11 +176,11 @@ export default function PropertyLeadSlide({
               <div className="col-span-1 border-b border-gray-200">
                 <div className="px-4 py-5 sm:p-6">
                   <dl>
-                    <dt className="text-base leading-6 font-normal text-gray-900">
+                    <dt className="text-base leading-6 font-normal text-logoFont">
                       Last 30 days
                     </dt>
                     <dd className="mt-1 flex justify-between items-baseline ">
-                      <div className="flex items-baseline text-2xl leading-8 font-semibold text-indigo-600">
+                      <div className="flex items-baseline text-2xl leading-8 font-semibold text-logoRed">
                         {formatNumber(sumLast30Days)}
                         <span className="ml-2 text-sm leading-5 font-medium text-gray-500">
                           sessions
@@ -195,11 +195,11 @@ export default function PropertyLeadSlide({
               <div className="col-span-1 border-b border-gray-200">
                 <div className="px-4 py-5 sm:p-6">
                   <dl>
-                    <dt className="text-base leading-6 font-normal text-gray-900">
+                    <dt className="text-base leading-6 font-normal text-logoFont">
                       Last 6 Months
                     </dt>
                     <dd className="mt-1 flex justify-between items-baseline ">
-                      <div className="flex items-baseline text-2xl leading-8 font-semibold text-indigo-600">
+                      <div className="flex items-baseline text-2xl leading-8 font-semibold text-logoRed">
                         {formatNumber(sumLast180Days)}
                         <span className="ml-2 text-sm leading-5 font-medium text-gray-500">
                           sessions
@@ -254,7 +254,7 @@ export default function PropertyLeadSlide({
                     </div>
                     <div className="py-3 text-right flex flex-row-reverse">
                       <button
-                        className={`py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-500 focus:outline-none focus:shadow-outline-blue active:bg-indigo-600 transition duration-150 ease-in-out ${
+                        className={`py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-logoRed shadow-sm hover:bg-logoRed-500 focus:outline-none focus:shadow-outline-blue active:bg-logoRed-500 transition duration-150 ease-in-out ${
                           submitButtonDisabled
                             ? "opacity-50 cursor-not-allowed"
                             : ""
@@ -316,7 +316,7 @@ export default function PropertyLeadSlide({
             {(ref) => (
               <div ref={ref} className="relative w-screen max-w-md">
                 <div className="h-full flex flex-col space-y-6 pb-6 bg-white shadow-xl overflow-y-scroll">
-                  <header className="space-y-1 py-6 px-4 bg-indigo-700 sm:px-6">
+                  <header className="space-y-1 py-6 px-4 bg-logoRed sm:px-6">
                     <div className="flex items-center justify-between space-x-3">
                       <h2 className="text-lg leading-7 font-medium text-white">
                         {selectedLead.name}
@@ -324,7 +324,7 @@ export default function PropertyLeadSlide({
                       <div className="h-7 flex items-center">
                         <button
                           aria-label="Close panel"
-                          className="text-indigo-200 hover:text-white transition ease-in-out duration-150"
+                          className="text-logoFont hover:text-white transition ease-in-out duration-150"
                         >
                           <svg
                             className="h-6 w-6"
@@ -344,7 +344,7 @@ export default function PropertyLeadSlide({
                       </div>
                     </div>
                     <div>
-                      <p className="text-sm leading-5 text-indigo-300">
+                      <p className="text-sm leading-5 text-logoFont">
                         {formatPhoneNumber(selectedLead.phone)} -{" "}
                         {selectedLead.email}
                       </p>

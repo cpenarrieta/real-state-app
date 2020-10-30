@@ -199,7 +199,7 @@ export default function PropertyDetailsForm({
                             id="hidePrice"
                             type="checkbox"
                             name="hidePrice"
-                            className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                            className="form-checkbox h-4 w-4 text-logoRed transition duration-150 ease-in-out"
                           />
                         </div>
                         <div className="ml-3 text-sm leading-5">
@@ -223,7 +223,7 @@ export default function PropertyDetailsForm({
                             id="strata"
                             type="checkbox"
                             name="strata"
-                            className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                            className="form-checkbox h-4 w-4 text-logoRed transition duration-150 ease-in-out"
                           />
                         </div>
                         <div className="ml-3 text-sm leading-5">
@@ -268,7 +268,7 @@ export default function PropertyDetailsForm({
                 </div>
                 <div className="px-4 py-3 bg-gray-50 text-right sm:px-6 flex flex-row-reverse">
                   <button
-                    className={`py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-500 focus:outline-none focus:shadow-outline-blue active:bg-indigo-600 transition duration-150 ease-in-out ${
+                    className={`py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-logoRed shadow-sm hover:bg-logoRed-500 focus:outline-none focus:shadow-outline-blue active:bg-logoRed-500 transition duration-150 ease-in-out ${
                       submitButtonDisabled
                         ? "opacity-50 cursor-not-allowed"
                         : ""

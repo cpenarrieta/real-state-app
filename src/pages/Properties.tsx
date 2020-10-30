@@ -71,9 +71,9 @@ export default function Properties() {
   }
 
   const notSelected =
-    "px-3 py-2 font-medium text-sm leading-5 rounded-md text-gray-500 hover:text-gray-700 focus:outline-none focus:text-indigo-600 focus:bg-indigo-50";
+    "px-3 py-2 font-medium text-sm leading-5 rounded-md text-logoFont hover:text-gray-700 focus:outline-none focus:text-logoFont focus:bg-logoPink";
   const selected =
-    "px-3 py-2 font-medium text-sm leading-5 rounded-md text-indigo-700 bg-indigo-100 focus:outline-none focus:text-indigo-800 focus:bg-indigo-200";
+    "px-3 py-2 font-medium text-sm leading-5 rounded-md text-logoFont bg-logoPink focus:outline-none focus:text-logoPink focus:bg-logoPink";
 
   return (
     <div>

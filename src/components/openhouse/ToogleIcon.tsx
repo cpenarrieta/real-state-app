@@ -12,7 +12,7 @@ export default function ToogleIcon({ name }: { name: string }) {
       tabIndex={0}
       aria-checked="false"
       className={`relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:shadow-outline ${
-        value ? "bg-indigo-600" : "bg-gray-200"
+        value ? "bg-logoRed" : "bg-gray-200"
       }`}
       onClick={() => setValue(value ? false : true)}
     >
@@ -54,7 +54,7 @@ export default function ToogleIcon({ name }: { name: string }) {
         >
           {value && (
             <svg
-              className="h-3 w-3 text-indigo-600"
+              className="h-3 w-3 text-logoRed"
               fill="currentColor"
               viewBox="0 0 12 12"
             >
@@ -64,7 +64,5 @@ export default function ToogleIcon({ name }: { name: string }) {
         </span>
       </span>
     </span>
-    // <div>
-    // </div>
   );
 }

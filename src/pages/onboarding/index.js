@@ -27,7 +27,7 @@ export default function Onboarding() {
   const doneComp = (
     <>
       {matchSummary ? (
-        <div className="absolute top-0 left-0 w-1 h-full bg-indigo-600 lg:w-full lg:h-1 lg:bottom-0 lg:top-auto"></div>
+        <div className="absolute top-0 left-0 w-1 h-full bg-logoRed lg:w-full lg:h-1 lg:bottom-0 lg:top-auto"></div>
       ) : (
         <div className="absolute top-0 left-0 w-1 h-full bg-transparent group-hover:bg-gray-200 group-focus:bg-gray-200 lg:w-full lg:h-1 lg:bottom-0 lg:top-auto"></div>
       )}
@@ -36,13 +36,11 @@ export default function Onboarding() {
         <div className="flex-shrink-0">
           <div
             className={`w-10 h-10 flex items-center justify-center border-2 ${
-              matchSummary ? "border-indigo-600" : "border-gray-300"
+              matchSummary ? "border-logoRed" : "border-gray-300"
             } rounded-full`}
           >
             <p
-              className={`${
-                matchSummary ? "text-indigo-600" : "text-gray-500"
-              } `}
+              className={`${matchSummary ? "text-logoRed" : "text-gray-500"} `}
             >
               03
             </p>
@@ -51,7 +49,7 @@ export default function Onboarding() {
         <div className="mt-0.5 min-w-0">
           <h3
             className={`text-xs leading-4 font-semibold ${
-              matchSummary ? "text-indigo-600" : "text-gray-500"
+              matchSummary ? "text-logoRed" : "text-gray-500"
             }  uppercase tracking-wide`}
           >
             Done
@@ -73,7 +71,7 @@ export default function Onboarding() {
               <div className="border border-gray-200 overflow-hidden border-b-0 rounded-t-md lg:border-0">
                 <Link to="/onboarding" className="group">
                   {matchOnboarding ? (
-                    <div className="absolute top-0 left-0 w-1 h-full bg-indigo-600 lg:w-full lg:h-1 lg:bottom-0 lg:top-auto"></div>
+                    <div className="absolute top-0 left-0 w-1 h-full bg-logoRed lg:w-full lg:h-1 lg:bottom-0 lg:top-auto"></div>
                   ) : (
                     <div className="absolute top-0 left-0 w-1 h-full bg-transparent group-hover:bg-gray-200 group-focus:bg-gray-200 lg:w-full lg:h-1 lg:bottom-0 lg:top-auto"></div>
                   )}
@@ -82,15 +80,9 @@ export default function Onboarding() {
                     <div className="flex-shrink-0">
                       <div
                         className={`w-10 h-10 flex items-center justify-center border-2 ${
-                          matchOnboarding
-                            ? "border-indigo-600"
-                            : "border-gray-300"
+                          matchOnboarding ? "border-logoRed" : "border-gray-300"
                         }   
-                        ${
-                          profileCompleted
-                            ? "bg-indigo-600 border-indigo-600"
-                            : ""
-                        }
+                        ${profileCompleted ? "bg-logoRed border-logoRed" : ""}
                         rounded-full`}
                       >
                         {profileCompleted ? (
@@ -108,9 +100,7 @@ export default function Onboarding() {
                         ) : (
                           <p
                             className={`${
-                              matchOnboarding
-                                ? "text-indigo-600"
-                                : "text-gray-500"
+                              matchOnboarding ? "text-logoRed" : "text-gray-500"
                             } `}
                           >
                             01
@@ -121,7 +111,7 @@ export default function Onboarding() {
                     <div className="mt-0.5 min-w-0">
                       <h3
                         className={`text-xs leading-4 font-semibold uppercase tracking-wide ${
-                          matchOnboarding ? "text-indigo-600" : "text-gray-500"
+                          matchOnboarding ? "text-logoRed" : "text-gray-500"
                         }`}
                       >
                         Profile Information
@@ -141,7 +131,7 @@ export default function Onboarding() {
               <div className="border border-gray-200 overflow-hidden lg:border-0">
                 <Link to="/onboarding/email_verify" className="group">
                   {matchEmail ? (
-                    <div className="absolute top-0 left-0 w-1 h-full bg-indigo-600 lg:w-full lg:h-1 lg:bottom-0 lg:top-auto"></div>
+                    <div className="absolute top-0 left-0 w-1 h-full bg-logoRed lg:w-full lg:h-1 lg:bottom-0 lg:top-auto"></div>
                   ) : (
                     <div className="absolute top-0 left-0 w-1 h-full bg-transparent group-hover:bg-gray-200 group-focus:bg-gray-200 lg:w-full lg:h-1 lg:bottom-0 lg:top-auto"></div>
                   )}
@@ -150,11 +140,9 @@ export default function Onboarding() {
                     <div className="flex-shrink-0">
                       <div
                         className={`w-10 h-10 flex items-center justify-center border-2 ${
-                          matchEmail ? "border-indigo-600" : "border-gray-300"
+                          matchEmail ? "border-logoRed" : "border-gray-300"
                         } 
-                        ${
-                          emailVerified ? "bg-indigo-600 border-indigo-600" : ""
-                        }
+                        ${emailVerified ? "bg-logoRed border-logoRed" : ""}
                         rounded-full`}
                       >
                         {emailVerified ? (
@@ -172,7 +160,7 @@ export default function Onboarding() {
                         ) : (
                           <p
                             className={`${
-                              matchEmail ? "text-indigo-600" : "text-gray-500"
+                              matchEmail ? "text-logoRed" : "text-gray-500"
                             } `}
                           >
                             02
@@ -183,7 +171,7 @@ export default function Onboarding() {
                     <div className="mt-0.5 min-w-0">
                       <h3
                         className={`text-xs leading-4 font-semibold ${
-                          matchEmail ? "text-indigo-600" : "text-gray-500"
+                          matchEmail ? "text-logoRed" : "text-gray-500"
                         } uppercase tracking-wide`}
                       >
                         Verrify Email

@@ -17,7 +17,7 @@ export default function AnalyticRow({
       <div className="bg-white overflow-hidden shadow rounded-lg">
         <div className="px-4 py-5 sm:p-6">
           <div className="flex items-center">
-            <div className="flex-shrink-0 bg-indigo-500 rounded-md p-3">
+            <div className="flex-shrink-0 bg-logoRed rounded-md p-3">
               <svg
                 className="h-6 w-6 text-white"
                 xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +45,7 @@ export default function AnalyticRow({
                   Sessions
                 </dt>
                 <dd className="flex items-baseline">
-                  <div className="text-2xl leading-8 font-semibold text-gray-900">
+                  <div className="text-2xl leading-8 font-semibold text-logoFont">
                     {sessions}
                   </div>
                 </dd>
@@ -57,7 +57,7 @@ export default function AnalyticRow({
       <div className="bg-white overflow-hidden shadow rounded-lg">
         <div className="px-4 py-5 sm:p-6">
           <div className="flex items-center">
-            <div className="flex-shrink-0 bg-indigo-500 rounded-md p-3">
+            <div className="flex-shrink-0 bg-logoRed rounded-md p-3">
               <svg
                 className="h-6 w-6 text-white"
                 xmlns="http://www.w3.org/2000/svg"
@@ -79,7 +79,7 @@ export default function AnalyticRow({
                   Users
                 </dt>
                 <dd className="flex items-baseline">
-                  <div className="text-2xl leading-8 font-semibold text-gray-900">
+                  <div className="text-2xl leading-8 font-semibold text-logoFont">
                     {users}
                   </div>
                 </dd>
@@ -92,7 +92,7 @@ export default function AnalyticRow({
         <div className="bg-white overflow-hidden shadow rounded-lg">
           <div className="px-4 py-5 sm:p-6">
             <div className="flex items-center">
-              <div className="flex-shrink-0 bg-indigo-500 rounded-md p-3">
+              <div className="flex-shrink-0 bg-logoRed rounded-md p-3">
                 <svg
                   className="h-6 w-6 text-white"
                   xmlns="http://www.w3.org/2000/svg"
@@ -114,7 +114,7 @@ export default function AnalyticRow({
                     Leads
                   </dt>
                   <dd className="flex items-baseline">
-                    <div className="text-2xl leading-8 font-semibold text-gray-900">
+                    <div className="text-2xl leading-8 font-semibold text-logoFont">
                       {leads}
                     </div>
                   </dd>

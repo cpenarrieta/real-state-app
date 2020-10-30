@@ -78,7 +78,7 @@ export default function ManagePropertyPayment() {
       <div className="pt-12 sm:pt-16 lg:pt-20">
         <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-3xl leading-9 font-extrabold text-gray-900 sm:text-4xl sm:leading-10 lg:text-5xl lg:leading-none">
+            <h2 className="text-3xl leading-9 font-extrabold text-logoFont sm:text-4xl sm:leading-10 lg:text-5xl lg:leading-none">
               Simple no-tricks pricing
             </h2>
             <p className="mt-4 text-xl leading-7 text-gray-600">
@@ -95,7 +95,7 @@ export default function ManagePropertyPayment() {
             <div className="relative max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="max-w-lg mx-auto rounded-lg shadow-lg overflow-hidden lg:max-w-none lg:flex">
                 <div className="bg-white px-6 py-8 lg:p-12">
-                  <h3 className="text-2xl leading-8 font-extrabold text-gray-900 sm:text-3xl sm:leading-9">
+                  <h3 className="text-2xl leading-8 font-extrabold text-logoFont sm:text-3xl sm:leading-9">
                     Lifetime
                   </h3>
                   <p className="mt-6 text-base leading-6 text-gray-500">
@@ -105,7 +105,7 @@ export default function ManagePropertyPayment() {
                   </p>
                   <div className="mt-8">
                     <div className="flex items-center">
-                      <h4 className="flex-shrink-0 pr-4 bg-white text-sm leading-5 tracking-wider font-semibold uppercase text-indigo-600">
+                      <h4 className="flex-shrink-0 pr-4 bg-white text-sm leading-5 tracking-wider font-semibold uppercase text-logoRed">
                         What's included
                       </h4>
                       <div className="flex-1 border-t-2 border-gray-200"></div>
@@ -241,10 +241,10 @@ export default function ManagePropertyPayment() {
                   </div>
                 </div>
                 <div className="py-8 px-6 text-center bg-gray-50 lg:flex-shrink-0 lg:flex lg:flex-col lg:justify-center lg:p-12">
-                  <p className="text-lg leading-6 font-medium text-gray-900">
+                  <p className="text-lg leading-6 font-medium text-logoFont">
                     Pay once, own it forever
                   </p>
-                  <div className="mt-4 flex items-center justify-center text-5xl leading-none font-extrabold text-gray-900">
+                  <div className="mt-4 flex items-center justify-center text-5xl leading-none font-extrabold text-logoFont">
                     <span>${lifetime.amount}</span>
                     <span className="ml-3 text-xl leading-7 font-medium text-gray-500 uppercase">
                       {lifetime.currency}
@@ -253,7 +253,7 @@ export default function ManagePropertyPayment() {
                   <div className="mt-6">
                     <div className="rounded-md shadow">
                       <button
-                        className="w-full flex items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-indigo-700 hover:bg-indigo-600 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
+                        className="w-full flex items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-logoRed hover:bg-logoRed-500 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
                         onClick={() => handleClick(lifetime.id)}
                       >
                         Buy Lifetime
@@ -269,7 +269,7 @@ export default function ManagePropertyPayment() {
             <div className="mt-10 relative max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="max-w-lg mx-auto rounded-lg shadow-lg overflow-hidden lg:max-w-none lg:flex">
                 <div className="bg-white px-6 py-8 lg:p-12">
-                  <h3 className="text-2xl leading-8 font-extrabold text-gray-900 sm:text-3xl sm:leading-9">
+                  <h3 className="text-2xl leading-8 font-extrabold text-logoFont sm:text-3xl sm:leading-9">
                     1 Year
                   </h3>
                   <p className="mt-6 text-base leading-6 text-gray-500">
@@ -279,7 +279,7 @@ export default function ManagePropertyPayment() {
                   </p>
                   <div className="mt-8">
                     <div className="flex items-center">
-                      <h4 className="flex-shrink-0 pr-4 bg-white text-sm leading-5 tracking-wider font-semibold uppercase text-indigo-600">
+                      <h4 className="flex-shrink-0 pr-4 bg-white text-sm leading-5 tracking-wider font-semibold uppercase text-logoRed">
                         What's included
                       </h4>
                       <div className="flex-1 border-t-2 border-gray-200"></div>
@@ -415,10 +415,10 @@ export default function ManagePropertyPayment() {
                   </div>
                 </div>
                 <div className="py-8 px-6 text-center bg-gray-50 lg:flex-shrink-0 lg:flex lg:flex-col lg:justify-center lg:p-12">
-                  <p className="text-lg leading-6 font-medium text-gray-900">
+                  <p className="text-lg leading-6 font-medium text-logoFont">
                     Pay once, own for 1 year
                   </p>
-                  <div className="mt-4 flex items-center justify-center text-5xl leading-none font-extrabold text-gray-900">
+                  <div className="mt-4 flex items-center justify-center text-5xl leading-none font-extrabold text-logoFont">
                     <span>${oneYear.amount}</span>
                     <span className="ml-3 text-xl leading-7 font-medium text-gray-500 uppercase">
                       {oneYear.currency}
@@ -427,7 +427,7 @@ export default function ManagePropertyPayment() {
                   <div className="mt-6">
                     <div className="rounded-md shadow">
                       <button
-                        className="w-full flex items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-indigo-700 hover:bg-indigo-600 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
+                        className="w-full flex items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-logoRed hover:bg-logoRed-500 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
                         onClick={() => handleClick(oneYear.id)}
                       >
                         Buy 1 year

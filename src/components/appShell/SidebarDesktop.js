@@ -7,6 +7,7 @@ import { Transition } from "@tailwindui/react";
 import userDefault from "../../images/user-default.png";
 import { useUser } from "../../context/UserContext";
 import { useAlert } from "../../context/AlertContext";
+import logo from "../../images/original_transparent.png";
 
 const NEW_PROPERTY_MUTATION = gql`
   mutation SaveProperty {
@@ -59,18 +60,20 @@ export default function SidebarDesktop({
         <div className="flex flex-col h-0 flex-1 border-r border-gray-200 bg-white">
           <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
             <div className="flex items-center flex-shrink-0 px-4">
-              <img
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/workflow-logo-on-white.svg"
-                alt="Workflow"
-              />
+              <Link to="/dashboard">
+                <img
+                  className="h-20 w-auto"
+                  src={logo}
+                  alt="Realtor App logo"
+                />
+              </Link>
             </div>
             <nav className="mt-5 flex-1 px-2 bg-white space-y-1">
               <Link
                 to="/dashboard"
-                className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-900 rounded-md ${
+                className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-logoFont rounded-md ${
                   currentPath === "/dashboard" ? "bg-gray-100" : ""
-                } hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:bg-gray-${
+                } hover:text-logoFont hover:bg-gray-100 focus:outline-none focus:bg-gray-${
                   currentPath === "/dashboard" ? "200" : "50"
                 } transition ease-in-out duration-150`}
               >
@@ -95,7 +98,7 @@ export default function SidebarDesktop({
                 to="/my-properties"
                 className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-600 rounded-md ${
                   currentPath === "/my-properties" ? "bg-gray-100" : ""
-                } hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-${
+                } hover:text-logoFont hover:bg-gray-50 focus:outline-none focus:text-logoFont focus:bg-gray-${
                   currentPath === "/my-properties" ? "200" : "50"
                 } transition ease-in-out duration-150`}
               >
@@ -119,7 +122,7 @@ export default function SidebarDesktop({
                 to="/leads"
                 className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-600 rounded-md ${
                   currentPath === "/leads" ? "bg-gray-100" : ""
-                } hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-${
+                } hover:text-logoFont hover:bg-gray-50 focus:outline-none focus:text-logoFont focus:bg-gray-${
                   currentPath === "/leads" ? "200" : "50"
                 } transition ease-in-out duration-150`}
               >
@@ -143,7 +146,7 @@ export default function SidebarDesktop({
                 to="/analytics"
                 className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-600 rounded-md ${
                   currentPath === "/analytics" ? "bg-gray-100" : ""
-                } hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-${
+                } hover:text-logoFont hover:bg-gray-50 focus:outline-none focus:text-logoFont focus:bg-gray-${
                   currentPath === "/analytics" ? "200" : "50"
                 } transition ease-in-out duration-150`}
               >
@@ -168,7 +171,7 @@ export default function SidebarDesktop({
                 to="/settings"
                 className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-600 rounded-md ${
                   currentPath === "/settings" ? "bg-gray-100" : ""
-                } hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-${
+                } hover:text-logoFont hover:bg-gray-50 focus:outline-none focus:text-logoFont focus:bg-gray-${
                   currentPath === "/settings" ? "200" : "50"
                 } transition ease-in-out duration-150`}
               >
@@ -195,12 +198,12 @@ export default function SidebarDesktop({
                 Settings
               </Link>
 
-              <span className="group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150">
+              <span className="group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-600 rounded-md hover:text-logoFont hover:bg-gray-50 focus:outline-none focus:text-logoFont focus:bg-gray-50 transition ease-in-out duration-150">
                 <button
                   type="button"
                   onClick={savePropertyOnClick}
                   disabled={savePropertyLoading}
-                  className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150"
+                  className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-logoRed hover:bg-logoRed-500 focus:outline-none focus:border-logoRed-500 focus:shadow-outline-indigo active:bg-logoRed-500 transition ease-in-out duration-150"
                 >
                   <svg
                     className="mr-3 h-6 w-6 text-white-400 group-hover:text-white-500 group-focus:text-white-500 transition ease-in-out duration-150"
@@ -242,7 +245,7 @@ export default function SidebarDesktop({
                   >
                     <div className="px-4 py-3">
                       <p className="text-sm leading-5">Signed in as</p>
-                      <p className="text-sm leading-5 font-medium text-gray-900 truncate">
+                      <p className="text-sm leading-5 font-medium text-logoFont truncate">
                         {user && user.email}
                       </p>
                     </div>
@@ -250,14 +253,14 @@ export default function SidebarDesktop({
                     <div className="py-1">
                       <Link
                         to="/settings"
-                        className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                        className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-logoFont focus:outline-none focus:bg-gray-100 focus:text-logoFont"
                         role="menuitem"
                       >
                         Account settings
                       </Link>
                       <Link
                         to="/support"
-                        className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                        className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-logoFont focus:outline-none focus:bg-gray-100 focus:text-logoFont"
                         role="menuitem"
                       >
                         Support
@@ -266,7 +269,7 @@ export default function SidebarDesktop({
                     <div className="border-t border-gray-100"></div>
                     <div className="py-1">
                       <button
-                        className="block w-full text-left px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                        className="block w-full text-left px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-logoFont focus:outline-none focus:bg-gray-100 focus:text-logoFont"
                         role="menuitem"
                         onClick={() =>
                           logout({ returnTo: window.location.origin })
@@ -292,7 +295,7 @@ export default function SidebarDesktop({
                     />
                   </div>
                   <div className="ml-3">
-                    <p className="text-sm leading-5 font-medium text-gray-700 group-hover:text-gray-900">
+                    <p className="text-sm leading-5 font-medium text-gray-700 group-hover:text-logoFont">
                       {`${user.firstName}`}
                     </p>
                     <p className="text-xs leading-4 font-medium text-gray-500 group-hover:text-gray-700 transition ease-in-out duration-150">
@@ -304,7 +307,7 @@ export default function SidebarDesktop({
 
               <div className="ml-auto self-center">
                 <svg
-                  className="-mr-1 ml-2 h-5 w-5 text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+                  className="-mr-1 ml-2 h-5 w-5 text-gray-500 hover:text-logoFont hover:bg-gray-50"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"

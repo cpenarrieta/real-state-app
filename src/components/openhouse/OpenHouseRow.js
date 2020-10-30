@@ -30,7 +30,7 @@ export default function OpenHouseRow({ id, index, remove, uuid }) {
 
   return (
     <div className="col-span-6 py-3 px-6">
-      <div className="flex justify-between text-sm leading-5 font-medium text-gray-900">
+      <div className="flex justify-between text-sm leading-5 font-medium text-logoFont">
         <DatePickerFormik
           name={`openHouseDates.${index}.date`}
           dateFormat="MMMM d, yyyy"

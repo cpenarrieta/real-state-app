@@ -156,12 +156,12 @@ export default function PropertyAttachmentsForm() {
                                 <tbody className="bg-white divide-y divide-gray-200">
                                   {attachments.map((attachment) => (
                                     <tr key={attachment.id}>
-                                      <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900">
+                                      <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-logoFont">
                                         {attachment.title}
                                       </td>
                                       <td className="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
                                         <a
-                                          className="text-indigo-600 hover:text-indigo-900"
+                                          className="text-logoRed hover:text-logoRed-500"
                                           href={attachment.url}
                                           rel="noopener noreferrer"
                                           target="_blank"
@@ -254,7 +254,7 @@ export default function PropertyAttachmentsForm() {
                             </>
                           )}
                           <p className="mt-1 text-sm text-gray-600">
-                            <button className="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition duration-150 ease-in-out">
+                            <button className="font-medium text-logoRed hover:text-logoRed-500 focus:outline-none focus:underline transition duration-150 ease-in-out">
                               Upload a file
                             </button>{" "}
                             or drag and drop
@@ -270,7 +270,7 @@ export default function PropertyAttachmentsForm() {
               </div>
               <div className="px-4 py-3 bg-gray-50 text-right sm:px-6 flex flex-row-reverse">
                 <button
-                  className={`inline-flex items-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-500 focus:outline-none focus:shadow-outline-blue active:bg-indigo-600 transition duration-150 ease-in-out ${
+                  className={`inline-flex items-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-logoRed shadow-sm hover:bg-logoRed-500 focus:outline-none focus:shadow-outline-blue active:bg-logoRed-500 transition duration-150 ease-in-out ${
                     submitButtonDisabled ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                   onClick={handleSubmit}

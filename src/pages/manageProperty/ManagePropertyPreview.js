@@ -137,7 +137,7 @@ export default function ManagePropertyPreview() {
 
   return (
     <div>
-      <div className="bg-white px-1 py-2 border-b border-indigo-600 sm:px-6">
+      <div className="bg-white px-1 py-2 border-b border-logoRed sm:px-6">
         <div className="-ml-4 -mt-4 flex justify-between items-center flex-wrap sm:flex-no-wrap">
           <div className="ml-4 mt-4 grid grid-cols-4 gap-5">
             <h3 className="text-lg leading-6 font-medium text-gray-600">
@@ -150,7 +150,7 @@ export default function ManagePropertyPreview() {
                   to={`/preview/${propertyId}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs leading-4 font-medium rounded text-indigo-700 bg-indigo-100 hover:bg-indigo-50 focus:outline-none focus:border-indigo-300 focus:shadow-outline-indigo active:bg-indigo-200 transition ease-in-out duration-150"
+                  className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs leading-4 font-medium rounded text-logoFont bg-logoPink hover:bg-logoRed-500 focus:outline-none focus:border-logoRed hover:text-white focus:shadow-outline-indigo active:bg-logoRed transition ease-in-out duration-150"
                 >
                   <svg
                     className="-ml-0.5 mr-2 h-4 w-4"

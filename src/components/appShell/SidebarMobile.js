@@ -7,6 +7,7 @@ import { Transition } from "@tailwindui/react";
 import userDefault from "../../images/user-default.png";
 import { useUser } from "../../context/UserContext";
 import { useAlert } from "../../context/AlertContext";
+import logo from "../../images/original_transparent.png";
 
 const NEW_PROPERTY_MUTATION = gql`
   mutation SaveProperty {
@@ -97,17 +98,17 @@ export default function SidebarMobile({
               <div className="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
                 <div className="flex-shrink-0 flex items-center px-4">
                   <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/workflow-logo-on-white.svg"
-                    alt="Workflow"
+                    className="h-16 w-auto"
+                    src={logo}
+                    alt="Realtor App logo"
                   />
                 </div>
                 <nav className="mt-5 px-2 space-y-1">
                   <Link
                     to="/dashboard"
-                    className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-900 rounded-md ${
+                    className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-logoFont rounded-md ${
                       currentPath === "/dashboard" ? "bg-gray-100" : ""
-                    } hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:bg-gray-${
+                    } hover:text-logoFont hover:bg-gray-100 focus:outline-none focus:bg-gray-${
                       currentPath === "/dashboard" ? "200" : "50"
                     } transition ease-in-out duration-150`}
                   >
@@ -132,7 +133,7 @@ export default function SidebarMobile({
                     to="/my-properties"
                     className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-600 rounded-md ${
                       currentPath === "/my-properties" ? "bg-gray-100" : ""
-                    } hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-${
+                    } hover:text-logoFont hover:bg-gray-50 focus:outline-none focus:text-logoFont focus:bg-gray-${
                       currentPath === "/my-properties" ? "200" : "50"
                     } transition ease-in-out duration-150`}
                   >
@@ -156,7 +157,7 @@ export default function SidebarMobile({
                     to="/leads"
                     className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-600 rounded-md ${
                       currentPath === "/leads" ? "bg-gray-100" : ""
-                    } hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-${
+                    } hover:text-logoFont hover:bg-gray-50 focus:outline-none focus:text-logoFont focus:bg-gray-${
                       currentPath === "/leads" ? "200" : "50"
                     } transition ease-in-out duration-150`}
                   >
@@ -180,7 +181,7 @@ export default function SidebarMobile({
                     to="/analytics"
                     className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-600 rounded-md ${
                       currentPath === "/analytics" ? "bg-gray-100" : ""
-                    } hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-${
+                    } hover:text-logoFont hover:bg-gray-50 focus:outline-none focus:text-logoFont focus:bg-gray-${
                       currentPath === "/analytics" ? "200" : "50"
                     } transition ease-in-out duration-150`}
                   >
@@ -205,7 +206,7 @@ export default function SidebarMobile({
                     to="/settings"
                     className={`group flex items-center px-2 py-2 text-sm leading-5 font-medium text-gray-600 rounded-md ${
                       currentPath === "/settings" ? "bg-gray-100" : ""
-                    } hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-${
+                    } hover:text-logoFont hover:bg-gray-50 focus:outline-none focus:text-logoFont focus:bg-gray-${
                       currentPath === "/settings" ? "200" : "50"
                     } transition ease-in-out duration-150`}
                   >
@@ -232,12 +233,12 @@ export default function SidebarMobile({
                     Settings
                   </Link>
 
-                  <span className="group flex items-center px-2 py-2 text-base leading-6 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-100 transition ease-in-out duration-150">
+                  <span className="group flex items-center px-2 py-2 text-base leading-6 font-medium text-gray-600 rounded-md hover:text-logoFont hover:bg-gray-50 focus:outline-none focus:text-logoFont focus:bg-gray-100 transition ease-in-out duration-150">
                     <button
                       type="button"
                       onClick={savePropertyOnClick}
                       disabled={savePropertyLoading}
-                      className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150"
+                      className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-logoRed hover:bg-logoRed-500 focus:outline-none focus:border-logoRed-500 focus:shadow-outline-indigo active:bg-logoRed-500 transition ease-in-out duration-150"
                     >
                       <svg
                         className="mr-3 h-6 w-6 text-white-400 group-hover:text-white-500 group-focus:text-white-500 transition ease-in-out duration-150"
@@ -273,7 +274,7 @@ export default function SidebarMobile({
                         />
                       </div>
                       <div className="ml-3">
-                        <p className="text-base leading-6 font-medium text-gray-700 group-hover:text-gray-900">
+                        <p className="text-base leading-6 font-medium text-gray-700 group-hover:text-logoFont">
                           {`${user.firstName}`}
                         </p>
                         <p className="text-sm leading-5 font-medium text-gray-500 group-hover:text-gray-700 group-focus:underline transition ease-in-out duration-150">
@@ -288,7 +289,7 @@ export default function SidebarMobile({
                 <div className="flex-shrink-0 flex px-4 py-2">
                   <Link
                     to="/support"
-                    className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                    className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-logoFont focus:outline-none focus:bg-gray-100 focus:text-logoFont"
                     role="menuitem"
                   >
                     Support

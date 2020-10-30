@@ -61,10 +61,10 @@ const SuccessPayment = () => {
     <div className="bg-white">
       <div className="max-w-screen-xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
         <div className="text-center">
-          <h1 className="text-base leading-6 font-semibold text-indigo-600 tracking-wide uppercase">
+          <h1 className="text-base leading-6 font-semibold text-logoRed tracking-wide uppercase">
             payment
           </h1>
-          <p className="mt-1 text-4xl leading-10 font-extrabold text-gray-900 sm:text-5xl sm:leading-none sm:tracking-tight lg:text-6xl">
+          <p className="mt-1 text-4xl leading-10 font-extrabold text-logoFont sm:text-5xl sm:leading-none sm:tracking-tight lg:text-6xl">
             Payment succeeded
           </p>
           <p className="max-w-xl mt-5 mx-auto text-xl leading-7 text-gray-500 mb-5">
@@ -73,14 +73,14 @@ const SuccessPayment = () => {
           <Link
             to={`/manage-property/${propertyId}`}
             type="button"
-            className="inline-flex items-center px-6 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150"
+            className="inline-flex items-center px-6 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-logoRed hover:bg-logoRed-500 focus:outline-none focus:border-logoRed focus:shadow-outline-indigo active:bg-logoRed transition ease-in-out duration-150"
           >
             Back To Property
           </Link>
           <Link
             to="/dashboard"
             type="button"
-            className="ml-5 inline-flex items-center px-6 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-50 focus:outline-none focus:border-indigo-300 focus:shadow-outline-indigo active:bg-indigo-200 transition ease-in-out duration-150"
+            className="ml-5 inline-flex items-center px-6 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-logoFont bg-logoPink hover:bg-logoPink focus:outline-none focus:border-logoPink focus:shadow-outline-indigo active:bg-logoPink transition ease-in-out duration-150"
           >
             Go to Dashboard
           </Link>

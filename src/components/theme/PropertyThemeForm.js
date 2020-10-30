@@ -39,7 +39,7 @@ export default function PropertyThemeForm({
           setFormThemeSuccess(true);
         }}
       >
-        {({ isSubmitting, errors, touched }) => {
+        {({ isSubmitting }) => {
           const submitButtonDisabled = isSubmitting || savePropertyLoading;
 
           return (
@@ -58,7 +58,7 @@ export default function PropertyThemeForm({
                         More themes coming soon.
                       </p>
                       <img
-                        className="mt-1 rounded-lg shadow-xl border-2 border-indigo-600"
+                        className="mt-1 rounded-lg shadow-xl border-2 border-logoRed"
                         src={themeDefault}
                         alt={uuid}
                       />
@@ -210,7 +210,7 @@ export default function PropertyThemeForm({
                 </div>
                 <div className="px-4 py-3 bg-gray-50 text-right sm:px-6 flex flex-row-reverse">
                   <button
-                    className={`py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-500 focus:outline-none focus:shadow-outline-blue active:bg-indigo-600 transition duration-150 ease-in-out ${
+                    className={`py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-logoRed shadow-sm hover:bg-logoRed-500 focus:outline-none focus:shadow-outline-blue active:bg-logoRed-500 transition duration-150 ease-in-out ${
                       submitButtonDisabled
                         ? "opacity-50 cursor-not-allowed"
                         : ""

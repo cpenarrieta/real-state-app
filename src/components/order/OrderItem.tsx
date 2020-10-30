@@ -50,7 +50,7 @@ export default function OrderItem({
           </svg>
 
           <div className="mt-3 sm:mt-0 sm:ml-4">
-            <div className="text-sm leading-5 font-medium text-gray-900">
+            <div className="text-sm leading-5 font-medium text-logoFont">
               ${amountTotal / 100}{" "}
               <span className="uppercase text-gray-400">{currency}</span>
             </div>
@@ -68,7 +68,7 @@ export default function OrderItem({
           <div className="mt-4 sm:mt-0 sm:ml-6 sm:flex-shrink-0">
             <span className="inline-flex rounded-md shadow-sm">
               <Link
-                className="inline-flex items-center rounded-md text-indigo-600 focus:outline-none focus:shadow-outline-blue active:text-gray-800 transition ease-in-out duration-150"
+                className="inline-flex items-center rounded-md text-logoFont focus:outline-none focus:shadow-outline-blue active:text-gray-800 transition ease-in-out duration-150"
                 to={`/manage-property/${uuid}`}
               >
                 {image ? (

@@ -6,7 +6,7 @@ class ExampleCustomInput extends React.Component {
   render() {
     return (
       <button
-        className="text-sm leading-5 font-medium text-gray-900"
+        className="text-sm leading-5 font-medium text-logoFont"
         onClick={(e) => {
           e.preventDefault();
           this.props.onClick(e);

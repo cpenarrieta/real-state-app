@@ -52,7 +52,7 @@ export default function PropertyCard({
               {bedrooms} beds &bull; {bathrooms} baths
             </div>
           </div>
-          <h4 className="mt-1 font-semibold text-lg leading-tight truncate">
+          <h4 className="mt-1 font-semibold text-lg leading-tight truncate text-logoFont">
             {title}
           </h4>
           <div className="mt-1">

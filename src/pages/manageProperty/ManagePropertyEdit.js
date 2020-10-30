@@ -74,7 +74,7 @@ export default function ManagePropertyEdit({
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
-              <h3 className="text-lg font-medium leading-6 text-gray-900">
+              <h3 className="text-lg font-medium leading-6 text-logoFont">
                 Property Details
               </h3>
               <p className="mt-1 text-sm leading-5 text-gray-600">
@@ -113,7 +113,7 @@ export default function ManagePropertyEdit({
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
-              <h3 className="text-lg font-medium leading-6 text-gray-900">
+              <h3 className="text-lg font-medium leading-6 text-logoFont">
                 Location
               </h3>
               <p className="mt-1 text-sm leading-5 text-gray-600">
@@ -147,7 +147,7 @@ export default function ManagePropertyEdit({
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
-              <h3 className="text-lg font-medium leading-6 text-gray-900">
+              <h3 className="text-lg font-medium leading-6 text-logoFont">
                 Pictures
               </h3>
               <p className="mt-1 text-sm leading-5 text-gray-600">
@@ -174,7 +174,7 @@ export default function ManagePropertyEdit({
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
-              <h3 className="text-lg font-medium leading-6 text-gray-900">
+              <h3 className="text-lg font-medium leading-6 text-logoFont">
                 Video
               </h3>
               <p className="mt-1 text-sm leading-5 text-gray-600">
@@ -202,7 +202,7 @@ export default function ManagePropertyEdit({
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
-              <h3 className="text-lg font-medium leading-6 text-gray-900">
+              <h3 className="text-lg font-medium leading-6 text-logoFont">
                 Attachments
               </h3>
               <p className="mt-1 text-sm leading-5 text-gray-600">
@@ -224,7 +224,7 @@ export default function ManagePropertyEdit({
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
-              <h3 className="text-lg font-medium leading-6 text-gray-900">
+              <h3 className="text-lg font-medium leading-6 text-logoFont">
                 Open House
               </h3>
               <p className="mt-1 text-sm leading-5 text-gray-600">
@@ -252,7 +252,7 @@ export default function ManagePropertyEdit({
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
-              <h3 className="text-lg font-medium leading-6 text-gray-900">
+              <h3 className="text-lg font-medium leading-6 text-logoFont">
                 Theme and Colors
               </h3>
               <p className="mt-1 text-sm leading-5 text-gray-600">

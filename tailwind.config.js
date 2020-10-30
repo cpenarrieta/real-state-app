@@ -52,6 +52,10 @@ module.exports = {
       },
       colors: {
         "brand-blue": "#1992d4",
+        "logoPink": '#FFF1EE',
+        "logoRed": '#F77E93',
+        "logoRed-500": '#f28d9e',
+        "logoFont": '#394C72',
       },
       fontFamily: {
         sans: ["Inter var", ...defaultTheme.fontFamily.sans],

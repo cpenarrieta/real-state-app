@@ -155,7 +155,7 @@ export default function OnboardingProfile({
               <div>
                 <div>
                   <div>
-                    <h3 className="text-lg leading-6 font-medium text-gray-900">
+                    <h3 className="text-lg leading-6 font-medium text-logoFont">
                       Profile
                     </h3>
                     <p className="mt-1 max-w-2xl text-sm leading-5 text-gray-500">
@@ -279,7 +279,7 @@ export default function OnboardingProfile({
                             <p className="mt-1 text-sm text-gray-600">
                               <button
                                 type="button"
-                                className="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition duration-150 ease-in-out"
+                                className="font-medium text-logoRed hover:text-logoRed-500 focus:outline-none focus:underline transition duration-150 ease-in-out"
                               >
                                 Upload a file
                               </button>
@@ -296,7 +296,7 @@ export default function OnboardingProfile({
                 </div>
                 <div className="mt-8 border-t border-gray-200 pt-8 sm:mt-5 sm:pt-10">
                   <div>
-                    <h3 className="text-lg leading-6 font-medium text-gray-900">
+                    <h3 className="text-lg leading-6 font-medium text-logoFont">
                       Personal Information
                     </h3>
                     <p className="mt-1 max-w-2xl text-sm leading-5 text-gray-500">
@@ -357,7 +357,7 @@ export default function OnboardingProfile({
 
                 <div className="mt-8 border-t border-gray-200 pt-8 sm:mt-5 sm:pt-10">
                   <div>
-                    <h3 className="text-lg leading-6 font-medium text-gray-900">
+                    <h3 className="text-lg leading-6 font-medium text-logoFont">
                       Location
                     </h3>
                     <p className="mt-1 max-w-2xl text-sm leading-5 text-gray-500">
@@ -542,7 +542,7 @@ export default function OnboardingProfile({
                   )}
                   <span className="ml-3 inline-flex rounded-md shadow-sm">
                     <button
-                      className={`inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out ${
+                      className={`inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-logoRed hover:bg-logoRed-500 focus:outline-none focus:border-logoRed focus:shadow-outline-indigo active:bg-logoRed transition duration-150 ease-in-out ${
                         submitButtonDisabled
                           ? "opacity-50 cursor-not-allowed"
                           : ""

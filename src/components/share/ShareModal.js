@@ -93,7 +93,7 @@ export default function ShareModal({
               <div>
                 <div className="mt-3 text-center sm:mt-5">
                   <h3
-                    className="text-lg leading-6 font-medium text-gray-900"
+                    className="text-lg leading-6 font-medium text-logoFont"
                     id="modal-headline"
                   >
                     Share your Property Page
@@ -106,7 +106,7 @@ export default function ShareModal({
                           className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm hover:bg-gray-100"
                         >
                           <svg
-                            className="h-4 w-4 text-gray-600 hover:text-indigo-500"
+                            className="h-4 w-4 text-gray-600 hover:text-logoRed"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
@@ -155,7 +155,7 @@ export default function ShareModal({
                     </WhatsappShareButton>
                     <FacebookMessengerShareButton
                       url={liveWebsiteUrl}
-                      appId={process.env.FACEBOOK_APP_ID} // TODO app_id
+                      appId={process.env.FACEBOOK_APP_ID}
                     >
                       <FacebookMessengerIcon size={32} />
                     </FacebookMessengerShareButton>
@@ -189,7 +189,7 @@ export default function ShareModal({
                   </button>
                   <button
                     type="button"
-                    className="ml-2 inline-flex justify-center w-1/2 rounded-md border border-transparent px-4 py-2 bg-indigo-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                    className="ml-2 inline-flex justify-center w-1/2 rounded-md border border-transparent px-4 py-2 bg-logoRed text-base leading-6 font-medium text-white shadow-sm hover:bg-logoRed-500 focus:outline-none focus:border-logoRed-500 focus:shadow-outline-indigo transition ease-in-out duration-150 sm:text-sm sm:leading-5"
                     onClick={() => setShowModal(false)}
                   >
                     Done

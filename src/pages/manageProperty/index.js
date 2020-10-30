@@ -21,11 +21,11 @@ import { PROPERTY_QUERY } from "../../queries/getProperty";
 const ButtonNotSelected =
   "group inline-flex items-center py-4 px-1 border-b-2 border-transparent font-medium text-sm leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300";
 const ButtonSelected =
-  "group inline-flex items-center py-4 px-1 border-b-2 border-indigo-500 font-medium text-sm leading-5 text-indigo-600 focus:outline-none focus:text-indigo-800 focus:border-indigo-700";
+  "group inline-flex items-center py-4 px-1 border-b-2 border-logoRed font-medium text-sm leading-5 text-logoRed focus:outline-none focus:text-logoRed focus:border-logoRed";
 const IconNotSelected =
   "-ml-0.5 mr-2 h-5 w-5 text-gray-400 group-hover:text-gray-500 group-focus:text-gray-600";
 const IconSelected =
-  "-ml-0.5 mr-2 h-5 w-5 text-indigo-500 group-focus:text-indigo-600";
+  "-ml-0.5 mr-2 h-5 w-5 text-logoRed group-focus:text-logoRed";
 
 export default function ManageProperty() {
   const { path } = useRouteMatch();
@@ -67,7 +67,7 @@ export default function ManageProperty() {
     <div>
       <div className="lg:flex lg:items-center lg:justify-between">
         <div className="flex-1 min-w-0">
-          <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:leading-9 sm:truncate">
+          <h2 className="text-2xl font-bold leading-7 text-logoFont sm:text-3xl sm:leading-9 sm:truncate">
             {title || "[property title]"}
           </h2>
           <div className="mt-1 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap">
@@ -107,11 +107,11 @@ export default function ManageProperty() {
             <span className="sm:block ml-3 shadow-sm rounded-md">
               <button
                 type="button"
-                className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-gray-300 active:text-gray-800 active:bg-gray-50 active:text-gray-800 transition duration-150 ease-in-out hover:bg-indigo-100"
+                className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-logoFont bg-white hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-gray-300 active:text-gray-800 active:bg-gray-50 active:text-gray-800 transition duration-150 ease-in-out hover:bg-logoPink"
                 onClick={() => setShowShareModal(true)}
               >
                 <svg
-                  className="-ml-1 mr-2 h-5 w-5 text-gray-500"
+                  className="-ml-1 mr-2 h-5 w-5 text-logoFont"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -134,7 +134,7 @@ export default function ManageProperty() {
               <span className="sm:block ml-3 shadow-sm rounded-md">
                 <button
                   type="button"
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:shadow-outline-indigo focus:border-indigo-700 active:bg-indigo-700 transition duration-150 ease-in-out"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-logoRed hover:bg-logoRed-500 focus:outline-none focus:shadow-outline-logoRed focus:border-logoRed active:bg-logoRed transition duration-150 ease-in-out"
                 >
                   <svg
                     className="-ml-1 mr-2 h-5 w-5 text-white-500"
