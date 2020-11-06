@@ -78,8 +78,7 @@ export default function ManagePropertyEdit({
                 Property Details
               </h3>
               <p className="mt-1 text-sm leading-5 text-gray-600">
-                khjg asdfjkhg asdfjkhg oigsdafoiga sdfklhbxz cvlkhbxd fois
-                dfgoisadfkh sdf
+                Edit your property details.
               </p>
             </div>
           </div>
@@ -117,7 +116,9 @@ export default function ManagePropertyEdit({
                 Location
               </h3>
               <p className="mt-1 text-sm leading-5 text-gray-600">
-                Property address...
+                Enter your Property address and we will autocomplete the address
+                fields for you and detect the location in the map. You can still
+                edit specific fields too or enter them manually.
               </p>
             </div>
           </div>
@@ -151,7 +152,8 @@ export default function ManagePropertyEdit({
                 Pictures
               </h3>
               <p className="mt-1 text-sm leading-5 text-gray-600">
-                Property pictures....
+                Enter up to 50 high quality Property pictures. Set a cover
+                picture to appear in the landing page first.
               </p>
             </div>
           </div>
@@ -178,7 +180,8 @@ export default function ManagePropertyEdit({
                 Video
               </h3>
               <p className="mt-1 text-sm leading-5 text-gray-600">
-                Property video....
+                Copy paste your video link (url). We support YouTube and Vimeo
+                video providers.
               </p>
             </div>
           </div>
@@ -206,7 +209,8 @@ export default function ManagePropertyEdit({
                 Attachments
               </h3>
               <p className="mt-1 text-sm leading-5 text-gray-600">
-                Property attachments....
+                Have some extra information to show on a pdf file? Add them here
+                as an attachment and we'll show it for you in your website.
               </p>
             </div>
           </div>
@@ -256,7 +260,8 @@ export default function ManagePropertyEdit({
                 Theme and Colors
               </h3>
               <p className="mt-1 text-sm leading-5 text-gray-600">
-                theme and colors....
+                Select the theme and color palette for your website. We will
+                have more themes and colors very soon.
               </p>
             </div>
           </div>
