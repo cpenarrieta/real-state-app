@@ -54,6 +54,10 @@ export default function OnboardingProfile({
   smallBio,
   email,
   onboardingComplete,
+  twitterLink,
+  instagramLink,
+  facebookLink,
+  website,
 }) {
   const history = useHistory();
   const [profilePicture, setProfilePictture] = useState();
@@ -99,6 +103,10 @@ export default function OnboardingProfile({
           address1: address1 || "",
           city: city || "",
           zipCode: zipCode || "",
+          twitterLink: twitterLink || "",
+          instagramLink: instagramLink || "",
+          facebookLink: facebookLink || "",
+          website: website || "",
         }}
         onSubmit={async (values) => {
           const prov =
@@ -115,6 +123,10 @@ export default function OnboardingProfile({
             address1: values.address1,
             city: values.city,
             zipCode: values.zipCode,
+            twitterLink: values.twitterLink,
+            instagramLink: values.instagramLink,
+            facebookLink: values.facebookLink,
+            website: values.website,
           };
 
           if (profilePicture) {
@@ -526,6 +538,66 @@ export default function OnboardingProfile({
                         type="text"
                         placeholder=""
                         label="ZIP / Postal"
+                        labelClass="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2"
+                        className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-8 border-t border-gray-200 pt-8 sm:mt-5 sm:pt-10">
+                  <div>
+                    <h3 className="text-lg leading-6 font-medium text-logoFont">
+                      Social Media
+                    </h3>
+                    <p className="mt-1 max-w-2xl text-sm leading-5 text-gray-500">
+                      Put here your social media links. You can complete/update this section later if you don't have this info now.
+                    </p>
+                  </div>
+                  <div className="mt-6 sm:mt-5">
+                    <div className="mt-6 sm:mt-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+                      <TextField
+                        id="twitterLink"
+                        name="twitterLink"
+                        type="text"
+                        placeholder="https://twitter.com/realtor_app"
+                        label="Twitter"
+                        labelClass="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2"
+                        className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                      />
+                    </div>
+
+                    <div className="mt-6 sm:mt-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+                      <TextField
+                        id="instagramLink"
+                        name="instagramLink"
+                        type="text"
+                        placeholder="https://www.instagram.com/myrealtorapp/"
+                        label="Instagram"
+                        labelClass="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2"
+                        className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                      />
+                    </div>
+
+                    <div className="mt-6 sm:mt-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+                      <TextField
+                        id="facebookLink"
+                        name="facebookLink"
+                        type="text"
+                        placeholder="https://www.facebook.com/myrealtorapp/"
+                        label="Facebook"
+                        labelClass="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2"
+                        className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                      />
+                    </div>
+
+                    <div className="mt-6 sm:mt-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+                      <TextField
+                        id="website"
+                        name="website"
+                        type="text"
+                        placeholder="https://realtorapp.co"
+                        label="Website"
                         labelClass="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2"
                         className="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                       />

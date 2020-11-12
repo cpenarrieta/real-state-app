@@ -22,6 +22,10 @@ const ME_QUERY = gql`
       onboardingComplete
       profileComplete
       smallBio
+      twitterLink
+      instagramLink
+      facebookLink
+      website
     }
   }
 `;
