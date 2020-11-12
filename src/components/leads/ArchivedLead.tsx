@@ -10,11 +10,18 @@ import { Link } from "react-router-dom";
 const UPDATE_LEAD_MUTATION = gql`
   mutation UpdateLead(
     $id: Int!
-    $uuid: String!
+    $uuid: String
     $leadStatus: LEAD_STATUS!
     $notes: String
+    $type: VISITOR_TYPE
   ) {
-    updateLead(id: $id, uuid: $uuid, leadStatus: $leadStatus, notes: $notes)
+    updateLead(
+      id: $id
+      uuid: $uuid
+      leadStatus: $leadStatus
+      notes: $notes
+      type: $type
+    )
   }
 `;
 
@@ -120,7 +127,7 @@ export default function ArchivedLead({
                 </span>
               </div>
             </div>
-            {!fromProperty && (
+            {!fromProperty && lead.type === "PROPERTY" && (
               <div className={`${colClass} sm:col-span-1`}>
                 <div className="flex overflow-hidden">
                   <svg
@@ -149,6 +156,15 @@ export default function ArchivedLead({
                 </div>
               </div>
             )}
+            {!fromProperty && lead.type === "USER" && (
+              <div className={`${colClass} sm:col-span-1`}>
+                <div className="flex overflow-hidden">
+                  <span className="font-normal text-sm text-gray-500">
+                    Agent website
+                  </span>
+                </div>
+              </div>
+            )}
             <div className={`${colClass} sm:col-span-1`}>
               <div className="flex flex-row-reverse overflow-hidden">
                 {/* ARCHIVED */}
@@ -163,6 +179,7 @@ export default function ArchivedLead({
                         id: lead.id,
                         uuid: lead.uuid,
                         leadStatus: getLeadStatus("ARCHIVED", lead.leadStatus),
+                        type: lead.type,
                       },
                     });
                   }}

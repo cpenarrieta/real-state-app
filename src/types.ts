@@ -11,6 +11,7 @@ export interface PropertyLead {
   uuid?: string;
   title?: string;
   image?: string;
+  type?: 'PROPERTY' | 'USER' 
 }
 
 export interface PropertyDashboard {

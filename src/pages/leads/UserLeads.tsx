@@ -23,6 +23,8 @@ const GET_LEADS = gql`
       uuid
       title
       image
+      type
+      userId
     }
   }
 `;

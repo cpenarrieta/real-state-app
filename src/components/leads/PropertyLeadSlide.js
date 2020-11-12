@@ -6,11 +6,11 @@ import { useAlert } from "../../context/AlertContext";
 import { formatPhoneNumber } from "../../util/formatPhoneNumber";
 import { splitRawData } from "../../util/splitRawData";
 import { formatNumber } from "../../util/formatNumber";
-import { sumData } from '../../util/sumRawData'
+import { sumData } from "../../util/sumRawData";
 
 const LEADS_QUERY = gql`
-  query LeadAnalytics($id: Int!, $uuid: String!) {
-    leadAnalytics(id: $id, uuid: $uuid) {
+  query LeadAnalytics($id: Int!, $uuid: String, $type: VISITOR_TYPE) {
+    leadAnalytics(id: $id, uuid: $uuid, type: $type) {
       day
       count
     }
@@ -36,7 +36,11 @@ export default function PropertyLeadSlide({
   propertyId,
 }) {
   const { loading, error, data } = useQuery(LEADS_QUERY, {
-    variables: { uuid: propertyId, id: selectedLead?.id },
+    variables: {
+      uuid: propertyId,
+      id: selectedLead?.id,
+      type: selectedLead?.type,
+    },
     skip: !showDetails || !selectedLead,
   });
   const [updateLead, { error: errorUpdateLead }] = useMutation(
@@ -96,7 +100,7 @@ export default function PropertyLeadSlide({
           <h3 className="text-md leading-6 font-medium text-gray-700">
             <span className="text-teal-500">{selectedLead.name}</span> session
             history{" "}
-            {fromProperty ? "for this property" : `for ${selectedLead.title}`}
+            {fromProperty ? "for this property" : `for ${selectedLead.title || "Agent website"}`}
           </h3>
           <span className="text-sm leading-5 font-medium text-gray-500">
             Analytics for last 6 months.

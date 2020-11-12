@@ -66,7 +66,7 @@ export default function Dashboard() {
       <div className="mt-5 py-5 font-medium text-md leading-5 rounded-md text-gray-500">
         Last Properties
       </div>
-      <div className="">
+      <div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
           {data.dashboard.properties.map((property: PropertyDashboard) => (
             <div key={property.uuid}>
