@@ -15,7 +15,7 @@ export default function Header({
   const notSelected =
     "px-3 py-2 font-medium text-sm leading-5 rounded-md text-logoFont hover:text-gray-700 focus:outline-none focus:text-logoFont focus:bg-logoPink";
   const selected =
-    "px-3 py-2 font-medium text-sm leading-5 rounded-md text-logoFont bg-logoPink focus:outline-none focus:text-logoPink focus:bg-logoPink";
+    "px-3 py-2 font-medium text-sm leading-5 rounded-md text-logoFont bg-logoPink focus:outline-none focus:text-logoFont focus:bg-logoPink";
 
   const [visitsRawToday, visitsRawYesterday, visitsRawLast7Days] = splitRawData(
     visitsRaw
