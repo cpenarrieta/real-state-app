@@ -6,6 +6,8 @@ import { useAlert } from "../../context/AlertContext";
 import NewLead from "../../components/leads/NewLead";
 import ContactedLead from "../../components/leads/ContactedLead";
 import ArchivedLead from "../../components/leads/ArchivedLead";
+import Loading from '../../components/Loading'
+import Error from '../../components/Error'
 
 const GET_PROPERTY_LEADS = gql`
   query GetPropertyLeads($uuid: String!) {
@@ -38,8 +40,8 @@ export default function ManagePropertyLeads() {
     }
   }, [error, setShowAlert]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error...</p>;
+  if (loading) return <Loading />;
+  if (error) return <Error />;
 
   const leads = data?.propertyLeads;
 

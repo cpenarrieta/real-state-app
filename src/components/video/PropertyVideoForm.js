@@ -56,7 +56,7 @@ export default function PropertyVideoForm({
                         id="videoUrl"
                         name="videoUrl"
                         label="Video URL"
-                        placeholder="paste your video url here"
+                        placeholder="https://www.youtube.com/watch?v=7g9KhGp5nNQ"
                         labelClass="block text-sm font-medium leading-5 text-gray-700"
                         className="mt-1 form-input block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                       />

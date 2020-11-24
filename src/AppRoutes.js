@@ -5,6 +5,7 @@ import FourOFour from "./pages/FourOFour";
 import Home from "./pages/Home";
 import VerifyUserCallBack from "./pages/VerifyUserCallBack";
 import AppShell from "./components/appShell/AppShell";
+import Loading from './components/Loading'
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Onboarding = lazy(() => import("./pages/onboarding"));
@@ -23,7 +24,7 @@ const ManagePropertyPreview = lazy(() =>
   import("./pages/manageProperty/ManagePropertyPreview")
 );
 
-const LoadingFallback = () => <div className="p-4">Loading...</div>;
+const LoadingFallback = () => <Loading />;
 
 const UnauthenticatedRoutes = () => (
   <Switch>
@@ -40,7 +41,7 @@ const AuthenticatedRoute = ({ children, ...rest }) => {
   const { isAuthenticated, isLoading } = useAuth0();
 
   if (isLoading) {
-    return <div className="h-screen flex justify-center">loading logo</div>;
+    return <Loading />;
   }
 
   return (
@@ -57,7 +58,7 @@ const AuthenticatedRouteNoAppShell = ({ children, ...rest }) => {
   const { isAuthenticated, isLoading } = useAuth0();
 
   if (isLoading) {
-    return <div className="h-screen flex justify-center">loading logo</div>;
+    return <Loading />;
   }
 
   return (
@@ -72,7 +73,7 @@ const AdminRoute = ({ children, ...rest }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
 
   if (isLoading) {
-    return <div className="h-screen flex justify-center">loading logo</div>;
+    return <Loading />;
   }
 
   const roles = user[`${process.env.REACT_APP_JWT_NAMESPACE}/roles`];

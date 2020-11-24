@@ -7,6 +7,7 @@ import { useAlert } from "../../context/AlertContext";
 import { parseISO, format } from "date-fns";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { OPEN_HOUSE_QUERY } from "../../queries/getOpenHouse";
+import Loading from '../Loading'
 
 const SAVE_OPEN_HOUSE_MUTATION = gql`
   mutation SaveOpenHouse($openHouse: [OpenHouseInput]!, $uuid: String!) {
@@ -80,7 +81,7 @@ export default function OpenHouseForm({
     }
   }, [error, errorSaveOpenHouse, setShowAlert]);
 
-  if (loading) return <p>loading</p>;
+  if (loading) return <Loading />;
 
   const openHouseData = formatData(data?.propertyOpenHouse || []);
 

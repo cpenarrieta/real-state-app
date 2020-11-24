@@ -4,6 +4,7 @@ import { useQuery, gql } from "@apollo/client";
 import { useAlert } from "../../context/AlertContext";
 import AnalyticTabs from "../../components/analytics/AnalyticTabs";
 import { AnalyticRaw } from "../../types";
+import Loading from '../../components/Loading'
 
 const ANALYTICS_QUERY = gql`
   query PropertyAnalytics($uuid: String!) {
@@ -39,7 +40,7 @@ export default function ManagePropertyAnalytics() {
   }, [error, setShowAlert]);
 
   if (loading) {
-    return <p>loading</p>;
+    return <Loading />;
   }
 
   const visitsRaw: AnalyticRaw[] = data.propertyAnalytics?.visitsRaw;

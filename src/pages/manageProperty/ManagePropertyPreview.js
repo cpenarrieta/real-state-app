@@ -4,6 +4,8 @@ import { useQuery, gql } from "@apollo/client";
 import { PropertyPage } from "@cpenarrieta/real-state-property-components";
 import { parseISO } from "date-fns";
 import { Link, useRouteMatch } from "react-router-dom";
+import Loading from '../../components/Loading'
+import Error from '../../components/Error'
 
 const formatData = (propertyOpenHouse) => {
   return propertyOpenHouse?.map((o) => {
@@ -110,8 +112,8 @@ export default function ManagePropertyPreview() {
   const matchNewWindow = useRouteMatch("/preview/:propertyId");
   console.log(matchNewWindow);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error...</p>;
+  if (loading) return <Loading />;
+  if (error) return <Error />;
 
   const property = data?.property;
   const attachments = data?.attachments;

@@ -4,6 +4,7 @@ import OrderItem from "../components/order/OrderItem";
 import DeleteAccountModal from "../components/settings/DeleteAccountModal";
 import { useQuery, gql } from "@apollo/client";
 import { useUser } from "../context/UserContext";
+import Loading from '../components/Loading'
 
 const ORDERS_QUERY = gql`
   query UserOrders {
@@ -31,7 +32,7 @@ export default function Settings() {
   const user = useUserCtx?.user;
 
   if (loading || !user) {
-    return <p>loading...</p>;
+    return <Loading />;
   }
 
   const orders = data?.orders || [];

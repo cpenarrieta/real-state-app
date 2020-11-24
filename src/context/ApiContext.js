@@ -10,6 +10,7 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { useAccessToken } from "../context/AccessTokenContext";
+import Loading from '../components/Loading'
 
 export const ApiProvider = ({ children }) => {
   const { accessToken, setAccessToken } = useAccessToken();
@@ -81,6 +82,6 @@ export const ApiProvider = ({ children }) => {
   } else if (tokenError) {
     return <ApolloProvider client={apolloClient}>{children}</ApolloProvider>;
   } else {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 };

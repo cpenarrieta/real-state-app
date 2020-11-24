@@ -7,6 +7,8 @@ import { formatPhoneNumber } from "../../util/formatPhoneNumber";
 import { splitRawData } from "../../util/splitRawData";
 import { formatNumber } from "../../util/formatNumber";
 import { sumData } from "../../util/sumRawData";
+import Loading from '../Loading'
+import Error from '../Error'
 
 const LEADS_QUERY = gql`
   query LeadAnalytics($id: Int!, $uuid: String, $type: VISITOR_TYPE) {
@@ -70,8 +72,8 @@ export default function PropertyLeadSlide({
     }
   }, [formNotesSuccess]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error...</p>;
+  if (loading) return <Loading />;
+  if (error) return <Error />;
 
   const visitsRaw = data?.leadAnalytics || [];
 
@@ -84,7 +86,7 @@ export default function PropertyLeadSlide({
     visitsRawLast180Days,
   ] = splitRawData(visitsRaw);
 
-  let mainbody = <p>loading</p>;
+  let mainbody = <Loading />;
 
   const sumToday = sumData(visitsRawToday);
   const sumYesterday = sumData(visitsRawYesterday);

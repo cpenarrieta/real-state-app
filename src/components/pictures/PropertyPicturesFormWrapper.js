@@ -4,6 +4,7 @@ import { useQuery, gql } from "@apollo/client";
 import PropertyPicturesForm from "./PropertyPicturesForm";
 import { ImagesGridProvider } from "./ImagesGridContext";
 import { useAlert } from "../../context/AlertContext";
+import Loading from '../Loading'
 
 const IMAGES_QUERY = gql`
   query PropertyImages($uuid: String!) {
@@ -38,7 +39,7 @@ export default function PropertyPicturesFormWrapper({
     }
   }, [error, setShowAlert]);
 
-  if (loading) return <p>loading</p>;
+  if (loading) return <Loading />;
 
   const images = data?.propertyImages;
 

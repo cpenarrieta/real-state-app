@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import PropertyCard from "../components/PropertyCard";
 import PageHeader from "../components/PageHeader";
+import Loading from '../components/Loading'
+import Error from '../components/Error'
 
 interface Property {
   uuid: string;
@@ -39,8 +41,8 @@ export default function Properties() {
   const { loading, error, data } = useQuery<PropertyData>(PROPERTIES_QUERY);
   const [tab, selectTab] = useState("LIVE");
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error...</p>;
+  if (loading) return <Loading />;
+  if (error) return <Error />;
 
   if (!data?.properties?.length) {
     return <p>no properties</p>;

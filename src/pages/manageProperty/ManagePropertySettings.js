@@ -6,6 +6,7 @@ import DeletePropertyModal from "../../components/settings/DeletePropertyModal";
 import { useAlert } from "../../context/AlertContext";
 import { getPublishedStatus } from "../../util/propertyStatus";
 import { PROPERTY_QUERY } from "../../queries/getProperty";
+import Loading from '../../components/Loading'
 
 const PROPERTY_ORDERS_QUERY = gql`
   query PropertyOrders($uuid: String!) {
@@ -56,7 +57,7 @@ export default function ManagePropertySettings({ status, publishedStatus }) {
   }, [error, errorSetAsSold, setShowAlert]);
 
   if (loading) {
-    return <p>loading...</p>;
+    return <Loading />;
   }
 
   const orders = data?.propertyOrders;

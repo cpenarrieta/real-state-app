@@ -4,6 +4,7 @@ import { useAccessToken } from "../context/AccessTokenContext";
 import { useLazyQuery, gql } from "@apollo/client";
 import OrderItem from "../components/order/OrderItem";
 import { useAlert } from "../context/AlertContext";
+import Loading from '../components/Loading'
 
 const PROPERTY_ORDERS_QUERY = gql`
   query PropertyOrders($uuid: String!) {
@@ -52,7 +53,7 @@ const SuccessPayment = () => {
   }, [error, setShowAlert]);
 
   if (loading || !called) {
-    return <p>loading...</p>;
+    return <Loading />;
   }
 
   const orders = data?.propertyOrders;

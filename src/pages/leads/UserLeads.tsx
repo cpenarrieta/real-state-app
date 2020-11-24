@@ -7,6 +7,8 @@ import ContactedLead from "../../components/leads/ContactedLead";
 import ArchivedLead from "../../components/leads/ArchivedLead";
 import { useAlert } from "../../context/AlertContext";
 import { PropertyLead, PropertyLeadData } from "../../types";
+import Loading from '../../components/Loading'
+import Error from '../../components/Error'
 
 const GET_LEADS = gql`
   query GetLeads {
@@ -43,8 +45,8 @@ export default function Leads() {
     }
   }, [error, setShowAlert]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error...</p>;
+  if (loading) return <Loading />;
+  if (error) return <Error />;
 
   const leads: PropertyLead[] = data?.leads || [];
 

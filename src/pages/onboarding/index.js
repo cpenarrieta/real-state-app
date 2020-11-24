@@ -5,6 +5,7 @@ import { useUser } from "../../context/UserContext";
 import OnboardingProfile from "./Profile";
 import EmailVerify from "./EmailVerify";
 import Summary from "./Summary";
+import Loading from '../../components/Loading'
 
 export default function Onboarding() {
   const { path } = useRouteMatch();
@@ -17,7 +18,7 @@ export default function Onboarding() {
   const { user: authUser } = useAuth0();
 
   if (!user) {
-    return <p>loading</p>;
+    return <Loading />;
   }
 
   const profileCompleted = user?.profileComplete;

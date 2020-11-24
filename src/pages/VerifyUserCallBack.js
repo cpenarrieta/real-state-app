@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useMutation, gql } from "@apollo/client";
 import { Redirect } from "react-router-dom";
 import { useAccessToken } from "../context/AccessTokenContext";
+import Loading from '../components/Loading'
 
 const VERIFY_USER_MUTATION = gql`
   mutation VerifyUser {
@@ -33,5 +34,5 @@ export default function VerifyUserCallBack() {
     return <Redirect to="/reactivate_account" />;
   }
 
-  return <div>loading...</div>;
+  return <Loading />;
 }

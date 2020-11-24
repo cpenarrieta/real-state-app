@@ -1,6 +1,7 @@
 import React, { useContext, useState, useMemo, useEffect } from "react";
 import { gql } from "@apollo/client";
 import {useAuthQuery} from '../hooks/useAuthQuery'
+import Loading from '../components/Loading'
 
 const ME_QUERY = gql`
   query MeQuery {
@@ -46,7 +47,7 @@ function UserProvider({ children }) {
   }, [data]);
 
   if (loading) {
-    return <p>loading</p>;
+    return <Loading />;
   }
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
