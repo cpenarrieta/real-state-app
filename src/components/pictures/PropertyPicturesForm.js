@@ -7,15 +7,19 @@ import { multipleImageUpload } from "../../util/imageUpload";
 import PropertyPicture from "./PropertyPicture";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { TouchBackend } from "react-dnd-touch-backend";
 import { useImagesGrid } from "./ImagesGridContext";
 import DragItem from "./DragItem";
 import { useAlert } from "../../context/AlertContext";
+import { mobileAndTabletCheck } from "../../util/checkMobileOrTablet";
 
 const SAVE_IMAGES_MUTATION = gql`
   mutation SavePropertyImages($images: [ImagesInput]!, $uuid: String!) {
     savePropertyImages(images: $images, uuid: $uuid)
   }
 `;
+
+const MAX_IMAGE_SIZE = 50;
 
 export default function PropertyPicturesForm({
   saveProperty,
@@ -132,99 +136,135 @@ export default function PropertyPicturesForm({
                         <div
                           className={`mt-2 flex justify-center px-3 pt-3 pb-3 border-2 border-gray-300 border-dashed rounded-md`}
                         >
-                          <DndProvider backend={HTML5Backend}>
-                            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-1">
-                              {items.map((image) => (
-                                <DragItem
-                                  key={image.id}
-                                  id={image.id}
-                                  onMoveItem={moveItem}
-                                >
-                                  <PropertyPicture
-                                    {...image}
-                                    saveProperty={saveProperty}
-                                    refetchGetImages={refetchGetImages}
-                                    propertyId={propertyId}
-                                  />
-                                </DragItem>
-                              ))}
-                            </div>
-                          </DndProvider>
+                          {mobileAndTabletCheck() && (
+                            <DndProvider backend={TouchBackend}>
+                              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-1">
+                                {items.map((image) => (
+                                  <DragItem
+                                    key={image.id}
+                                    id={image.id}
+                                    onMoveItem={moveItem}
+                                  >
+                                    <PropertyPicture
+                                      {...image}
+                                      saveProperty={saveProperty}
+                                      refetchGetImages={refetchGetImages}
+                                      propertyId={propertyId}
+                                    />
+                                  </DragItem>
+                                ))}
+                              </div>
+                            </DndProvider>
+                          )}
+                          {!mobileAndTabletCheck() && (
+                            <DndProvider backend={HTML5Backend}>
+                              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-1">
+                                {items.map((image) => (
+                                  <DragItem
+                                    key={image.id}
+                                    id={image.id}
+                                    onMoveItem={moveItem}
+                                  >
+                                    <PropertyPicture
+                                      {...image}
+                                      saveProperty={saveProperty}
+                                      refetchGetImages={refetchGetImages}
+                                      propertyId={propertyId}
+                                    />
+                                  </DragItem>
+                                ))}
+                              </div>
+                            </DndProvider>
+                          )}
                         </div>
                       </div>
                     )}
-                    <div className="col-span-6">
-                      <label className="block text-sm leading-5 font-medium text-gray-700">
-                        Add more Pictures
-                      </label>
-                      <div
-                        className={`mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md ${
-                          isDragActive ? "bg-green-100" : ""
-                        }`}
-                        {...getRootProps()}
-                      >
-                        <input {...getInputProps()} />
-                        <div className="text-center">
-                          {files.length <= 0 && (
-                            <svg
-                              className="mx-auto h-12 w-12 text-gray-400"
-                              stroke="currentColor"
-                              fill="none"
-                              viewBox="0 0 48 48"
-                            >
-                              <path
-                                d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          )}
-                          {files.length > 0 && (
-                            <>
+                    {items?.length < MAX_IMAGE_SIZE && (
+                      <div className="col-span-6">
+                        <label className="block text-sm leading-5 font-medium text-gray-700">
+                          Add more Pictures
+                        </label>
+                        <div
+                          className={`mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md ${
+                            isDragActive ? "bg-green-100" : ""
+                          }`}
+                          {...getRootProps()}
+                        >
+                          <input {...getInputProps()} />
+                          <div className="text-center">
+                            {files.length <= 0 && (
                               <svg
-                                className="mx-auto h-12 w-12 text-green-400"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
+                                className="mx-auto h-12 w-12 text-gray-400"
                                 stroke="currentColor"
+                                fill="none"
+                                viewBox="0 0 48 48"
                               >
                                 <path
+                                  d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                  strokeWidth="2"
                                   strokeLinecap="round"
                                   strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
                                 />
                               </svg>
-                              <p className="mt-1 text-xs text-gray-500">
-                                Now click Save.
-                              </p>
-                            </>
-                          )}
-                          <p className="mt-1 text-sm text-gray-600">
-                            <button className="font-medium text-logoRed hover:text-logoRed-500 focus:outline-none focus:underline transition duration-150 ease-in-out">
-                              Upload all of your property pictures
-                            </button>{" "}
-                            or drag and drop
-                          </p>
-                          <p className="mt-1 text-xs text-gray-500">
-                            PNG, JPG up to 3MB per file
-                          </p>
+                            )}
+                            {files.length > 0 && (
+                              <>
+                                <svg
+                                  className="mx-auto h-12 w-12 text-green-400"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                                  />
+                                </svg>
+                                <p className="mt-1 text-xs text-gray-500">
+                                  Now click Save.
+                                </p>
+                              </>
+                            )}
+                            <p className="mt-1 text-sm text-gray-600">
+                              <button className="font-medium text-logoRed hover:text-logoRed-500 focus:outline-none focus:underline transition duration-150 ease-in-out">
+                                Upload all of your property pictures
+                              </button>{" "}
+                              or drag and drop
+                            </p>
+                            <p className="mt-1 text-xs text-gray-500">
+                              PNG, JPG up to 3MB per file
+                            </p>
+                          </div>
                         </div>
+                        {files.length > 0 && (
+                          <div className="grid grid-cols-6 gap-6 mt-1">
+                            {files.map((f) => (
+                              <img
+                                key={f.url}
+                                className="col-span-1 rounded-sm"
+                                src={f.url}
+                                alt="file uploaded"
+                              />
+                            ))}
+                          </div>
+                        )}
                       </div>
-                      {files.length > 0 && (
-                        <div className="grid grid-cols-6 gap-6 mt-1">
-                          {files.map((f) => (
-                            <img
-                              key={f.url}
-                              className="col-span-1 rounded-sm"
-                              src={f.url}
-                              alt="file uploaded"
-                            />
-                          ))}
-                        </div>
-                      )}
-                    </div>
+                    )}
+                    {items?.length >= MAX_IMAGE_SIZE && (
+                      <div className="col-span-6">
+                        <label className="block text-sm leading-5 font-medium text-gray-700 text-center">
+                          You reached the maximun amount of pictures (
+                          {MAX_IMAGE_SIZE}).
+                        </label>
+                        <label className="block text-sm leading-5 font-medium text-gray-700 text-center">
+                          You can remove some current pictures and replace them
+                          with new ones.
+                        </label>
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="px-4 py-3 bg-gray-50 text-right sm:px-6 flex flex-row-reverse">

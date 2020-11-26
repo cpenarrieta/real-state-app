@@ -25,6 +25,8 @@ const SAVE_ATTACHMENT_MUTATION = gql`
   }
 `;
 
+const MAX_ATTACHMENT_SIZE = 10;
+
 const formatFilename = (filename, propertyId) => {
   const date = format(new Date(), "yyyyLLdd");
   const randomString = Math.random().toString(36).substring(2, 7);
@@ -194,77 +196,93 @@ export default function PropertyAttachmentsForm() {
                   )}
 
                   <Form className="col-span-6 grid grid-cols-6 gap-6">
-                    <div className="col-span-6 sm:col-span-3">
-                      <TextField
-                        id="attachmentTitle"
-                        name="attachmentTitle"
-                        type="text"
-                        label="Attachment Title"
-                        labelClass="block text-sm font-medium leading-5 text-gray-700"
-                        className="mt-1 form-input block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                      />
-                    </div>
-                    <div className="col-span-6">
-                      <label className="block text-sm leading-5 font-medium text-gray-700">
-                        Attachment
-                      </label>
-                      <div
-                        className={`mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md ${
-                          isDragActive ? "bg-green-100" : ""
-                        }`}
-                        {...getRootProps()}
-                      >
-                        <input {...getInputProps()} />
-                        <div className="text-center">
-                          {!file && (
-                            <svg
-                              className="mx-auto h-12 w-12 text-gray-400"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                              />
-                            </svg>
-                          )}
-                          {file && (
-                            <>
-                              <svg
-                                className="mx-auto h-12 w-12 text-green-400"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
-                                />
-                              </svg>
-                              <p className="mt-1 text-xs text-gray-500">
-                                Set an Attachment title and click Save.
-                              </p>
-                            </>
-                          )}
-                          <p className="mt-1 text-sm text-gray-600">
-                            <button className="font-medium text-logoRed hover:text-logoRed-500 focus:outline-none focus:underline transition duration-150 ease-in-out">
-                              Upload a file
-                            </button>{" "}
-                            or drag and drop
-                          </p>
-                          <p className="mt-1 text-xs text-gray-500">
-                            .PDF up to 5MB
-                          </p>
-                        </div>
+                    {attachments?.length >= MAX_ATTACHMENT_SIZE && (
+                      <div className="col-span-6">
+                        <label className="block text-sm leading-5 font-medium text-gray-700 text-center">
+                          You reached the maximun amount of attachments (
+                          {MAX_ATTACHMENT_SIZE}).
+                        </label>
+                        <label className="block text-sm leading-5 font-medium text-gray-700 text-center">
+                          You can remove some current attachments and replace
+                          them with new ones.
+                        </label>
                       </div>
-                    </div>
+                    )}
+                    {attachments?.length < MAX_ATTACHMENT_SIZE && (
+                      <>
+                        <div className="col-span-6 sm:col-span-3">
+                          <TextField
+                            id="attachmentTitle"
+                            name="attachmentTitle"
+                            type="text"
+                            label="Attachment Title"
+                            labelClass="block text-sm font-medium leading-5 text-gray-700"
+                            className="mt-1 form-input block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                          />
+                        </div>
+                        <div className="col-span-6">
+                          <label className="block text-sm leading-5 font-medium text-gray-700">
+                            Attachment
+                          </label>
+                          <div
+                            className={`mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md ${
+                              isDragActive ? "bg-green-100" : ""
+                            }`}
+                            {...getRootProps()}
+                          >
+                            <input {...getInputProps()} />
+                            <div className="text-center">
+                              {!file && (
+                                <svg
+                                  className="mx-auto h-12 w-12 text-gray-400"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                  />
+                                </svg>
+                              )}
+                              {file && (
+                                <>
+                                  <svg
+                                    className="mx-auto h-12 w-12 text-green-400"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                                    />
+                                  </svg>
+                                  <p className="mt-1 text-xs text-gray-500">
+                                    Set an Attachment title and click Save.
+                                  </p>
+                                </>
+                              )}
+                              <p className="mt-1 text-sm text-gray-600">
+                                <button className="font-medium text-logoRed hover:text-logoRed-500 focus:outline-none focus:underline transition duration-150 ease-in-out">
+                                  Upload a file
+                                </button>{" "}
+                                or drag and drop
+                              </p>
+                              <p className="mt-1 text-xs text-gray-500">
+                                .PDF up to 5MB
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </Form>
                 </div>
               </div>
