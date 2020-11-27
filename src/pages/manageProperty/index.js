@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Route,
   Switch,
@@ -7,7 +7,7 @@ import {
   useParams,
   useHistory,
 } from "react-router-dom";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation, gql } from "@apollo/client";
 import ManagePropertyEdit from "./ManagePropertyEdit";
 import ManagePropertyLeads from "./ManagePropertyLeads";
 import ManagePropertyPreview from "./ManagePropertyPreview";
@@ -19,6 +19,7 @@ import ShareModal from "../../components/share/ShareModal";
 import { PROPERTY_QUERY } from "../../queries/getProperty";
 import Loading from "../../components/Loading";
 import Error from "../../components/Error";
+import { useAlert } from "../../context/AlertContext";
 
 const ButtonNotSelected =
   "group inline-flex items-center py-4 px-1 border-b-2 border-transparent font-medium text-sm leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300";
@@ -28,6 +29,15 @@ const IconNotSelected =
   "-ml-0.5 mr-2 h-5 w-5 text-gray-400 group-hover:text-gray-500 group-focus:text-gray-600";
 const IconSelected =
   "-ml-0.5 mr-2 h-5 w-5 text-logoRed group-focus:text-logoRed";
+
+const SAVE_PROPERTY_MUTATION = gql`
+  mutation SaveProperty($property: PropertyInput) {
+    saveProperty(property: $property) {
+      uuid
+      title
+    }
+  }
+`;
 
 export default function ManageProperty() {
   const { path } = useRouteMatch();
@@ -45,6 +55,35 @@ export default function ManageProperty() {
     variables: { uuid: propertyId },
   });
   const [showShareModal, setShowShareModal] = useState(false);
+  const [editTitle, setEditTitle] = useState(false);
+  const [editTitleValue, setEditTitleValue] = useState();
+
+  const [saveProperty, { error: savePropertyError }] = useMutation(
+    SAVE_PROPERTY_MUTATION,
+    {
+      refetchQueries: [
+        {
+          query: PROPERTY_QUERY,
+          variables: { uuid: propertyId },
+        },
+      ],
+      awaitRefetchQueries: true,
+    }
+  );
+
+  const { setShowAlert } = useAlert();
+
+  useEffect(() => {
+    if (savePropertyError) {
+      setShowAlert(true);
+    }
+  }, [savePropertyError, setShowAlert]);
+
+  useEffect(() => {
+    if (data && !loading && !error && data?.property) {
+      setEditTitleValue(data?.property?.title);
+    }
+  }, [data, loading, error]);
 
   const isRoot =
     !matchEdit &&
@@ -65,13 +104,56 @@ export default function ManageProperty() {
 
   const liveWebsiteUrl = `${process.env.REACT_APP_STATIC_URI}${username}/${propertyId}`;
 
+  const savePropertyTitle = async (e) => {
+    e.preventDefault();
+    await saveProperty({
+      variables: {
+        property: {
+          uuid: propertyId,
+          title: editTitleValue || title,
+        },
+      },
+    });
+    setEditTitle(false);
+  };
+
   return (
     <div>
       <div className="lg:flex lg:items-center lg:justify-between">
         <div className="flex-1 min-w-0">
-          <h2 className="text-2xl font-bold leading-7 text-logoFont sm:text-3xl sm:leading-9 sm:truncate">
-            {title || "[property title]"}
-          </h2>
+          <div className="flex">
+            {!editTitle && (
+              <h2 className="text-2xl font-bold leading-7 text-logoFont sm:text-3xl sm:leading-9 sm:truncate">
+                {title || "[property title]"}
+              </h2>
+            )}
+            {title && !editTitle && (
+              <button
+                type="button"
+                className="rounded-md font-medium text-logoRed hover:text-logoRed-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 ml-2"
+                onClick={() => setEditTitle(true)}
+              >
+                edit
+              </button>
+            )}
+            {editTitle && (
+              <form onSubmit={savePropertyTitle} className="flex">
+                <input
+                  type="text"
+                  className="shadow-sm focus:ring-logoRed focus:border-logoRed block w-full border-gray-300 rounded-md text-2xl"
+                  placeholder="Custom Property Title"
+                  value={editTitleValue}
+                  onChange={(e) => setEditTitleValue(e.target.value)}
+                ></input>
+                <button
+                  type="submit"
+                  className="rounded-md font-medium text-logoRed hover:text-logoRed-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 ml-2"
+                >
+                  save
+                </button>
+              </form>
+            )}
+          </div>
           <div className="mt-1 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap">
             <span
               className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium leading-5 bg-${publishedColor}-100 text-${publishedColor}-800 mt-2 flex items-center text-sm leading-5 sm:mr-6`}
