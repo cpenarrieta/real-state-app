@@ -90,9 +90,6 @@ export default function GraphPropertyAnalytics({
 
   useEffect(() => {
     if (chartInstance && visitsRaw) {
-
-      console.log(visitsRaw, days)
-
       const labels = [];
       const sessionsDataSet = [];
       const leadsDataSet = [];

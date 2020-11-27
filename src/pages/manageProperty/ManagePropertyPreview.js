@@ -110,7 +110,6 @@ export default function ManagePropertyPreview() {
     variables: { uuid: propertyId },
   });
   const matchNewWindow = useRouteMatch("/preview/:propertyId");
-  console.log(matchNewWindow);
 
   if (loading) return <Loading />;
   if (error) return <Error />;
