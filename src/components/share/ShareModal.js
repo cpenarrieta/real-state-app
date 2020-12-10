@@ -42,8 +42,8 @@ export default function ShareModal({
     setCopied(true);
   }
 
-  const text = "Check out this wonderfull Property";
-  const emailTitle = "Check out this wonderfull Property";
+  const text = "Check out this wonderful Property";
+  const emailTitle = "Check out this wonderful Property";
 
   return (
     <div
