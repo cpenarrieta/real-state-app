@@ -20,6 +20,7 @@ import { PROPERTY_QUERY } from "../../queries/getProperty";
 import Loading from "../../components/Loading";
 import Error from "../../components/Error";
 import { useAlert } from "../../context/AlertContext";
+import { useUser } from "../../context/UserContext";
 
 const ButtonNotSelected =
   "group inline-flex items-center py-4 px-1 border-b-2 border-transparent font-medium text-sm leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300";
@@ -57,6 +58,8 @@ export default function ManageProperty() {
   const [showShareModal, setShowShareModal] = useState(false);
   const [editTitle, setEditTitle] = useState(false);
   const [editTitleValue, setEditTitleValue] = useState();
+  const useUserCtx = useUser();
+  const user = useUserCtx?.user;
 
   const [saveProperty, { error: savePropertyError }] = useMutation(
     SAVE_PROPERTY_MUTATION,
@@ -93,14 +96,16 @@ export default function ManageProperty() {
     !matchSettings &&
     !matchPayment;
 
-  if (loading) return <Loading />;
+  if (loading || !user) return <Loading />;
   if (error) return <Error />;
 
   const { title, status, publishedStatus, username } = data?.property;
+  const { trialUsed } = user;
 
   const [publishedText, publishedColor] = getPublishedStatus(publishedStatus);
 
   const isPropertyActive = publishedStatus === "PUBLISHED";
+  const isPropertyValidForFreeTrial = !isPropertyActive && !trialUsed;
 
   const liveWebsiteUrl = `${process.env.REACT_APP_STATIC_URI}${username}/${propertyId}`;
 
@@ -237,7 +242,7 @@ export default function ManageProperty() {
             </a>
           )}
 
-          {!isPropertyActive && (
+          {!isPropertyActive && !isPropertyValidForFreeTrial && (
             <span className="sm:ml-3 shadow-sm rounded-md">
               <button
                 type="button"
@@ -259,6 +264,34 @@ export default function ManageProperty() {
                   />
                 </svg>
                 Activate
+              </button>
+            </span>
+          )}
+
+          {!isPropertyActive && isPropertyValidForFreeTrial && (
+            <span className="sm:ml-3 shadow-sm rounded-md">
+              <button
+                type="button"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-green-500 hover:bg-green-400 focus:outline-none focus:shadow-outline-green focus:border-green-700 active:bg-green-700 transition duration-150 ease-in-out"
+                onClick={() => {
+                  history.push(`/manage-property/${propertyId}/payment`);
+                }}
+              >
+                <svg
+                  className="-ml-1 mr-2 h-4 w-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
+                  />
+                </svg>
+                Activate Free Website
               </button>
             </span>
           )}

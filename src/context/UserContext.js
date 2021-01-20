@@ -27,6 +27,7 @@ const ME_QUERY = gql`
       instagramLink
       facebookLink
       website
+      trialUsed
     }
   }
 `;

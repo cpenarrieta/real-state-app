@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useAccessToken } from "../../context/AccessTokenContext";
 import { useUser } from "../../context/UserContext";
+import { PROPERTY_QUERY } from "../../queries/getProperty";
+import { useMutation, gql } from "@apollo/client";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC);
+
+const PUBLISH_FREE_WEBSITE_MUTATION = gql`
+  mutation PublishFreeWebsite($uuid: String!) {
+    publishFreeWebsite(uuid: $uuid)
+  }
+`;
 
 const fetchCheckoutSession = async ({
   productType,
@@ -38,12 +46,24 @@ const fetchProducts = async (country) => {
 };
 
 export default function ManagePropertyPayment() {
+  const { propertyId } = useParams();
+  const history = useHistory();
+  const [publishFreeWebsite] = useMutation(PUBLISH_FREE_WEBSITE_MUTATION, {
+    refetchQueries: [
+      "MeQuery",
+      {
+        query: PROPERTY_QUERY,
+        variables: { uuid: propertyId },
+      },
+    ],
+    awaitRefetchQueries: true,
+  });
   const [lifetime, setLifetime] = useState();
   const [oneYear, setOneYear] = useState();
   const { accessToken } = useAccessToken();
-  const { propertyId } = useParams();
   const useUserCtx = useUser();
   const user = useUserCtx?.user;
+  const { trialUsed } = user;
 
   useEffect(() => {
     async function asyncFetchProducts() {
@@ -79,11 +99,14 @@ export default function ManagePropertyPayment() {
         <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl leading-9 font-extrabold text-logoFont sm:text-4xl sm:leading-10 lg:text-5xl lg:leading-none">
-              Simple no-tricks pricing
+              {trialUsed
+                ? "Simple no-tricks pricing"
+                : "Enjoy your first website for free"}
             </h2>
             <p className="mt-4 text-xl leading-7 text-gray-600">
-              If you're not satisfied, contact us within the first 30 days and
-              we'll send you a full refund. No questions asked.
+              {trialUsed
+                ? "If you're not satisfied, contact us within the first 30 days and we'll send you a full refund. No questions asked."
+                : ""}
             </p>
           </div>
         </div>
@@ -242,10 +265,10 @@ export default function ManagePropertyPayment() {
                 </div>
                 <div className="py-8 px-6 text-center bg-gray-50 lg:flex-shrink-0 lg:flex lg:flex-col lg:justify-center lg:p-12">
                   <p className="text-lg leading-6 font-medium text-logoFont">
-                    Pay once, own it forever
+                    {trialUsed ? "Pay once, own it forever" : ""}
                   </p>
                   <div className="mt-4 flex items-center justify-center text-5xl leading-none font-extrabold text-logoFont">
-                    <span>${lifetime.amount}</span>
+                    <span>${trialUsed ? lifetime.amount : 0}</span>
                     <span className="ml-3 text-xl leading-7 font-medium text-gray-500 uppercase">
                       {lifetime.currency}
                     </span>
@@ -254,9 +277,20 @@ export default function ManagePropertyPayment() {
                     <div className="rounded-md shadow">
                       <button
                         className="w-full flex items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-logoRed hover:bg-logoRed-500 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
-                        onClick={() => handleClick(lifetime.id)}
+                        onClick={async () => {
+                          if (trialUsed) {
+                            handleClick(lifetime.id);
+                          } else {
+                            await publishFreeWebsite({
+                              variables: {
+                                uuid: propertyId,
+                              },
+                            });
+                            history.push(`/manage-property/${propertyId}`);
+                          }
+                        }}
                       >
-                        Buy Lifetime
+                        {trialUsed ? "Buy Lifetime" : "Publish Free Website"}
                       </button>
                     </div>
                   </div>
