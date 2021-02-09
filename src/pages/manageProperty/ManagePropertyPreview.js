@@ -1,11 +1,11 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useQuery, gql } from "@apollo/client";
-import { PropertyPage } from "@cpenarrieta/real-state-property-components";
 import { parseISO } from "date-fns";
 import { Link, useRouteMatch } from "react-router-dom";
-import Loading from '../../components/Loading'
-import Error from '../../components/Error'
+import Loading from "../../components/Loading";
+import Error from "../../components/Error";
+import PropertyPage from "../../preview/property/index";
 
 const formatData = (propertyOpenHouse) => {
   return propertyOpenHouse?.map((o) => {
