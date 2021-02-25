@@ -34,7 +34,7 @@ class DownloadQrCode extends Component {
           className="inline-flex justify-center w-1/2 rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5"
         >
           <svg
-            className="h-5 w-5"
+            className="-ml-1 mr-3 h-5 w-5"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
