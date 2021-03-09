@@ -26,7 +26,7 @@ export default function HeroBackground({
   const [showShareModal, setShowShareModal] = useState(false);
   const [badgeText, badgeColor] = getPropertyBadge(status, publishedStatus);
   const [colorMain, colorHover] = getColorThemeBackground(color);
-  const [colorMainText, _] = getColorThemeText(color);
+  const [colorMainText, ] = getColorThemeText(color);
 
   const origin = "https://realtorapp.co";
   const liveWebsiteUrl = `${origin}/${username}/${uuid}`;

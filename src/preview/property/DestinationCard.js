@@ -14,7 +14,7 @@ export default function DestinationCard({
   username,
   color,
 }) {
-  const [_, colorSec] = getColorThemeText(color);
+  const [, colorSec] = getColorThemeText(color);
 
   return (
     <a href={`/${username}/${uuid}`} rel="noopener noreferrer">

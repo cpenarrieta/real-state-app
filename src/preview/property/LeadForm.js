@@ -31,7 +31,7 @@ export default function LeadForm({
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [colorMain, colorSec] = getColorThemeText(color);
-  const [colorMainBg, colorSecBg] = getColorThemeBackground(color);
+  const [colorMainBg,] = getColorThemeBackground(color);
 
   const showSuccessAlert = successMessage && !errorMessage;
   const buttonDisabled = !email || !name || !phone || showSuccessAlert;
@@ -278,7 +278,6 @@ export default function LeadForm({
                         <span className="sr-only">Facebook</span>
                         <svg
                           className={`w-5 h-5 hover:${colorSec}`}
-                          className="h-6 w-6"
                           aria-hidden="true"
                           fill="currentColor"
                           viewBox="0 0 24 24"
