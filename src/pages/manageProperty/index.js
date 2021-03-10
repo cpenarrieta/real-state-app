@@ -246,8 +246,8 @@ export default function ManageProperty() {
           )}
 
           {isPropertyActive && (
-            <div class="has-tooltip">
-              <span class="tooltip rounded shadow-lg p-1 bg-gray-100 text-logoFont -mt-8">
+            <div className="has-tooltip">
+              <span className="tooltip rounded shadow-lg p-1 bg-gray-100 text-logoFont -mt-8">
                 Updates may take up to 30'
               </span>
               <a

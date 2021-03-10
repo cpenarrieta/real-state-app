@@ -52,6 +52,7 @@ const PROPERTY_QUERY = gql`
       color
       hidePrice
       strata
+      openHouseActive
     }
     attachments(uuid: $uuid) {
       id
