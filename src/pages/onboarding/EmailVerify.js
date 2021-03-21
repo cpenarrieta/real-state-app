@@ -16,7 +16,7 @@ export default function EmailVerify({ email, emailVerified }) {
             before continuing.
             <br />
             Please check your inbox and follow instructions to confirm your
-            email.
+            email (make sure you check the spam folder too).
           </h5>
         </div>
       </div>
